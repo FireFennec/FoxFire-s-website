@@ -50,6 +50,12 @@ class WebsiteFeaturesRepository
                 'About me',
                 'Improve information with links for better access to my social media',
                 'Update feature'
+            ),
+            new WebsiteFeatures(
+                8,
+                'About me',
+                'You can find a contact informations on me here and my social medias',
+                'Completed feature'
             )
         ];
     }

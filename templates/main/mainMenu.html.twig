@@ -7,17 +7,19 @@
 
     <h3>What is the purpose?</h3>
     <p>I want to test my web developing skill here by creating an interesting apps that can be also useful.</p>
+
     <h3>The list of existing thing here</h3>
-    <p>About me. Some links on social medias and contacts</p>
+    {% for completedFeature in completedFeatures %}
+        <strong>{{ completedFeature.title }}</strong>: {{ completedFeature.description }}<br>
+    {% endfor %}
 
     <h3>The plan of things I want to add</h3>
-    <p>Task list</p>
-    <p>Small text minigame</p>
-    <p>My personal IT skills</p>
-    <p>Registration and login for your own account.</p>
-    <p>Front-end (visual) update of my webside</p>
-    <p>Navigation bar</p>
+    {% for newFeature in newFeatures %}
+        <strong>{{ newFeature.title }}</strong>: {{ newFeature.description }}<br>
+    {% endfor %}
 
     <h3>The plan of things I want to update</h3>
-    <p>About me. Add dynamic links on social medias</p>
+    {% for updateFeature in updateFeatures %}
+        <strong>{{ updateFeature.title }}</strong>: {{ updateFeature.description }}<br>
+    {% endfor %}
 {% endblock %}
