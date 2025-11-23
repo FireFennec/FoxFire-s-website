@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Model\ContactInformations;
 
-class ContactInformationRepository
+class ContactInformationsRepository
 {
     public function findAll(): array
     {
