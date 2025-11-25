@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class MainMenuController extends AbstractController
 {
-    #[Route('/')]
+    #[Route('/', name: 'app_mainMenu', methods: ['GET'])]
     public function mainMenu(WebsiteFeaturesRepository $websiteFeaturesRepository): Response
     {
         $websiteFeatures = $websiteFeaturesRepository->findAll();
@@ -17,20 +17,14 @@ class MainMenuController extends AbstractController
         $newFeatures = [];
         $updateFeatures = [];
         $completedFeatures = [];
-        $newFeaturesCount = 0;
-        $updateFeaturesCount = 0;
-        $completedFeaturesCount = 0;
         foreach ($websiteFeatures as $websiteFeature)
         {
             if ($websiteFeature->getType() === 'New feature'){
                 $newFeatures[] = $websiteFeature;
-                $newFeaturesCount++;
             } else if ($websiteFeature->getType() === 'Update feature'){
                 $updateFeatures[] = $websiteFeature;
-                $updateFeaturesCount++;
             } else if ($websiteFeature->getType() === 'Completed feature'){
                 $completedFeatures[] = $websiteFeature;
-                $completedFeaturesCount++;
             }
         }
 
@@ -38,9 +32,6 @@ class MainMenuController extends AbstractController
             'newFeatures' => $newFeatures,
             'updateFeatures' => $updateFeatures,
             'completedFeatures' => $completedFeatures,
-            'newFeaturesCount' => $newFeaturesCount,
-            'updateFeaturesCount' => $updateFeaturesCount,
-            'completedFeaturesCount' => $completedFeaturesCount,
         ]);
     }
 }

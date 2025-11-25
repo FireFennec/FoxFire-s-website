@@ -5,20 +5,23 @@
 {% block body %}
     <h1>FoxFire's website</h1>
 
-    <h3>What is the purpose?</h3>
+    <h2>What is the purpose?</h2>
     <p>I want to test my web developing skill here by creating an interesting apps that can be also useful.</p>
 
-    <h3>The list of existing thing here</h3>
+    <h2>The list of existing thing here</h2>
+    <strong>Right now there is {{ completedFeatures|length }} task to finish in "completed" section.</strong><br><br>
     {% for completedFeature in completedFeatures %}
         <strong>{{ completedFeature.title }}</strong>: {{ completedFeature.description }}<br>
     {% endfor %}
 
-    <h3>The plan of things I want to add</h3>
+    <h2>The plan of things I want to add</h2>
+    <strong>Right now there is {{ newFeatures|length }} task to finish in "add new" section.</strong><br><br>
     {% for newFeature in newFeatures %}
         <strong>{{ newFeature.title }}</strong>: {{ newFeature.description }}<br>
     {% endfor %}
 
-    <h3>The plan of things I want to update</h3>
+    <h2>The plan of things I want to update</h2>
+    <strong>Right now there is {{ updateFeatures|length }} task to finish in "update" section.</strong><br><br>
     {% for updateFeature in updateFeatures %}
         <strong>{{ updateFeature.title }}</strong>: {{ updateFeature.description }}<br>
     {% endfor %}

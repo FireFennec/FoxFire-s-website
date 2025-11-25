@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ContactController extends AbstractController
 {
-    #[Route('aboutMe')]
+    #[Route('/aboutMe', name: 'app_contact_aboutMe', methods: ['GET'])]
     public function aboutMe(ContactInformationsRepository $contactInformationsRepository): Response
     {
         $myContactInformation = $contactInformationsRepository->findOne('DanVraspir@protonmail.com');
