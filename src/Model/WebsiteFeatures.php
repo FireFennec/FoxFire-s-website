@@ -8,7 +8,7 @@ class WebsiteFeatures
         private int $id,
         private string $title,
         private string $description,
-        private string $type,
+        private FeaturesStatusEnum $type,
     ){
     }
 
@@ -42,12 +42,12 @@ class WebsiteFeatures
         $this->description = $description;
     }
 
-    public function getType(): string
+    public function getType(): FeaturesStatusEnum
     {
         return $this->type;
     }
 
-    public function setType(string $type): void
+    public function setType(FeaturesStatusEnum $type): void
     {
         $this->type = $type;
     }

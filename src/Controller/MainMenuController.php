@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\FeaturesStatusEnum;
 use App\Repository\WebsiteFeaturesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,11 +20,11 @@ class MainMenuController extends AbstractController
         $completedFeatures = [];
         foreach ($websiteFeatures as $websiteFeature)
         {
-            if ($websiteFeature->getType() === 'New feature'){
+            if ($websiteFeature->getType() === FeaturesStatusEnum::NEW_FEATURE){
                 $newFeatures[] = $websiteFeature;
-            } else if ($websiteFeature->getType() === 'Update feature'){
+            } else if ($websiteFeature->getType() === FeaturesStatusEnum::UPDATE_FEATURE){
                 $updateFeatures[] = $websiteFeature;
-            } else if ($websiteFeature->getType() === 'Completed feature'){
+            } else if ($websiteFeature->getType() === FeaturesStatusEnum::COMPLETED_FEATURE){
                 $completedFeatures[] = $websiteFeature;
             }
         }
