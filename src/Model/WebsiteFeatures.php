@@ -51,4 +51,9 @@ class WebsiteFeatures
     {
         $this->type = $type;
     }
+
+    public function getTypeString(): string
+    {
+        return $this->type->value;
+    }
 }

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Task {{ task.title }}{% endblock %}
+
+{% block body %}
+    <div class="my-4 px-8">
+        <div class="flex items-center justify-between">
+            <a class="bg-orange-500 hover:bg-orange-600 rounded-xl px-4 py-2 text-white"
+               href="{{ path('app_mainMenu') }}">
+                Back
+            </a>
+
+            <span class="bg-orange-500 text-white px-5 py-2 rounded-full
+                     text-base md:text-lg font-semibold shadow">
+            {{ task.getTypeString }}
+        </span>
+        </div>
+
+        <div class="flex justify-center mt-8">
+            <div class="text-center text-white">
+                <h2 class="text-3xl md:text-4xl font-bold">
+                    {{ task.title }}
+                </h2>
+                <p class="text-lg md:text-xl mt-6">
+                    {{ task.description }}
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

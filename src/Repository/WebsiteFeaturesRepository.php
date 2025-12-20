@@ -12,9 +12,9 @@ class WebsiteFeaturesRepository
         return [
             new WebsiteFeatures(
                 1,
-                'Task list',
+                'Task list editing',
                 'List where you can add and delete tasks.',
-                FeaturesStatusEnum::NEW_FEATURE
+                FeaturesStatusEnum::UPDATE_FEATURE
             ),
             new WebsiteFeatures(
                 2,
@@ -48,8 +48,8 @@ class WebsiteFeaturesRepository
             ),
             new WebsiteFeatures(
                 7,
-                'About me',
-                'Improve information with links for better access to my social media',
+                'About me with links',
+                'Improve information with links for better access to my social media. Also with better visuals.',
                 FeaturesStatusEnum::UPDATE_FEATURE
             ),
             new WebsiteFeatures(
@@ -57,7 +57,30 @@ class WebsiteFeaturesRepository
                 'About me',
                 'You can find a contact informations on me here and my social medias',
                 FeaturesStatusEnum::COMPLETED_FEATURE
-            )
+            ),
+            new WebsiteFeatures(
+                9,
+                'Task list show',
+                'Page with chosen task with its description and status.',
+                FeaturesStatusEnum::COMPLETED_FEATURE
+            ),
+            new WebsiteFeatures(
+                10,
+                'Task list priority',
+                'Tasks will have another attribute = priority.',
+                FeaturesStatusEnum::UPDATE_FEATURE
+            ),
         ];
+    }
+
+    public function findOne(int $id): ?WebsiteFeatures
+    {
+        foreach ($this->findAll() as $websiteFeature) {
+            if ($websiteFeature->getId() === $id) {
+                return $websiteFeature;
+            }
+        }
+
+        return null;
     }
 }
