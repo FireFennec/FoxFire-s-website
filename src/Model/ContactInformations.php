@@ -6,13 +6,16 @@ class ContactInformations
 {
     public function __construct(
         private int $id,
-        private int $phoneNumber,
+        private ?int $phoneNumber,
         private string $email,
-        private string $discord,
-        private string $telegram,
-        private string $x,
-        private string $xAD,
-        private string $barq,
+        private ?string $discord,
+        private ?string $telegram,
+        private ?string $x,
+        private ?string $xLink,
+        private ?string $xAd,
+        private ?string $xAdLink,
+        private ?string $barq,
+        private ?string $barqLink,
     ){
     }
 
@@ -76,14 +79,34 @@ class ContactInformations
         $this->x = $x;
     }
 
-    public function getXAD(): string
+    public function getXLink(): string
     {
-        return $this->xAD;
+        return $this->xLink;
     }
 
-    public function setXAD(string $xAD): void
+    public function setXLink(string $xLink): void
     {
-        $this->xAD = $xAD;
+        $this->xLink = $xLink;
+    }
+
+    public function getXAd(): string
+    {
+        return $this->xAd;
+    }
+
+    public function setXAd(string $xAD): void
+    {
+        $this->xAd = $xAD;
+    }
+
+    public function getXAdLink(): string
+    {
+        return $this->xAdLink;
+    }
+
+    public function setXAdLink(string $xADLink): void
+    {
+        $this->xAdLink = $xADLink;
     }
 
     public function getBarq(): string
@@ -94,5 +117,15 @@ class ContactInformations
     public function setBarq(string $barq): void
     {
         $this->barq = $barq;
+    }
+
+    public function getBarqLink(): ?string
+    {
+        return $this->barqLink;
+    }
+
+    public function setBarqLink(?string $barqLink): void
+    {
+        $this->barqLink = $barqLink;
     }
 }

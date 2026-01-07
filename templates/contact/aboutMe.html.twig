@@ -9,28 +9,49 @@
             <h3 class="text-3xl">Contact me</h3>
         </tr>
         <tr>
-            <td><strong>Email:</strong> {{ myContactInformation.0.email }}</td>
+            <td><strong>Email:</strong> {{ myContactInformation.email }}</td>
         </tr>
         <tr>
-            <td><strong>Telegram:</strong> {{ myContactInformation.0.telegram }}</td>
+            <td><strong>Telegram:</strong>
+                <a href="https://t.me/{{ myContactInformation.telegram }}">
+                    {{ myContactInformation.telegram }}
+                </a></td>
         </tr>
         <tr>
-            <td><strong>Discord:</strong> {{ myContactInformation.0.discord }}</td>
+            <td><strong>Discord:</strong> {{ myContactInformation.discord }}</td>
         </tr>
-    </table>
+    </table><br>
 
     <table>
         <tr>
             <h3>Follow me</h3>
         </tr>
         <tr>
-            <td><strong>X:</strong> {{ myContactInformation.0.x }}</td>
+            <td><strong>X:</strong>
+                {% if myContactInformation.xLink %}
+                    <a href="{{ myContactInformation.xLink }}">{{ myContactInformation.x }}</a>
+                {% else %}
+                    {{ myContactInformation.x }}
+                {% endif %}
+            </td>
         </tr>
         <tr>
-            <td><strong>X(AD):</strong> {{ myContactInformation.0.xAd }}</td>
+            <td><strong>X(AD):</strong>
+                {% if myContactInformation.xAdLink %}
+                    <a href="{{ myContactInformation.xAdLink }}">{{ myContactInformation.xAd }}</a>
+                {% else %}
+                    {{ myContactInformation.xAd }}
+                {% endif %}
+            </td>
         </tr>
         <tr>
-            <td><strong>Barq:</strong> {{ myContactInformation.0.barq }}</td>
+            <td><strong>Barq:</strong>
+                {% if myContactInformation.BarqLink %}
+                    <a href="{{ myContactInformation.BarqLink }}">{{ myContactInformation.barq }}</a>
+                {% else %}
+                    {{ myContactInformation.barq }}
+                {% endif %}
+            </td>
         </tr>
     </table>
 {% endblock %}

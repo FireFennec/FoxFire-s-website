@@ -6,22 +6,14 @@ use App\Model\ContactInformations;
 
 class ContactInformationsRepository
 {
-    public function findOne($email): ?array
+    public function findOneById(int $id): ?ContactInformations
     {
-        if ($email == 'DanVraspir@protonmail.com') {
-            return [
-                new ContactInformations(
-                    1,
-                    '+420739950157',
-                    'DanVraspir@protonmail.com',
-                    'foxfire7445',
-                    '@FoxFireCZ',
-                    'FoxFireCZ',
-                    'FoxFire_AD',
-                    '@FoxFireCZ'
-                )
-            ];
-        }
+       foreach ($this->findAll() as $contactInformation)
+       {
+           if ($contactInformation->getId() == $id) {
+               return $contactInformation;
+           }
+       }
         return null;
     }
 
@@ -33,10 +25,13 @@ class ContactInformationsRepository
                 '+420739950157',
                 'DanVraspir@protonmail.com',
                 'foxfire7445',
-                '@FoxFireCZ',
                 'FoxFireCZ',
+                'FoxFireCZ',
+                'https://x.com/FoxFireCZ',
                 'FoxFire_AD',
-                '@FoxFireCZ'
+                'https://x.com/FoxFire_ad',
+                '@FoxFireCZ',
+                'https://barq.app/@FoxFireCZ'
             )
         ];
     }
