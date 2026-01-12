@@ -87,7 +87,7 @@ class WebsiteFeaturesRepository
                 11,
                 'About me - improve visual design',
                 'Add some borders and and text visual improvement. Also improve link so it can be recognized it is link.',
-                FeaturesStatusEnum::UPDATE_FEATURE,
+                FeaturesStatusEnum::COMPLETED_FEATURE,
                 TaskPriorityEnum::NICE_TO_HAVE
             ),
             new WebsiteFeatures(
