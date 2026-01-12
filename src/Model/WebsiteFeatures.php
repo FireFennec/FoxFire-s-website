@@ -9,6 +9,7 @@ class WebsiteFeatures
         private string $title,
         private string $description,
         private FeaturesStatusEnum $type,
+        private TaskPriorityEnum $priority,
     ){
     }
 
@@ -55,5 +56,25 @@ class WebsiteFeatures
     public function getTypeString(): string
     {
         return $this->type->value;
+    }
+
+    public function getPriority(): TaskPriorityEnum
+    {
+        return $this->priority;
+    }
+
+    public function setPriority(TaskPriorityEnum $priority): void
+    {
+        $this->priority = $priority;
+    }
+
+    public function getPriorityString(): string
+    {
+        return $this->priority->value;
+    }
+
+    public function getPriorityColor(): string
+    {
+        return $this->priority->priorityColor();
     }
 }

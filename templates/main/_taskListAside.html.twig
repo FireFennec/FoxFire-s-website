@@ -7,24 +7,24 @@
         <div class="flex flex-col mt-4">
             <strong class="text-2xl">Completed: {{ completedFeatures|length }} tasks</strong>
             {% for completedFeature in completedFeatures %}
-            <a
-                class="hover:text-slate-200"
-                href="{{ path('app_taskList_taskInfoShow', {id: completedFeature.id}) }}"
-            ><strong>{{ completedFeature.title }}</strong></a>
+                <a
+                    class="hover:text-slate-200 {{ completedFeature.priorityColor() }}"
+                    href="{{ path('app_taskList_taskInfoShow', {id: completedFeature.id}) }}"
+                ><strong>{{ completedFeature.title }}</strong></a>
             {% endfor %}<br>
 
             <strong class="text-2xl">To create: {{ newFeatures|length }} tasks</strong>
             {% for newFeature in newFeatures %}
-            <a
-                class="hover:text-slate-200"
-                href="{{ path('app_taskList_taskInfoShow', {id: newFeature.id}) }}"
-            ><strong>{{ newFeature.title }}</strong></a>
+                <a
+                    class="hover:text-slate-200 {{ newFeature.priorityColor() }}"
+                    href="{{ path('app_taskList_taskInfoShow', {id: newFeature.id}) }}"
+                ><strong>{{ newFeature.title }}</strong></a>
             {% endfor %}<br>
 
             <strong class="text-2xl">To update: {{ updateFeatures|length }} tasks</strong>
             {% for updateFeature in updateFeatures %}
                 <a
-                    class="hover:text-slate-200"
+                    class="hover:text-slate-200 {{ updateFeature.priorityColor() }}"
                     href="{{ path('app_taskList_taskInfoShow', {id: updateFeature.id}) }}"
                 ><strong>{{ updateFeature.title }}</strong></a>
             {% endfor %}
