@@ -104,6 +104,20 @@ class WebsiteFeaturesRepository
                 FeaturesStatusEnum::NEW_FEATURE,
                 TaskPriorityEnum::ASAP
             ),
+            new WebsiteFeatures(
+                14,
+                'Add cook recipes',
+                'There will be a page with my recipes that I tried. For now only names of recipes.',
+                FeaturesStatusEnum::NEW_FEATURE,
+                TaskPriorityEnum::ANYTIME
+            ),
+            new WebsiteFeatures(
+                15,
+                'Better navigation menu',
+                'Add some border and light effects for navigation menu.',
+                FeaturesStatusEnum::UPDATE_FEATURE,
+                TaskPriorityEnum::SOON
+            ),
         ];
     }
 
