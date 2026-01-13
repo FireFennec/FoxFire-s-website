@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Task {{ task.title }}{% endblock %}
+{% block title %}Feature - {{ feature.title }}{% endblock %}
 
 {% block body %}
     <div class="my-4 px-8">
@@ -12,20 +12,20 @@
 
             <span class="bg-orange-500 text-white px-5 py-2 rounded-full
                      text-base md:text-lg font-semibold shadow">
-            {{ task.getTypeString }}
+            {{ feature.getTypeString }}
         </span>
         </div>
 
         <div class="flex justify-center mt-8">
             <div class="text-center text-white">
                 <h2 class="text-3xl md:text-4xl font-bold">
-                    {{ task.title }}
+                    {{ feature.title }}
                 </h2>
-                <p class="text-xl md:text-2xl lg:text-2xl mt-4 {{ task.getPriorityColor }}">
-                    Priority: {{ task.getPriorityString }}
+                <p class="text-xl md:text-2xl lg:text-2xl mt-4 {{ feature.getPriorityColor }}">
+                    Priority: {{ feature.getPriorityString }}
                 </p>
                 <p class="text-lg md:text-xl mt-6">
-                    {{ task.description }}
+                    {{ feature.description }}
                 </p>
             </div>
         </div>

@@ -1,31 +1,31 @@
 <aside class="pb-8 lg:pb-0 lg:w-[350px] shrink-0 lg:block lg:min-h-screen text-white transition-all overflow-hidden px-8 border-b lg:border-b-0 lg:border-r border-white/20">
     <div class="flex justify-between mt-11 mb-7">
-        <h2 class="text-[32px] font-semibold">My tasks list</h2>
+        <h2 class="text-[25px] font-semibold">My Website features list</h2>
     </div>
 
     <div>
         <div class="flex flex-col mt-4">
-            <strong class="text-2xl">To create: {{ newFeatures|length }} tasks</strong>
+            <strong class="text-2xl">To create: {{ newFeatures|length }} features</strong>
             {% for newFeature in newFeatures %}
                 <a
                     class="hover:text-slate-200 {{ newFeature.priorityColor() }}"
-                    href="{{ path('app_taskList_taskInfoShow', {id: newFeature.id}) }}"
+                    href="{{ path('app_featureList_featureInfoShow', {id: newFeature.id}) }}"
                 ><strong>{{ newFeature.title }}</strong></a>
             {% endfor %}<br>
 
-            <strong class="text-2xl">To update: {{ updateFeatures|length }} tasks</strong>
+            <strong class="text-2xl">To update: {{ updateFeatures|length }} features</strong>
             {% for updateFeature in updateFeatures %}
                 <a
                     class="hover:text-slate-200 {{ updateFeature.priorityColor() }}"
-                    href="{{ path('app_taskList_taskInfoShow', {id: updateFeature.id}) }}"
+                    href="{{ path('app_featureList_featureInfoShow', {id: updateFeature.id}) }}"
                 ><strong>{{ updateFeature.title }}</strong></a>
             {% endfor %}<br>
 
-            <strong class="text-2xl">Completed: {{ completedFeatures|length }} tasks</strong>
+            <strong class="text-2xl">Completed: {{ completedFeatures|length }} features</strong>
             {% for completedFeature in completedFeatures %}
             <a
                 class="hover:text-slate-200 {{ completedFeature.priorityColor() }}"
-                href="{{ path('app_taskList_taskInfoShow', {id: completedFeature.id}) }}"
+                href="{{ path('app_featureList_featureInfoShow', {id: completedFeature.id}) }}"
             ><strong>{{ completedFeature.title }}</strong></a>
             {% endfor %}<br>
         </div>

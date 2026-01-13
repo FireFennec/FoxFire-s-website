@@ -4,7 +4,7 @@
 
 {% block body %}
     <main class="flex flex-col lg:flex-row">
-        {{ include('main/_taskListAside.html.twig') }}
+        {{ include('main/_featuresListAside.html.twig') }}
 
         <div class="px-12 pt-10 w-full text-white">
             <h1 class="text-4xl font-semibold mb-8">
@@ -16,19 +16,19 @@
                 <p>I want to test my web developing skill here by creating an interesting apps that can be also useful.</p><br>
 
                 <h2 class="text-2xl">The list of existing thing here</h2>
-                <strong>Right now there is {{ completedFeatures|length }} tasks in "completed" section.</strong><br><br>
+                <strong>Right now there is {{ completedFeatures|length }} features in "completed" section.</strong><br><br>
                 {% for completedFeature in completedFeatures %}
                 <strong>{{ completedFeature.title }}</strong>: {{ completedFeature.description }}<br>
                 {% endfor %}<br>
 
                 <h2 class="text-2xl">The plan of things I want to add</h2>
-                <strong>Right now there is {{ newFeatures|length }} task to finish in "add new" section.</strong><br><br>
+                <strong>Right now there is {{ newFeatures|length }} features to finish in "add new" section.</strong><br><br>
                 {% for newFeature in newFeatures %}
                 <strong>{{ newFeature.title }}</strong>: {{ newFeature.description }}<br>
                 {% endfor %}<br>
 
                 <h2 class="text-2xl">The plan of things I want to update</h2>
-                <strong>Right now there is {{ updateFeatures|length }} task to finish in "update" section.</strong><br><br>
+                <strong>Right now there is {{ updateFeatures|length }} features to finish in "update" section.</strong><br><br>
                 {% for updateFeature in updateFeatures %}
                     <strong>{{ updateFeature.title }}</strong>: {{ updateFeature.description }}<br>
                 {% endfor %}

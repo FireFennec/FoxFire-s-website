@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-enum TaskPriorityEnum: string
+enum FeaturePriorityEnum: string
 {
     case NICE_TO_HAVE = 'Nice to have';
     case ANYTIME = 'Anytime';
