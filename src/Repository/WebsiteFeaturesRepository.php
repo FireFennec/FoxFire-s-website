@@ -30,7 +30,7 @@ class WebsiteFeaturesRepository
                 3,
                 'Personal skills',
                 'A page with my own skills about IT',
-                FeaturesStatusEnum::NEW_FEATURE,
+                FeaturesStatusEnum::COMPLETED_FEATURE,
                 FeaturePriorityEnum::SOON
             ),
             new WebsiteFeatures(
