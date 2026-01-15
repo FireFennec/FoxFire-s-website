@@ -115,7 +115,7 @@ class WebsiteFeaturesRepository
                 15,
                 'Better navigation menu',
                 'Add some border and light effects for navigation menu.',
-                FeaturesStatusEnum::UPDATE_FEATURE,
+                FeaturesStatusEnum::COMPLETED_FEATURE,
                 FeaturePriorityEnum::SOON
             ),
             new WebsiteFeatures(
@@ -124,6 +124,13 @@ class WebsiteFeaturesRepository
                 'Rename tasks on Web Futures. It is because in the future I want to create tasks for daily rutine.',
                 FeaturesStatusEnum::COMPLETED_FEATURE,
                 FeaturePriorityEnum::HIGH_PRIORITY
+            ),
+            new WebsiteFeatures(
+                17,
+                'My skills - full list',
+                'Improve the information about my skills about other things and better description.',
+                FeaturesStatusEnum::UPDATE_FEATURE,
+                FeaturePriorityEnum::ANYTIME
             ),
         ];
     }
