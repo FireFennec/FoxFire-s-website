@@ -64,4 +64,9 @@ class PersonalSkill
 
         return $this;
     }
+
+    public function getLevelOfSkillString(): string
+    {
+        return $this->levelOfSkill->value;
+    }
 }

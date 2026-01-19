@@ -2,48 +2,27 @@
 
 namespace App\Repository;
 
-use App\Model\PersonalSkillLevelEnum;
-use App\Model\PersonalSkills;
+use AllowDynamicProperties;
+use App\Entity\PersonalSkill;
+use Doctrine\ORM\EntityManagerInterface;
 
+#[AllowDynamicProperties]
 class PersonalSkillsRepository
 {
+    public function __construct(
+        EntityManagerInterface $entityManager
+    )
+    {
+        $this->entityManager = $entityManager;
+    }
+
     public function findAll(): array
     {
-        return [
-            new PersonalSkills(
-                0,
-                'PHP (Hypertext Preprocessor)',
-                'A back-end programming language used to develop web applications.',
-                PersonalSkillLevelEnum::EXPERIENCED
-            ),
-            new PersonalSkills(
-                1,
-                'Symfony (PHP framework)',
-                'A PHP framework (like a comprehensive library of functions and tools).
-                The best way to write professional, maintainable PHP code.',
-                PersonalSkillLevelEnum::ADVANCED
-            ),
-            new PersonalSkills(
-                2,
-                'HTML (Hypertext Markup Language)',
-                'A front-end programming language designed for building the user-facing visual layer of websites,
-                including layouts, styling, animations, and responsive designs.',
-                PersonalSkillLevelEnum::ADVANCED
-            ),
-            new PersonalSkills(
-                3,
-                'CSS (Cascading Style Sheets)',
-                'A front-end stylesheet language specifically designed for styling and designing
-                the visual presentation of websites, controlling layouts, colors, fonts, spacing,
-                animations, and responsive behavior across different devices.',
-                PersonalSkillLevelEnum::BEGGER
-            ),
-            new PersonalSkills(
-                4,
-                'English',
-                'Important in IT technology.',
-                PersonalSkillLevelEnum::PROFESSIONAL
-            ),
-        ];
+        return $this->entityManager->createQueryBuilder()
+            ->select('s')
+            ->from(PersonalSkill::class, 's')
+            ->orderBy('s.levelOfSkill', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 }

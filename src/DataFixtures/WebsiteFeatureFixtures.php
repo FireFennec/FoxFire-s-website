@@ -97,7 +97,7 @@ class WebsiteFeatureFixtures extends Fixture
         $websiteFeature13->setDescription('Add a database to store important data and improve possibilities I can do on my website.
         This improvement will store data in Fixtures for now and it will have another updates.');
         $websiteFeature13->setPriority(FeaturePriorityEnum::ASAP);
-        $websiteFeature13->setStatus(FeaturesStatusEnum::NEW_FEATURE,);
+        $websiteFeature13->setStatus(FeaturesStatusEnum::COMPLETED_FEATURE,);
 
         $websiteFeature14 = new WebsiteFeature();
         $websiteFeature14->setName('Add a cooking recipes');
@@ -138,6 +138,13 @@ class WebsiteFeatureFixtures extends Fixture
         $websiteFeature18->setPriority(FeaturePriorityEnum::ANYTIME);
         $websiteFeature18->setStatus(FeaturesStatusEnum::UPDATE_FEATURE,);
 
+        $websiteFeature19 = new WebsiteFeature();
+        $websiteFeature19->setName('Database - improvement');
+        $websiteFeature19->setDescription('Right now all data in database are in fixtures which means it is hard to add a new things
+        without adding them from my code instead of my website. This feature will be about to fix this issue.');
+        $websiteFeature19->setPriority(FeaturePriorityEnum::ANYTIME);
+        $websiteFeature19->setStatus(FeaturesStatusEnum::UPDATE_FEATURE,);
+
         $manager->persist($websiteFeature1);
         $manager->persist($websiteFeature2);
         $manager->persist($websiteFeature3);
@@ -155,6 +162,8 @@ class WebsiteFeatureFixtures extends Fixture
         $manager->persist($websiteFeature15);
         $manager->persist($websiteFeature16);
         $manager->persist($websiteFeature17);
+        $manager->persist($websiteFeature18);
+        $manager->persist($websiteFeature19);
 
         $manager->flush();
     }
