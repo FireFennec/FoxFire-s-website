@@ -41,7 +41,7 @@ class PersonalSkillFixtures extends Fixture
         $personalSkill4->setSkillDescription('Honestly, I don\'t like CSS editing and I\'m only partially familiar with writing
         such code, since I\'m a back-end programmer. I can read such code, but I\'m not very good at writing it myself.
         So I can make a few edits, but if I had to do something like that, I\'d rely more on AI to check it than on creating it myself.');
-        $personalSkill4->setLevelOfSkill(PersonalSkillLevelEnum::BEGGER);
+        $personalSkill4->setLevelOfSkill(PersonalSkillLevelEnum::BEGINNER);
 
         $personalSkill5 = new PersonalSkill();
         $personalSkill5->setSkillName('English');
@@ -80,7 +80,7 @@ class PersonalSkillFixtures extends Fixture
         $personalSkill9->setSkillDescription('I already have some experience with testing. I can distinguish between the three
         tests mentioned, which ones are suitable for what and write a test if necessary. However, when I write tests for code
         that is not mine, it sometimes takes me a while to write such a test and I also often miss the options that I should have tested.');
-        $personalSkill9->setLevelOfSkill(PersonalSkillLevelEnum::BEGGER);
+        $personalSkill9->setLevelOfSkill(PersonalSkillLevelEnum::BEGINNER);
 
         $personalSkill10 = new PersonalSkill();
         $personalSkill10->setSkillName('Javascript');

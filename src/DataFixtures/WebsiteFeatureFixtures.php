@@ -130,7 +130,7 @@ class WebsiteFeatureFixtures extends Fixture
         $websiteFeature18->setName('Personal skills - full list');
         $websiteFeature18->setDescription('Add more information about my skills and better description how good I am with those skills.');
         $websiteFeature18->setPriority(FeaturePriorityEnum::ANYTIME);
-        $websiteFeature18->setStatus(FeaturesStatusEnum::UPDATE_FEATURE,);
+        $websiteFeature18->setStatus(FeaturesStatusEnum::COMPLETED_FEATURE,);
 
         $websiteFeature18 = new WebsiteFeature();
         $websiteFeature18->setName('Cooking recipes - full list');
