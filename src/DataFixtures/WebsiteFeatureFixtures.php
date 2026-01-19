@@ -132,6 +132,12 @@ class WebsiteFeatureFixtures extends Fixture
         $websiteFeature18->setPriority(FeaturePriorityEnum::ANYTIME);
         $websiteFeature18->setStatus(FeaturesStatusEnum::UPDATE_FEATURE,);
 
+        $websiteFeature18 = new WebsiteFeature();
+        $websiteFeature18->setName('Cooking recipes - full list');
+        $websiteFeature18->setDescription('Add progress and ingredients for my cooking recipes.');
+        $websiteFeature18->setPriority(FeaturePriorityEnum::ANYTIME);
+        $websiteFeature18->setStatus(FeaturesStatusEnum::UPDATE_FEATURE,);
+
         $manager->persist($websiteFeature1);
         $manager->persist($websiteFeature2);
         $manager->persist($websiteFeature3);

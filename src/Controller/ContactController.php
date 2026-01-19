@@ -10,9 +10,9 @@ use Symfony\Component\Routing\Attribute\Route;
 class ContactController extends AbstractController
 {
     #[Route('/aboutMe', name: 'app_contact_aboutMe', methods: ['GET'])]
-    public function aboutMe(ContactInformationRepository $contactInformationsRepository): Response
+    public function aboutMe(ContactInformationRepository $repository): Response
     {
-        $myContactInformation = $contactInformationsRepository->findOneByEmail('DanVraspir@protonmail.com');
+        $myContactInformation = $repository->findOneByEmail('DanVraspir@protonmail.com');
 
         return $this->render('contact/aboutMe.html.twig', [
             'myContactInformation' => $myContactInformation,

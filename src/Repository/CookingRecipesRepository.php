@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Model\CookingRecipes;
+use AllowDynamicProperties;
+use App\Entity\CookingRecipe;
+use Doctrine\ORM\EntityManagerInterface;
 
+#[AllowDynamicProperties]
 class CookingRecipesRepository
 {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+    ) {
+        $this->entityManager = $entityManager;
+    }
+
     public function findAll(): array
     {
-        return [
-            new CookingRecipes(
-                0,
-                'Salmon with salad'
-            ),
-            new CookingRecipes(
-                1,
-                'Fettuccine alfredo'
-            ),
-            new CookingRecipes(
-                2,
-                'Vegetable salad with tartare sauce garlic'
-            ),
-
-        ];
+        return $this->entityManager->createQueryBuilder()
+            ->select('s')
+            ->from(CookingRecipe::class, 's')
+            ->orderBy('s.id', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 }
