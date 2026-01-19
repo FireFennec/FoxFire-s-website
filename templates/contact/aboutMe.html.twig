@@ -35,7 +35,7 @@
                 <tr>
                     <td class="pb-2"><strong class="text-white">X:</strong>
                         {% if myContactInformation.xLink %}
-                            <a href="{{ myContactInformation.xLink }}" class="text-white hover:underline">{{ myContactInformation.x }}</a>
+                            <a href="{{ myContactInformation.xLink }}" class="text-white hover:underline">{{ myContactInformation.x }} - (Link)</a>
                         {% else %}
                             {{ myContactInformation.x }}
                         {% endif %}
@@ -44,7 +44,7 @@
                 <tr>
                     <td><strong class="text-white">Barq:</strong>
                         {% if myContactInformation.BarqLink %}
-                            <a href="{{ myContactInformation.BarqLink }}" class="text-white hover:underline">{{ myContactInformation.barq }}</a>
+                            <a href="{{ myContactInformation.BarqLink }}" class="text-white hover:underline">{{ myContactInformation.barq }} - (Link)</a>
                         {% else %}
                             {{ myContactInformation.barq }}
                         {% endif %}

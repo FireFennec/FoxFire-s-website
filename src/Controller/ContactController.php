@@ -12,7 +12,7 @@ class ContactController extends AbstractController
     #[Route('/aboutMe', name: 'app_contact_aboutMe', methods: ['GET'])]
     public function aboutMe(ContactInformationRepository $contactInformationsRepository): Response
     {
-        $myContactInformation = $contactInformationsRepository->findOneById(1);
+        $myContactInformation = $contactInformationsRepository->findOneByEmail('DanVraspir@protonmail.com');
 
         return $this->render('contact/aboutMe.html.twig', [
             'myContactInformation' => $myContactInformation,

@@ -20,11 +20,11 @@ class MainMenuController extends AbstractController
         $completedFeatures = [];
         foreach ($websiteFeatures as $websiteFeature)
         {
-            if ($websiteFeature->getType() === FeaturesStatusEnum::NEW_FEATURE){
+            if ($websiteFeature->getStatus() === FeaturesStatusEnum::NEW_FEATURE){
                 $newFeatures[] = $websiteFeature;
-            } else if ($websiteFeature->getType() === FeaturesStatusEnum::UPDATE_FEATURE){
+            } else if ($websiteFeature->getStatus() === FeaturesStatusEnum::UPDATE_FEATURE){
                 $updateFeatures[] = $websiteFeature;
-            } else if ($websiteFeature->getType() === FeaturesStatusEnum::COMPLETED_FEATURE){
+            } else if ($websiteFeature->getStatus() === FeaturesStatusEnum::COMPLETED_FEATURE){
                 $completedFeatures[] = $websiteFeature;
             }
         }

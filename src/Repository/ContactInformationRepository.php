@@ -11,18 +11,29 @@ class ContactInformationRepository
 {
     public function __construct(
         EntityManagerInterface $entityManager
-    ){
+    ) {
         $this->entityManager = $entityManager;
     }
 
     public function findOneById(int $id): ?ContactInformation
     {
-       foreach ($this->findAll() as $contactInformation)
-       {
-           if ($contactInformation->getId() == $id) {
-               return $contactInformation;
-           }
-       }
+        foreach ($this->findAll() as $contactInformation)
+        {
+            if ($contactInformation->getId() == $id) {
+                return $contactInformation;
+            }
+        }
+        return null;
+    }
+
+    public function findOneByEmail(string $email): ?ContactInformation
+    {
+        foreach ($this->findAll() as $contactInformation)
+        {
+            if ($contactInformation->getEmail() == $email) {
+                return $contactInformation;
+            }
+        }
         return null;
     }
 
