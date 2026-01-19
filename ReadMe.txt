@@ -1,0 +1,5 @@
+If you want to check the database tables, you can use:
+- symfony console dbal:run-sql "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name;"
+
+For insert data to database in dev mode you can use Fixtures and command:
+- symfony console doctrine:fixtures:load
