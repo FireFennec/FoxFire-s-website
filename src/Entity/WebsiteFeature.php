@@ -28,6 +28,9 @@ class WebsiteFeature
     #[ORM\Column(enumType: FeaturePriorityEnum::class)]
     private ?FeaturePriorityEnum $priority = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $deadlineAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -94,5 +97,17 @@ class WebsiteFeature
     public function getPriorityString(): string
     {
         return $this->priority->value;
+    }
+
+    public function getDeadlineAt(): ?\DateTimeImmutable
+    {
+        return $this->deadlineAt;
+    }
+
+    public function setDeadlineAt(?\DateTimeImmutable $deadlineAt): static
+    {
+        $this->deadlineAt = $deadlineAt;
+
+        return $this;
     }
 }
