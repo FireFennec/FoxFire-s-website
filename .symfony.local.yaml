@@ -1,3 +1,6 @@
 workers:
     tailwind:
         cmd: ['symfony', 'console', 'tailwind:build', '--watch']
+    database:
+        cmd: [ 'docker', 'compose', 'up', '-d' ]
+php: "C:/Users/DanVr/scoop/apps/php/current/php.exe"

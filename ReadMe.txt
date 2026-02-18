@@ -3,3 +3,6 @@ If you want to check the database tables, you can use:
 
 For insert data to database in dev mode you can use Fixtures and command:
 - symfony console doctrine:fixtures:load
+
+Just my own path for powershell
+- cd "D:\Programming - My Web\My_Website\"
