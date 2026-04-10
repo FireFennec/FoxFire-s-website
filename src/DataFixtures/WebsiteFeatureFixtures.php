@@ -17,9 +17,9 @@ class WebsiteFeatureFixtures extends Fixture
         $websiteFeature1->setName('Features list creating');
         $websiteFeature1->setDescription('List of the website features is created by hands.
         There is not a page for adding or editing those features so this will have to change.');
-        $websiteFeature1->setPriority(FeaturePriorityEnum::ASAP);
+        $websiteFeature1->setPriority(FeaturePriorityEnum::HIGH_PRIORITY);
         $websiteFeature1->setStatus(FeaturesStatusEnum::UPDATE_FEATURE);
-        $websiteFeature1->setDeadlineAt(new DateTimeImmutable('2026-02-14'));
+        $websiteFeature1->setDeadlineAt(new DateTimeImmutable('2026-05-15'));
 
         $websiteFeature2 = new WebsiteFeature();
         $websiteFeature2->setName('Basic texting minigame');
@@ -28,7 +28,7 @@ class WebsiteFeatureFixtures extends Fixture
         Every location will have a different monsters and after a fight there will be a cooldown for a few minutes.');
         $websiteFeature2->setPriority(FeaturePriorityEnum::ANYTIME);
         $websiteFeature2->setStatus(FeaturesStatusEnum::NEW_FEATURE);
-        $websiteFeature2->setDeadlineAt(new DateTimeImmutable('2026-03-01'));
+        $websiteFeature2->setDeadlineAt(new DateTimeImmutable('2026-07-01'));
 
         $websiteFeature3 = new WebsiteFeature();
         $websiteFeature3->setName('Personal skills');
@@ -41,7 +41,7 @@ class WebsiteFeatureFixtures extends Fixture
         $websiteFeature4->setDescription('Login, registration and logout for users. It will be important for many of my features.');
         $websiteFeature4->setPriority(FeaturePriorityEnum::HIGH_PRIORITY);
         $websiteFeature4->setStatus(FeaturesStatusEnum::NEW_FEATURE);
-        $websiteFeature4->setDeadlineAt(new DateTimeImmutable('2026-02-07'));
+        $websiteFeature4->setDeadlineAt(new DateTimeImmutable('2026-06-01'));
 
         $websiteFeature5 = new WebsiteFeature();
         $websiteFeature5->setName('Better visual for the interface');
@@ -141,7 +141,7 @@ class WebsiteFeatureFixtures extends Fixture
         $websiteFeature18->setDescription('Add progress and ingredients for my cooking recipes.');
         $websiteFeature18->setPriority(FeaturePriorityEnum::ANYTIME);
         $websiteFeature18->setStatus(FeaturesStatusEnum::UPDATE_FEATURE);
-        $websiteFeature18->setDeadlineAt(new DateTimeImmutable('2026-02-14'));
+        $websiteFeature18->setDeadlineAt(new DateTimeImmutable('2026-04-25'));
 
         $websiteFeature19 = new WebsiteFeature();
         $websiteFeature19->setName('Database - improvement');
@@ -149,7 +149,7 @@ class WebsiteFeatureFixtures extends Fixture
         without adding them from my code instead of my website. This feature will be about to fix this issue.');
         $websiteFeature19->setPriority(FeaturePriorityEnum::ANYTIME);
         $websiteFeature19->setStatus(FeaturesStatusEnum::UPDATE_FEATURE);
-        $websiteFeature19->setDeadlineAt(new DateTimeImmutable('2026-02-27'));
+        $websiteFeature19->setDeadlineAt(new DateTimeImmutable('2026-05-01'));
 
         $websiteFeature20 = new WebsiteFeature();
         $websiteFeature20->setName('Page system');
@@ -158,7 +158,22 @@ class WebsiteFeatureFixtures extends Fixture
         things on the website if it will be necessary.');
         $websiteFeature20->setPriority(FeaturePriorityEnum::ANYTIME);
         $websiteFeature20->setStatus(FeaturesStatusEnum::NEW_FEATURE);
-        $websiteFeature20->setDeadlineAt(new DateTimeImmutable('2026-02-03'));
+        $websiteFeature20->setDeadlineAt(new DateTimeImmutable('2026-05-15'));
+
+        $websiteFeature21 = new WebsiteFeature();
+        $websiteFeature21->setName('CSS rework');
+        $websiteFeature21->setDescription('Reword ugly twig design code into separeted css and
+        twig code for better expandability.');
+        $websiteFeature21->setPriority(FeaturePriorityEnum::ASAP);
+        $websiteFeature21->setStatus(FeaturesStatusEnum::UPDATE_FEATURE);
+        $websiteFeature21->setDeadlineAt(new DateTimeImmutable('2026-04-22'));
+
+        $websiteFeature22 = new WebsiteFeature();
+        $websiteFeature22->setName('Personal skills rework');
+        $websiteFeature22->setDescription('Reword my own personal skills after some practices.');
+        $websiteFeature22->setPriority(FeaturePriorityEnum::HIGH_PRIORITY);
+        $websiteFeature22->setStatus(FeaturesStatusEnum::UPDATE_FEATURE);
+        $websiteFeature22->setDeadlineAt(new DateTimeImmutable('2026-06-01'));
 
         $manager->persist($websiteFeature1);
         $manager->persist($websiteFeature2);
@@ -180,6 +195,8 @@ class WebsiteFeatureFixtures extends Fixture
         $manager->persist($websiteFeature18);
         $manager->persist($websiteFeature19);
         $manager->persist($websiteFeature20);
+        $manager->persist($websiteFeature21);
+        $manager->persist($websiteFeature22);
 
         $manager->flush();
     }

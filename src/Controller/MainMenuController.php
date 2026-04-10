@@ -13,11 +13,12 @@ class MainMenuController extends AbstractController
     #[Route('/', name: 'app_mainMenu', methods: ['GET'])]
     public function mainMenu(WebsiteFeaturesRepository $websiteFeaturesRepository): Response
     {
-        $websiteFeatures = $websiteFeaturesRepository->findAll();
-
         $newFeatures = [];
         $updateFeatures = [];
         $completedFeatures = [];
+
+        $websiteFeatures = $websiteFeaturesRepository->findAll();
+
         foreach ($websiteFeatures as $websiteFeature)
         {
             if ($websiteFeature->getStatus() === FeaturesStatusEnum::NEW_FEATURE){
