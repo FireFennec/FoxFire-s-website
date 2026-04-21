@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Model\FeaturePriorityEnum;
 use App\Model\FeaturesStatusEnum;
 use App\Repository\WebsiteFeatureRepository;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,7 +30,7 @@ class WebsiteFeature
     private ?FeaturePriorityEnum $priority = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $deadlineAt = null;
+    private ?DateTimeImmutable $deadlineAt = null;
 
     public function getId(): ?int
     {

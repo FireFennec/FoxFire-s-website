@@ -102,6 +102,9 @@
       <path value="$PROJECT_DIR$/vendor/pagerfanta/doctrine-orm-adapter" />
       <path value="$PROJECT_DIR$/vendor/pagerfanta/core" />
       <path value="$PROJECT_DIR$/vendor/babdev/pagerfanta-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-icu" />
+      <path value="$PROJECT_DIR$/vendor/symfony/options-resolver" />
+      <path value="$PROJECT_DIR$/vendor/symfony/form" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />

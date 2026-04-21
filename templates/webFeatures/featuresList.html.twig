@@ -3,38 +3,71 @@
 {% block title %}Features list{% endblock %}
 
 {% block body %}
-    <div class="flex justify-center mt-10">
-        <div class="w-full max-w-xl">
-            <h2 class="text-4xl font-bold text-white underline mb-3 w-2/3 mx-auto text-center">
-                To do futures
-            </h2>
-            {% for toDoFeature in toDoFeatures %}
-                <a
-                    class="block w-2/3 mx-auto border border-gray-600 rounded-md px-4 py-2 mb-2
-                   text-center
-                   hover:bg-gray-800 hover:text-slate-200 transition
-                   {{ toDoFeature.priorityColor() }}"
-                    href="{{ path('app_featureList_featureInfoShow', {id: toDoFeature.id}) }}"
-                >
-                    <strong>{{ toDoFeature.name }}</strong>
-                </a>
-            {% endfor %}
+    <div class="relative mt-10 px-8">
+        <a class="absolute left-8 top-0 px-10 py-6 bg-white/10 backdrop-blur-sm border-2 border-white/30
+           rounded-none text-white text-2xl font-bold hover:bg-white/20 hover:border-white/50
+           hover:scale-105 hover:shadow-xl transition-all duration-300 whitespace-nowrap"
+            href="{{ path('app_featureList_createFeature') }}">
+            Create Feature
+        </a>
 
-            <h2 class="text-4xl font-bold text-white underline mt-6 mb-3 w-2/3 mx-auto text-center">
-                Completed features
-            </h2>
-            {% for completedFeature in completedFeatures %}
-                <a
-                    class="block w-2/3 mx-auto border border-gray-600 rounded-md px-4 py-2 mb-2
-               text-center
-               hover:bg-gray-800 hover:text-slate-200 transition
-               {{ completedFeature.priorityColor() }}"
-                    href="{{ path('app_featureList_featureInfoShow', {id: completedFeature.id}) }}"
-                >
-                    <strong>{{ completedFeature.name }}</strong>
-                </a>
-            {% endfor %}
+        <div class="flex justify-center">
+            <div class="w-full max-w-xl">
+                <h2 class="text-4xl font-bold text-white underline mb-3 w-2/3 mx-auto text-center">
+                    To do features
+                </h2>
+
+                {% for toDoFeature in toDoFeatures %}
+                    <div class="w-4/5 mx-auto border border-gray-600 rounded-md px-4 py-2 mb-3 flex justify-between items-center {{ toDoFeature.priorityColor() }}">
+
+                        <a class="flex-1 text-center hover:text-slate-200"
+                            href="{{ path('app_featureList_featureInfoShow', {id: toDoFeature.id}) }}">
+                            <strong>{{ toDoFeature.name }}</strong>
+                        </a>
+
+                        <a class="ml-4 px-3 py-1 bg-white/10 backdrop-blur-sm border-2 border-white/30
+                               text-white text-base font-bold hover:bg-white/20 hover:border-white/50
+                               hover:scale-105 hover:shadow-xl transition-all duration-300 whitespace-nowrap"
+                            href="{{ path('app_featureEdit_editFeature', {id: toDoFeature.id}) }}">
+                            Edit
+                        </a>
+                        <a class="ml-4 px-3 py-1 bg-white/10 backdrop-blur-sm border-2 border-white/30
+                               text-white text-base font-bold hover:bg-white/20 hover:border-white/50
+                               hover:scale-105 hover:shadow-xl transition-all duration-300 whitespace-nowrap"
+                           href="{{ path('app_featureDelete', {id: toDoFeature.id}) }}">
+                            Delete
+                        </a>
+
+                    </div>
+                {% endfor %}
+
+                <h2 class="text-4xl font-bold text-white underline mt-10 mb-3 w-2/3 mx-auto text-center">
+                    Completed features
+                </h2>
+
+                {% for completedFeature in completedFeatures %}
+                    <div class="w-4/5 mx-auto border border-gray-600 rounded-md px-4 py-2 mb-2 flex justify-between items-center {{ completedFeature.priorityColor() }}">
+
+                        <a class="flex-1 text-center hover:text-slate-200"
+                            href="{{ path('app_featureList_featureInfoShow', {id: completedFeature.id}) }}">
+                            <strong>{{ completedFeature.name }}</strong>
+                        </a>
+
+                        <a class="ml-4 px-3 py-1 bg-white/10 backdrop-blur-sm border-2 border-white/30
+                               text-white text-base font-bold hover:bg-white/20 hover:border-white/50
+                               hover:scale-105 hover:shadow-xl transition-all duration-300 whitespace-nowrap"
+                            href="{{ path('app_featureEdit_editFeature', {id: completedFeature.id}) }}">
+                            Edit
+                        </a>
+                        <a class="ml-4 px-3 py-1 bg-white/10 backdrop-blur-sm border-2 border-white/30
+                               text-white text-base font-bold hover:bg-white/20 hover:border-white/50
+                               hover:scale-105 hover:shadow-xl transition-all duration-300 whitespace-nowrap"
+                           href="{{ path('app_featureDelete', {id: completedFeature.id}) }}">
+                            Delete
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}
-
