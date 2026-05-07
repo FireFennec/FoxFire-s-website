@@ -24,4 +24,15 @@ class CookingRecipesRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findOne(int $id): ?CookingRecipe
+    {
+        foreach ($this->findAll() as $cookingRecipe) {
+            if ($cookingRecipe->getId() === $id) {
+                return $cookingRecipe;
+            }
+        }
+
+        return null;
+    }
 }

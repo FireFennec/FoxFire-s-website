@@ -70,7 +70,7 @@ class FeaturesListController extends AbstractController
         ]);
     }
 
-    #[Route('/editFeature/{id<\d+>}', name: 'app_featureEdit_editFeature')]
+    #[Route('/editFeature/{id<\d+>}', name: 'app_featureList_editFeature')]
     public function editFeature(
         $id,
         Request $request,
