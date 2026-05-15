@@ -29,7 +29,6 @@
 
                 {{ form_start(form) }}
 
-                {# Recipe name #}
                 <div style="margin-bottom: 1.2rem;">
                     {{ form_label(form.recipe_name, 'Recipe name') }}
                     {{ form_widget(form.recipe_name, {
@@ -39,7 +38,6 @@
                     }) }}
                 </div>
 
-                {# Ingredients #}
                 <div style="margin-bottom: 1.2rem;">
                     {{ form_label(form.ingredience, 'Ingredients') }}
 
@@ -72,7 +70,6 @@
                     </button>
                 </div>
 
-                {# Cooking process #}
                 <div style="margin-bottom: 1.2rem;">
                     {{ form_label(form.cooking_process, 'Cooking process') }}
                     {{ form_widget(form.cooking_process, {
@@ -82,7 +79,6 @@
                     }) }}
                 </div>
 
-                {# Submit #}
                 <div style="margin-top: 2rem; text-align: center;">
                     {{ form_widget(form.submit, {
                         'attr': {

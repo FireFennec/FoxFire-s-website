@@ -7,11 +7,19 @@
 
         <div class="relative w-full flex justify-center items-center mb-6">
 
-            <a class="absolute left-10 px-8 py-4 bg-white/10 backdrop-blur-sm
+            <a class="absolute right-10 px-8 py-4 bg-white/10 backdrop-blur-sm
                border border-white/30 rounded-xl text-white text-xl font-bold
                hover:bg-white/20 hover:scale-105 transition-all duration-300"
                href="{{ path('app_cookingRecipe_editCookingRecipe', {id: cookingRecipe.id}) }}">
                 Update Recipe
+            </a>
+
+            <a
+                href="{{ path('app_cooking_recipe') }}"
+                class="absolute left-40 top-0 px-8 py-4 bg-orange-500 text-white text-xl font-semibold rounded
+           hover:bg-orange-600 transition-all duration-200"
+            >
+                Back
             </a>
 
             <h1 class="text-3xl md:text-4xl font-bold">

@@ -15,6 +15,25 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/feature')]
 class FeaturesListController extends AbstractController
 {
+    #[Route('/list', name: 'app_featureListMenu_featureListMenu')]
+    public function featuresListMenu(WebsiteFeaturesRepository $repository): Response
+    {
+        $features = $repository->findAll();
+
+        foreach ($features as $feature) {
+            if ($feature->getStatus() === FeaturesStatusEnum::COMPLETED_FEATURE) {
+                $completedFeatures[] = $feature;
+            } else {
+                $toDoFeatures[] = $feature;
+            }
+        }
+
+        return $this->render('webFeatures/featuresListMenu.html.twig', [
+            'completedFeatures' => $completedFeatures,
+            'toDoFeatures' => $toDoFeatures
+        ]);
+    }
+
     #[Route('/{id<\d+>}', name: 'app_featureList_featureInfoShow')]
     public function taskInfoShow($id, WebsiteFeaturesRepository $repository): Response
     {
@@ -26,25 +45,6 @@ class FeaturesListController extends AbstractController
 
         return $this->render('webFeatures/featuresInfoShow.html.twig', [
             'feature' => $feature
-        ]);
-    }
-
-    #[Route('/list', name: 'app_featureList_featureList')]
-    public function taskList(WebsiteFeaturesRepository $repository): Response
-    {
-        $featureList = $repository->findAll();
-
-        foreach ($featureList as $feature) {
-            if ($feature->getStatus() === FeaturesStatusEnum::COMPLETED_FEATURE) {
-                $completedFeatures[] = $feature;
-            } else {
-                $toDoFeatures[] = $feature;
-            }
-        }
-
-        return $this->render('webFeatures/featuresList.html.twig', [
-            'completedFeatures' => $completedFeatures,
-            'toDoFeatures' => $toDoFeatures
         ]);
     }
 
@@ -107,6 +107,6 @@ class FeaturesListController extends AbstractController
             $entityManager->remove($feature);
             $entityManager->flush();
         }
-        return $this->redirectToRoute('app_featureList_featureList');
+        return $this->redirectToRoute('app_featureListMenu_featureListMenu');
     }
 }
