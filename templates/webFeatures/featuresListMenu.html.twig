@@ -3,68 +3,70 @@
 {% block title %}Features list{% endblock %}
 
 {% block body %}
-    <div class="relative mt-10 px-8">
-        <a class="absolute left-8 top-0 px-10 py-6 bg-white/10 backdrop-blur-sm border-2 border-white/30
-           rounded-none text-white text-2xl font-bold hover:bg-white/20 hover:border-white/50
-           hover:scale-105 hover:shadow-xl transition-all duration-300 whitespace-nowrap"
-            href="{{ path('app_featureList_createFeature') }}">
-            Create Feature
-        </a>
+    <div class="flex justify-center relative m-7">
+        <div class="flex-1">
+            <a class="casual-button"
+               href="{{ path('app_featureList_createFeature') }}">
+                Create Feature
+            </a>
+        </div>
 
-        <div class="flex justify-center">
-            <div class="w-full max-w-xl">
-                <h2 class="text-4xl font-bold text-white underline mb-3 w-2/3 mx-auto text-center">
-                    To do features
+        <div class="justify-center flex-2">
+            <div class="max-w-xl">
+                <h2 class="text-4xl font-bold text-white mb-6 text-center">
+                    To Do Features
                 </h2>
 
                 {% for toDoFeature in toDoFeatures %}
-                    <div class="w-4/5 mx-auto border border-gray-600 rounded-md px-4 py-2 mb-3 flex justify-between items-center {{ toDoFeature.priorityColor() }}">
+                    <div class="flex items-center border border-white/30 px-4 py-2 gap-6 items-center {{ toDoFeature.priorityColor() }}">
 
-                        <a class="flex-1 text-center hover:text-slate-200"
+                        <a class="flex-1 text-center whitespace-nowrap
+                        hover:text-slate-200 hover:scale-110"
                             href="{{ path('app_featureList_featureInfoShow', {id: toDoFeature.id}) }}">
                             <strong>{{ toDoFeature.name }}</strong>
                         </a>
 
-                        <a class="ml-4 px-3 py-1 bg-white/10 backdrop-blur-sm border-2 border-white/30
-                               text-white text-base font-bold hover:bg-white/20 hover:border-white/50
-                               hover:scale-105 hover:shadow-xl transition-all duration-300 whitespace-nowrap"
-                            href="{{ path('app_featureList_editFeature', {id: toDoFeature.id}) }}">
-                            Edit
-                        </a>
-                        <a class="ml-4 px-3 py-1 bg-white/10 backdrop-blur-sm border-2 border-white/30
-                               text-white text-base font-bold hover:bg-white/20 hover:border-white/50
-                               hover:scale-105 hover:shadow-xl transition-all duration-300 whitespace-nowrap"
-                           href="{{ path('app_featureDelete', {id: toDoFeature.id}) }}">
-                            Delete
-                        </a>
-
+                        <div class="flex gap-2">
+                            <a class="px-3 py-1 bg-yellow-500/20 border-2 border-yellow-300/40 text-white text-lg
+                            hover:bg-yellow-500/40 hover:border-yellow-300/60"
+                               href="{{ path('app_featureList_editFeature', {id: toDoFeature.id}) }}">
+                                Edit
+                            </a>
+                            <a class="px-3 py-1 bg-red-500/20 border-2 border-red-300/40 text-white text-lg
+                            hover:bg-red-500/40 hover:border-red-300/60"
+                               href="{{ path('app_featureDelete', {id: toDoFeature.id}) }}">
+                                Delete
+                            </a>
+                        </div>
                     </div>
                 {% endfor %}
 
-                <h2 class="text-4xl font-bold text-white underline mt-10 mb-3 w-2/3 mx-auto text-center">
+                <h2 class="text-4xl font-bold text-white mb-6 text-center mt-10">
                     Completed features
                 </h2>
 
                 {% for completedFeature in completedFeatures %}
-                    <div class="w-4/5 mx-auto border border-gray-600 rounded-md px-4 py-2 mb-2 flex justify-between items-center {{ completedFeature.priorityColor() }}">
+                    <div class="flex items-center border border-white/30 px-4 py-2 gap-6 items-center {{ completedFeature.priorityColor() }}">
 
-                        <a class="flex-1 text-center hover:text-slate-200"
+                        <a class="flex-1 text-center whitespace-nowrap
+                        hover:text-slate-200 hover:scale-110"
                             href="{{ path('app_featureList_featureInfoShow', {id: completedFeature.id}) }}">
                             <strong>{{ completedFeature.name }}</strong>
                         </a>
 
-                        <a class="ml-4 px-3 py-1 bg-white/10 backdrop-blur-sm border-2 border-white/30
-                               text-white text-base font-bold hover:bg-white/20 hover:border-white/50
-                               hover:scale-105 hover:shadow-xl transition-all duration-300 whitespace-nowrap"
-                            href="{{ path('app_featureList_editFeature', {id: completedFeature.id}) }}">
-                            Edit
-                        </a>
-                        <a class="ml-4 px-3 py-1 bg-white/10 backdrop-blur-sm border-2 border-white/30
-                               text-white text-base font-bold hover:bg-white/20 hover:border-white/50
-                               hover:scale-105 hover:shadow-xl transition-all duration-300 whitespace-nowrap"
-                           href="{{ path('app_featureDelete', {id: completedFeature.id}) }}">
-                            Delete
-                        </a>
+                        <div class="flex gap-2">
+                            <a class="px-3 py-1 bg-yellow-500/20 border-2 border-yellow-300/40 text-white text-lg
+                            hover:bg-yellow-500/40 hover:border-yellow-300/60"
+                               href="{{ path('app_featureList_editFeature', {id: completedFeature.id}) }}">
+                                Edit
+                            </a>
+
+                            <a class="px-3 py-1 bg-red-500/20 border-2 border-red-300/40 text-white text-lg
+                            hover:bg-red-500/40 hover:border-red-300/60"
+                               href="{{ path('app_featureDelete', {id: completedFeature.id}) }}">
+                                Delete
+                            </a>
+                        </div>
                     </div>
                 {% endfor %}
             </div>

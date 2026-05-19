@@ -15,11 +15,14 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/feature')]
 class FeaturesListController extends AbstractController
 {
-    #[Route('/list', name: 'app_featureListMenu_featureListMenu')]
+    # Displays the feature list split into completed and to-do features.
+    #[Route('/list', name: 'app_FeaturesList_featureListMenu', methods: ['GET'])]
     public function featuresListMenu(WebsiteFeaturesRepository $repository): Response
     {
         $features = $repository->findAll();
 
+        $completedFeatures = [];
+        $toDoFeatures = [];
         foreach ($features as $feature) {
             if ($feature->getStatus() === FeaturesStatusEnum::COMPLETED_FEATURE) {
                 $completedFeatures[] = $feature;
@@ -107,6 +110,6 @@ class FeaturesListController extends AbstractController
             $entityManager->remove($feature);
             $entityManager->flush();
         }
-        return $this->redirectToRoute('app_featureListMenu_featureListMenu');
+        return $this->redirectToRoute('app_FeaturesList_featureListMenu');
     }
 }

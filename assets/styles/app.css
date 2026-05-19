@@ -1,5 +1,46 @@
 @import "tailwindcss";
 
-body {
-    background-color: slategrey;
+.background-main {
+    background: radial-gradient(
+        102.21% 102.21% at 50% 28.75%,
+        #000000 42.62%,
+        #8B0000 100%
+    );
+}
+
+.nav-button {
+    width: 13rem;
+    text-align: center;
+    font-weight: bold;
+    border: 2px solid rgba(255,255,255,0.3);
+    padding: 0.65rem 1.25rem;
+    font-size: 1.3rem;
+    border-radius: 0.5rem;
+    background: rgba(194,65,12,0.5);
+    transition: all 0.3s;
+}
+
+.nav-button:hover {
+    background: rgba(194,65,12,0.9);
+    color: #fef08a;
+    border-color: #fef08a;
+    transform: scale(1.1);
+}
+
+.casual-button {
+    display: inline-block;
+    font-weight: bold;
+    border-width: 2px;
+    border-color: rgba(252, 165, 165, 0.4);
+    padding: 0.9rem 1.2rem;
+    font-size: 1.4rem;
+    background: rgba(185, 28, 28, 0.5);
+    transition: all 0.3s;
+}
+
+.casual-button:hover {
+    background: rgba(239, 68, 68, 0.6);
+    color: #fef08a;
+    border-color: #fef08a;
+    transform: scale(1.1);
 }
