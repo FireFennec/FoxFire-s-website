@@ -3,41 +3,33 @@
 namespace App\Repository;
 
 use App\Entity\WebsiteFeature;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 
-/**
- * @extends ServiceEntityRepository<WebsiteFeature>
- */
-class WebsiteFeatureRepository extends ServiceEntityRepository
+readonly class WebsiteFeatureRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, WebsiteFeature::class);
+    public function __construct(
+        private EntityManagerInterface $entityManager
+    ) {
     }
 
-    //    /**
-    //     * @return WebsiteFeature[] Returns an array of WebsiteFeature objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('w')
-    //            ->andWhere('w.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('w.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findAll(): array
+    {
+        return $this->entityManager->createQueryBuilder()
+            ->select('s')
+            ->from(WebsiteFeature::class, 's')
+            ->orderBy('s.priority', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 
-    //    public function findOneBySomeField($value): ?WebsiteFeature
-    //    {
-    //        return $this->createQueryBuilder('w')
-    //            ->andWhere('w.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findOne(int $id): ?WebsiteFeature
+    {
+        return $this->entityManager->createQueryBuilder()
+            ->select('s')
+            ->from(WebsiteFeature::class, 's')
+            ->where('s.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

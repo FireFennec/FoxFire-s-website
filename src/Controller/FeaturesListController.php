@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\WebsiteFeature;
 use App\Form\Features\CreateFeatureForm;
 use App\Model\FeaturesStatusEnum;
-use App\Repository\WebsiteFeaturesRepository;
+use App\Repository\WebsiteFeatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +17,7 @@ class FeaturesListController extends AbstractController
 {
     # Displays the feature list split into completed and to-do features.
     #[Route('/list', name: 'app_FeaturesList_featureListMenu', methods: ['GET'])]
-    public function featuresListMenu(WebsiteFeaturesRepository $repository): Response
+    public function featuresListMenu(WebsiteFeatureRepository $repository): Response
     {
         $features = $repository->findAll();
 
@@ -37,8 +37,8 @@ class FeaturesListController extends AbstractController
         ]);
     }
 
-    #[Route('/{id<\d+>}', name: 'app_featureList_featureInfoShow')]
-    public function taskInfoShow($id, WebsiteFeaturesRepository $repository): Response
+    #[Route('/{id<\d+>}', name: 'app_FeatureList_featureInfoShow')]
+    public function featureInfoShow(int $id, WebsiteFeatureRepository $repository): Response
     {
         $feature = $repository->findOne($id);
 
@@ -65,7 +65,7 @@ class FeaturesListController extends AbstractController
             $entityManager->persist($feature);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_featureList_featureInfoShow', ['id' => $feature->getId()]);
+            return $this->redirectToRoute('app_FeatureList_featureInfoShow', ['id' => $feature->getId()]);
         }
 
         return $this->render('webFeatures/createFeature.html.twig', [
@@ -78,7 +78,7 @@ class FeaturesListController extends AbstractController
         $id,
         Request $request,
         EntityManagerInterface $entityManager,
-        WebsiteFeaturesRepository $repository
+        WebsiteFeatureRepository $repository
     ): Response
     {
         $feature = $repository->findOne($id);
@@ -92,7 +92,7 @@ class FeaturesListController extends AbstractController
             $entityManager->persist($feature);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_featureList_featureInfoShow', ['id' => $feature->getId()]);
+            return $this->redirectToRoute('app_FeatureList_featureInfoShow', ['id' => $feature->getId()]);
         }
 
         return $this->render('webFeatures/editFeature.html.twig', [
@@ -101,7 +101,7 @@ class FeaturesListController extends AbstractController
     }
 
     #[Route('/deleteFeature/{id<\d+>}', name: 'app_featureDelete')]
-    public function deleteFeature($id, WebsiteFeaturesRepository $repository, EntityManagerInterface $entityManager,): Response
+    public function deleteFeature($id, WebsiteFeatureRepository $repository, EntityManagerInterface $entityManager,): Response
     {
         $feature = $repository->findOne($id);
         if (!$feature) {

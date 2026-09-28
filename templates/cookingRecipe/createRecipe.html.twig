@@ -3,42 +3,23 @@
 {% block title %}Create cooking recipe{% endblock %}
 
 {% block body %}
-    <div class="relative mt-10 px-8">
-        <a
-            href="{{ path('app_cooking_recipe') }}"
-            class="absolute left-40 top-0 px-8 py-4 bg-orange-500 text-white text-xl font-semibold rounded
-                   hover:bg-orange-600 transition-all duration-200"
-        >
+    <div>
+        <a href="{{ path('app_cooking_recipe') }}">
             Back
         </a>
 
-        <div class="flex justify-center mt-16">
-            <div style="
-                width: 100%;
-                max-width: 600px;
-                background: rgba(255,255,255,0.09);
-                padding: 2rem;
-                border-radius: 12px;
-                backdrop-filter: blur(10px);
-                color: white;
-            ">
-
-                <h1 style="text-align: center; margin-bottom: 2rem; font-size: 2rem;">
-                    Create Recipe
-                </h1>
+        <div>
+            <div>
+                <h1>Create Recipe</h1>
 
                 {{ form_start(form) }}
 
-                <div style="margin-bottom: 1.2rem;">
+                <div>
                     {{ form_label(form.recipe_name, 'Recipe name') }}
-                    {{ form_widget(form.recipe_name, {
-                        'attr': {
-                            'style': 'width: 100%; padding: 0.7rem; background: #1e1e1e; color: white; border: 1px solid #555; border-radius: 6px;'
-                        }
-                    }) }}
+                    {{ form_widget(form.recipe_name) }}
                 </div>
 
-                <div style="margin-bottom: 1.2rem;">
+                <div>
                     {{ form_label(form.ingredience, 'Ingredients') }}
 
                     <div
@@ -46,45 +27,28 @@
                         data-prototype="{{ form_widget(form.ingredience.vars.prototype)|e('html_attr') }}"
                     >
                         {% for ingredient in form.ingredience %}
-                            <div class="ingredient-item" style="margin-bottom: 0.7rem; display: flex; gap: 10px;">
-                                {{ form_widget(ingredient, {
-                                    'attr': {
-                                        'style': 'flex: 1; padding: 0.7rem; background: #1e1e1e; color: white; border: 1px solid #555; border-radius: 6px;'
-                                    }
-                                }) }}
+                            <div class="ingredient-item">
+                                {{ form_widget(ingredient) }}
 
-                                <button type="button" class="remove-ingredient"
-                                        style="padding: 0.5rem 1rem; background: #aa4444; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                                <button type="button" class="remove-ingredient">
                                     X
                                 </button>
                             </div>
                         {% endfor %}
                     </div>
 
-                    <button
-                        type="button"
-                        id="add-ingredient"
-                        style="margin-top: 0.5rem; padding: 0.6rem 1.2rem; background: #444; color: white; border: none; border-radius: 6px; cursor: pointer;"
-                    >
+                    <button type="button" id="add-ingredient">
                         Add ingredient
                     </button>
                 </div>
 
-                <div style="margin-bottom: 1.2rem;">
+                <div>
                     {{ form_label(form.cooking_process, 'Cooking process') }}
-                    {{ form_widget(form.cooking_process, {
-                        'attr': {
-                            'style': 'width: 100%; padding: 0.7rem; min-height: 120px; background: #1e1e1e; color: white; border: 1px solid #555; border-radius: 6px;'
-                        }
-                    }) }}
+                    {{ form_widget(form.cooking_process) }}
                 </div>
 
-                <div style="margin-top: 2rem; text-align: center;">
-                    {{ form_widget(form.submit, {
-                        'attr': {
-                            'style': 'padding: 0.8rem 2rem; font-size: 1.1rem; background: #444; color: white; border: none; border-radius: 6px; cursor: pointer;'
-                        }
-                    }) }}
+                <div>
+                    {{ form_widget(form.submit) }}
                 </div>
 
                 {{ form_end(form, {'render_rest': false}) }}
@@ -110,35 +74,21 @@
 
             const wrapper = document.createElement('div');
             wrapper.classList.add('ingredient-item');
-            wrapper.style.marginBottom = '0.7rem';
-            wrapper.style.display = 'flex';
-            wrapper.style.gap = '10px';
 
             wrapper.innerHTML = `
                 ${prototype}
-                <button type="button" class="remove-ingredient"
-                    style="padding: 0.5rem 1rem; background: #aa4444; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                <button type="button" class="remove-ingredient">
                     X
                 </button>
             `;
-
-            const input = wrapper.querySelector('input');
-
-            input.style.flex = '1';
-            input.style.padding = '0.7rem';
-            input.style.background = '#1e1e1e';
-            input.style.color = 'white';
-            input.style.border = '1px solid #555';
-            input.style.borderRadius = '6px';
-            input.style.outline = 'none';
 
             ingredientsList.appendChild(wrapper);
 
             addRemoveListener(wrapper.querySelector('.remove-ingredient'));
         });
 
-        document.querySelectorAll('.remove-ingredient').forEach(btn => {
-            addRemoveListener(btn);
+        document.querySelectorAll('.remove-ingredient').forEach(button => {
+            addRemoveListener(button);
         });
 
         if (ingredientsList.children.length === 0) {

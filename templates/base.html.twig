@@ -3,9 +3,11 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+
         <title>{% block title %}FoxFire: {% endblock %}</title>
+
         <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.svg') }}">
-        <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+
         {% block javascripts %}
             {% block importmap %}
                 {{ importmap('app') }}
@@ -13,50 +15,41 @@
         {% endblock %}
     </head>
 
-    <body class="text-white background-main">
-        <div class="flex flex-col justify-between min-h-screen relative">
-                <header class="flex items-center py-3 border-b border-white/30 relative bg-red-500/15">
-                    <div class="px-3 flex items-center gap-3">
-                        <a href="{{ path('app_mainMenu') }}">
-                            <img src="{{ asset('images/logo_fox.png') }}"
-                                 alt="Fox_Logo"
-                                 class="h-15 hover:scale-130">
-                        </a>
+    <body class="background-main">
+        <header>
+            <div>
+                <a href="{{ path('app_mainMenu') }}">
+                    <img src="{{ asset('images/logo_fox.png') }}" alt="Fox_Logo">
+                </a>
 
-                        <p class="font-bold text-xl">FoxFire's website</p>
-                    </div>
+                <p>FoxFire's website</p>
+            </div>
 
-                    <nav class="flex items-center justify-center gap-5 mx-auto h-full">
-                        <a href="{{ path('app_mainMenu') }}"
-                           class="nav-button">
-                            Main menu
-                        </a>
+            <nav>
+                <a href="{{ path('app_mainMenu') }}">
+                    Main menu
+                </a>
 
-                        <a href="{{ path('app_contact_aboutMe') }}"
-                           class="nav-button">
-                            About me
-                        </a>
+                <a href="{{ path('app_contact_aboutMe') }}">
+                    About me
+                </a>
 
-                        <a href="{{ path('app_cooking_recipe') }}"
-                           class="nav-button">
-                            Cooking Recipes
-                        </a>
+                <a href="{{ path('app_cooking_recipe') }}">
+                    Cooking Recipes
+                </a>
 
-                        <a href="{{ path('app_personalSkill_listOfMySkills') }}"
-                           class="nav-button">
-                            Personal skills
-                        </a>
-                    </nav>
-                </header>
+                <a href="{{ path('app_personalSkill_listOfMySkills') }}">
+                    Personal skills
+                </a>
+            </nav>
+        </header>
 
-                <main>
-                    {% block body %}{% endblock %}
-                </main>
+        <main>
+            {% block body %}{% endblock %}
+        </main>
 
-            <footer class="p-4 bg-red-500/15 mt-4 text-center border-t border-white/30">
-                Made with fluffy paws by FoxFire
-            </footer>
-
-        </div>
+        <footer>
+            Made with fluffy paws by FoxFire
+        </footer>
     </body>
 </html>

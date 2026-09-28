@@ -3,48 +3,56 @@
 {% block title %}{{ parent() }}About me{% endblock %}
 
 {% block body %}
-    <div class="flex flex-col items-center justify-start pt-20 p-8 text-white">
-        <div class="w-full max-w-2xl border-4 border-white rounded-lg p-8">
-            <h1 class="text-4xl text-white mb-8 text-center">About me</h1>
+    <div>
+        <div>
+            <h1>About me</h1>
 
-            <table class="w-full text-white mb-8">
+            <table>
                 <tr>
-                    <th colspan="2" class="text-3xl text-white pb-4">Contact me</th>
+                    <th>Contact me</th>
                 </tr>
                 <tr>
-                    <td class="pb-2"><strong class="text-white">Email:</strong> {{ myContactInformation.email }}</td>
+                    <td><strong>Email:</strong> {{ myContactInformation.email }}</td>
                 </tr>
                 <tr>
-                    <td class="pb-2"><strong class="text-white">Telegram:</strong>
-                        <a href="https://t.me/{{ myContactInformation.telegram }}" class="text-white hover:underline">
+                    <td>
+                        <strong>Telegram:</strong>
+                        <a href="https://t.me/{{ myContactInformation.telegram }}">
                             {{ myContactInformation.telegram }}
-                        </a></td>
+                        </a>
+                    </td>
                 </tr>
                 <tr>
-                    <td><strong class="text-white">Discord:</strong> {{ myContactInformation.discord }}</td>
+                    <td><strong>Discord:</strong> {{ myContactInformation.discord }}</td>
                 </tr>
                 <tr>
-                    <td><strong class="text-white">Phone number:</strong> {{ myContactInformation.phoneNumber }}</td>
+                    <td><strong>Phone number:</strong> {{ myContactInformation.phoneNumber }}</td>
                 </tr>
             </table>
 
-            <table class="w-full text-white">
+            <table>
                 <tr>
-                    <th colspan="2" class="text-3xl text-white pb-4">Follow me</th>
+                    <th>Follow me</th>
                 </tr>
                 <tr>
-                    <td class="pb-2"><strong class="text-white">X:</strong>
+                    <td>
+                        <strong>X:</strong>
                         {% if myContactInformation.xLink %}
-                            <a href="{{ myContactInformation.xLink }}" class="text-white hover:underline">{{ myContactInformation.x }} - (Link)</a>
+                            <a href="{{ myContactInformation.xLink }}">
+                                {{ myContactInformation.x }} - (Link)
+                            </a>
                         {% else %}
                             {{ myContactInformation.x }}
                         {% endif %}
                     </td>
                 </tr>
                 <tr>
-                    <td><strong class="text-white">Barq:</strong>
+                    <td>
+                        <strong>Barq:</strong>
                         {% if myContactInformation.BarqLink %}
-                            <a href="{{ myContactInformation.BarqLink }}" class="text-white hover:underline">{{ myContactInformation.barq }} - (Link)</a>
+                            <a href="{{ myContactInformation.BarqLink }}">
+                                {{ myContactInformation.barq }} - (Link)
+                            </a>
                         {% else %}
                             {{ myContactInformation.barq }}
                         {% endif %}

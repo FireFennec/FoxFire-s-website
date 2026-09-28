@@ -90,22 +90,22 @@ class WebsiteFeature
         return $this;
     }
 
-    public function getPriorityColor(): string
+    public function getPriorityColor(): ?string
     {
         return $this->priority->priorityColor();
     }
 
-    public function getPriorityString(): string
+    public function getPriorityString(): ?string
     {
         return $this->priority->value;
     }
 
-    public function getDeadlineAt(): ?\DateTimeImmutable
+    public function getDeadlineAt(): ?DateTimeImmutable
     {
         return $this->deadlineAt;
     }
 
-    public function setDeadlineAt(?\DateTimeImmutable $deadlineAt): static
+    public function setDeadlineAt(?DateTimeImmutable $deadlineAt): static
     {
         $this->deadlineAt = $deadlineAt;
 

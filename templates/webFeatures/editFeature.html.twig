@@ -3,93 +3,53 @@
 {% block title %}Edit Feature{% endblock %}
 
 {% block body %}
-    <div class="relative mt-10 px-8">
-
-        <a
-            href="{{ path('app_FeaturesList_featureListMenu') }}"
-            class="absolute left-40 top-0 px-8 py-4 bg-orange-500 text-white text-xl font-semibold rounded
-                       hover:bg-orange-600 hover:scale-105 transition-all duration-200"
-        >
+    <div>
+        <a href="{{ path('app_FeaturesList_featureListMenu') }}">
             Back
         </a>
 
-        <div style="display: flex; justify-content: center; margin-top: 40px;">
+        <div>
+            <div>
+                <h1>Edit Feature</h1>
 
-        <div style="
-            width: 100%;
-            max-width: 600px;
-            background: rgba(255,255,255,0.09);
-            padding: 2rem;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            color: white;
-        ">
+                {{ form_start(form) }}
 
-            <h1 style="text-align: center; margin-bottom: 2rem; font-size: 2rem;">
-                Edit Feature
-            </h1>
+                <div>
+                    {{ form_label(form.name) }}
+                    {{ form_widget(form.name) }}
+                    {{ form_errors(form.name) }}
+                </div>
 
-            {{ form_start(form) }}
+                <div>
+                    {{ form_label(form.description) }}
+                    {{ form_widget(form.description) }}
+                    {{ form_errors(form.description) }}
+                </div>
 
-            <div style="margin-bottom: 1.2rem;">
-                {{ form_label(form.name) }}
-                {{ form_widget(form.name, {
-                    'attr': {
-                        'style': 'width: 100%; padding: 0.7rem; background: #1e1e1e; color: white; border: 1px solid #555; border-radius: 6px;'
-                    }
-                }) }}
-                {{ form_errors(form.name) }}
+                <div>
+                    {{ form_label(form.status) }}
+                    {{ form_widget(form.status) }}
+                    {{ form_errors(form.status) }}
+                </div>
+
+                <div>
+                    {{ form_label(form.priority) }}
+                    {{ form_widget(form.priority) }}
+                    {{ form_errors(form.priority) }}
+                </div>
+
+                <div>
+                    {{ form_label(form.deadlineAt) }}
+                    {{ form_widget(form.deadlineAt) }}
+                    {{ form_errors(form.deadlineAt) }}
+                </div>
+
+                <div>
+                    {{ form_widget(form.submit) }}
+                </div>
+
+                {{ form_end(form) }}
             </div>
-
-            <div style="margin-bottom: 1.2rem;">
-                {{ form_label(form.description) }}
-                {{ form_widget(form.description, {
-                    'attr': {
-                        'style': 'width: 100%; padding: 0.7rem; min-height: 120px; background: #1e1e1e; color: white; border: 1px solid #555; border-radius: 6px;'
-                    }
-                }) }}
-                {{ form_errors(form.description) }}
-            </div>
-
-            <div style="margin-bottom: 1.2rem;">
-                {{ form_label(form.status) }}
-                {{ form_widget(form.status, {
-                    'attr': {
-                        'style': 'width: 100%; padding: 0.7rem; background: #1e1e1e; color: white; border: 1px solid #555; border-radius: 6px;'
-                    }
-                }) }}
-                {{ form_errors(form.status) }}
-            </div>
-
-            <div style="margin-bottom: 1.2rem;">
-                {{ form_label(form.priority) }}
-                {{ form_widget(form.priority, {
-                    'attr': {
-                        'style': 'width: 100%; padding: 0.7rem; background: #1e1e1e; color: white; border: 1px solid #555; border-radius: 6px;'
-                    }
-                }) }}
-                {{ form_errors(form.priority) }}
-            </div>
-
-            <div style="margin-bottom: 1.2rem;">
-                {{ form_label(form.deadlineAt) }}
-                {{ form_widget(form.deadlineAt, {
-                    'attr': {
-                        'style': 'width: 100%; padding: 0.7rem; background: #1e1e1e; color: white; border: 1px solid #555; border-radius: 6px;'
-                    }
-                }) }}
-                {{ form_errors(form.deadlineAt) }}
-            </div>
-
-            <div style="margin-top: 2rem; text-align: center;">
-                {{ form_widget(form.submit, {
-                    'attr': {
-                        'style': 'padding: 0.8rem 2rem; font-size: 1.1rem; background: #444; color: white; border: none; border-radius: 6px; cursor: pointer;'
-                    }
-                }) }}
-            </div>
-
-            {{ form_end(form) }}
         </div>
     </div>
 {% endblock %}

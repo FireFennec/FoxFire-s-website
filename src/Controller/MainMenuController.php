@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Model\FeaturesStatusEnum;
-use App\Repository\WebsiteFeaturesRepository;
+use App\Repository\WebsiteFeatureRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class MainMenuController extends AbstractController
 {
     #[Route('/', name: 'app_mainMenu', methods: ['GET'])]
-    public function mainMenu(WebsiteFeaturesRepository $websiteFeaturesRepository): Response
+    public function mainMenu(WebsiteFeatureRepository $websiteFeaturesRepository): Response
     {
         $newFeatures = [];
         $updateFeatures = [];

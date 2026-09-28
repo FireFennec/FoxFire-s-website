@@ -3,34 +3,48 @@
 {% block title %}{{ parent() }}Homepage{% endblock %}
 
 {% block body %}
-    <main class="flex flex-col lg:flex-row">
+    <main>
         {{ include('main/_featuresListAside.html.twig') }}
 
-        <div class="px-12 pt-10 w-full text-white">
-            <h1 class="text-4xl font-semibold mb-8">
+        <div>
+            <h1>
                 FoxFire's website
             </h1>
 
-            <div class="space-y-5">
-                <h2 class="text-3xl">What is the purpose?</h2>
-                <p>I want to test my web developing skill here by creating an interesting apps that can be also useful.</p><br>
+            <div>
+                <h2>What is the purpose?</h2>
+                <p>I want to test my web developing skill here by creating an interesting apps that can be also useful.</p>
+                <br>
 
-                <h2 class="text-2xl">The list of existing thing here</h2>
-                <strong>Right now there is {{ completedFeatures|length }} features in "completed" section.</strong><br><br>
+                <h2>The list of existing thing here</h2>
+                <strong>Right now there is {{ completedFeatures|length }} features in "completed" section.</strong>
+                <br><br>
+
                 {% for completedFeature in completedFeatures %}
-                <strong>{{ completedFeature.name }}</strong>: {{ completedFeature.description }}<br>
-                {% endfor %}<br>
+                    <strong>{{ completedFeature.name }}</strong>: {{ completedFeature.description }}
+                    <br>
+                {% endfor %}
 
-                <h2 class="text-2xl">The plan of things I want to add</h2>
-                <strong>Right now there is {{ newFeatures|length }} features to finish in "add new" section.</strong><br><br>
+                <br>
+
+                <h2>The plan of things I want to add</h2>
+                <strong>Right now there is {{ newFeatures|length }} features to finish in "add new" section.</strong>
+                <br><br>
+
                 {% for newFeature in newFeatures %}
-                <strong>{{ newFeature.name }}</strong>: {{ newFeature.description }}<br>
-                {% endfor %}<br>
+                    <strong>{{ newFeature.name }}</strong>: {{ newFeature.description }}
+                    <br>
+                {% endfor %}
 
-                <h2 class="text-2xl">The plan of things I want to update</h2>
-                <strong>Right now there is {{ updateFeatures|length }} features to finish in "update" section.</strong><br><br>
+                <br>
+
+                <h2>The plan of things I want to update</h2>
+                <strong>Right now there is {{ updateFeatures|length }} features to finish in "update" section.</strong>
+                <br><br>
+
                 {% for updateFeature in updateFeatures %}
-                    <strong>{{ updateFeature.name }}</strong>: {{ updateFeature.description }}<br>
+                    <strong>{{ updateFeature.name }}</strong>: {{ updateFeature.description }}
+                    <br>
                 {% endfor %}
             </div>
         </div>
