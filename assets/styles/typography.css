@@ -1,0 +1,16 @@
+/* Setting for h1, h2, p and strong tags. */
+h1 {
+    color: #ffffff;
+}
+
+h2 {
+    color: #eee7e7;
+}
+
+p {
+    color: #c5bebe;
+}
+
+strong {
+    color: #e7dddd;
+}

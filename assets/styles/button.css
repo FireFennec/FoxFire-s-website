@@ -1,0 +1,65 @@
+/* Button margin. */
+.button {
+    margin-bottom: 15px;
+}
+
+/* Button text setting. Padding, position, font and border color. */
+.button a {
+    display: block;
+    position: relative;
+
+    padding: 9px 12px;
+
+    color: #e7dddd;
+    text-decoration: none;
+    text-align: center;
+
+    background: rgba(255, 40, 40, 0.7);
+
+    clip-path: polygon(
+        0 0,
+        calc(100% - 10px) 0,
+        100% 10px,
+        100% 100%,
+        0 100%
+    );
+}
+
+/* Front button layout setting. */
+.button a::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+
+    inset: 1px;
+
+    background: #080000;
+
+    clip-path: polygon(
+        0 0,
+        calc(100% - 9px) 0,
+        100% 9px,
+        100% 100%,
+        0 100%
+    );
+}
+
+/* Button hover setting with shadow and background. */
+.button a:hover {
+    color: #ffffff;
+
+    text-shadow:
+        0 0 1px #ffffff,
+        0 0 3px #ffffff,
+        0 0 5px #ff3030,
+        0 0 8px #ff0000,
+        0 0 14px #ff0000,
+        0 0 22px #ff0000;
+
+    background: rgb(255, 30, 30);
+
+    filter:
+        drop-shadow(0 0 3px #ff0000)
+        drop-shadow(0 0 7px #ff0000)
+        drop-shadow(0 0 12px rgba(255, 0, 0, 0.8));
+}

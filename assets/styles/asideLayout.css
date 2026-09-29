@@ -1,0 +1,79 @@
+/* Aside bar place setting. */
+.homepage-layout {
+    display: flex;
+    align-items: stretch;
+}
+
+/* Aside bar size, padding, border and background color. */
+.homepage-layout aside {
+    width: 320px;
+    flex-shrink: 0;
+
+    padding: 25px 25px;
+
+    background: rgba(0, 0, 0, 0.17);
+    border-right: 3px solid rgba(255, 0, 0, 0.37);
+}
+
+/* Aside bar inside padding and border. */
+.feature-aside-section {
+    padding: 15px 0;
+
+    border-top: 1px solid rgba(255, 0, 0, 0.37);
+}
+
+/* Aside status features margin and font size. */
+.feature-aside-heading {
+    display: block;
+
+    margin-bottom: 10px;
+
+    font-size: 18px;
+    letter-spacing: 0.03em;
+}
+
+/* Color and shadow for Planned features. */
+.feature-aside-heading.planned {
+    color: #ff4545;
+
+    text-shadow:
+        0 0 5px rgba(255, 69, 69, 0.8),
+        0 0 10px rgba(255, 40, 40, 0.35);
+}
+
+/* Color and shadow for In progress features. */
+.feature-aside-heading.progress {
+    color: #ffd84a;
+
+    text-shadow:
+        0 0 5px rgba(255, 216, 74, 0.8),
+        0 0 10px rgba(255, 190, 40, 0.35);
+}
+
+/* Color and shadow for Completed features. */
+.feature-aside-heading.completed {
+    color: #55e879;
+
+    text-shadow:
+        0 0 5px rgba(85, 232, 121, 0.8),
+        0 0 10px rgba(40, 220, 100, 0.35);
+}
+
+/* Aside features padding and font color. */
+.feature-aside-section a {
+    display: block;
+
+    padding: 3px 0;
+
+    color: #d8d2d2;
+}
+
+/* Aside features hover. */
+.feature-aside-section a:hover {
+    color: #ffffff;
+    padding-left: 5px;
+
+    text-shadow: 0 0 8px rgba(255, 40, 40, 0.6);
+
+    transition: 0.15s;
+}

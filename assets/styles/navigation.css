@@ -1,0 +1,70 @@
+/* Setting for nav menu. Position, size and gap. */
+nav {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+
+    margin-left: auto;
+    font-size: 20px;
+}
+
+/* Setting for nav buttons - first layout. Position and border color. */
+nav a {
+    position: relative;
+    padding: 8px 18px;
+
+    color: #d8d2d2;
+    text-decoration: none;
+
+    background: rgba(255, 40, 40, 0.7);
+
+    clip-path: polygon(
+        0 0,
+        calc(100% - 12px) 0,
+        100% 12px,
+        100% 100%,
+        0 100%
+    );
+
+    transition:
+        color 0.2s ease,
+        text-shadow 0.2s ease,
+        filter 0.2s ease;
+}
+
+/* Setting for nav buttons - second layout. Position and background color. */
+nav a::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+
+    inset: 1px;
+
+    background: #160000;
+
+    clip-path: polygon(
+        0 0,
+        calc(100% - 11px) 0,
+        100% 11px,
+        100% 100%,
+        0 100%
+    );
+}
+
+/* Nav button hover effect. */
+nav a:hover {
+    color: #ffffff;
+
+    text-shadow:
+        0 0 5px rgba(255, 255, 255, 0.8),
+        0 0 10px rgba(255, 40, 40, 0.8);
+
+    filter:
+        drop-shadow(0 0 5px rgba(255, 0, 0, 0.8))
+        drop-shadow(0 0 10px rgba(255, 0, 0, 0.4));
+}
+
+/* Makes the inside slightly red when hovering. */
+nav a:hover::before {
+    background: #300000;
+}

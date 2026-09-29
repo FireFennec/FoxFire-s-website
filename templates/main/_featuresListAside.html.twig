@@ -1,41 +1,43 @@
 <aside>
-    <div>
+    <div class="button">
         <a href="{{ path('app_FeaturesList_featureListMenu') }}">
             My Website features list
         </a>
     </div>
 
-    <div>
-        <div>
-            <strong>To create: {{ newFeatures|length }} features</strong>
+    <div class="feature-aside-section">
+        <strong class="feature-aside-heading planned">
+            Planned: {{ newFeatures|length }}
+        </strong>
 
-            {% for newFeature in newFeatures %}
-                <a href="{{ path('app_FeatureList_featureInfoShow', {id: newFeature.id}) }}">
-                    <strong>{{ newFeature.name }}</strong>
-                </a>
-            {% endfor %}
+        {% for newFeature in newFeatures %}
+            <a href="{{ path('app_FeatureList_featureInfoShow', {id: newFeature.id}) }}">
+                {{ newFeature.name }}
+            </a>
+        {% endfor %}
+    </div>
 
-            <br>
+    <div class="feature-aside-section">
+        <strong class="feature-aside-heading progress">
+            In progress: {{ updateFeatures|length }}
+        </strong>
 
-            <strong>To update: {{ updateFeatures|length }} features</strong>
+        {% for updateFeature in updateFeatures %}
+            <a href="{{ path('app_FeatureList_featureInfoShow', {id: updateFeature.id}) }}">
+                {{ updateFeature.name }}
+            </a>
+        {% endfor %}
+    </div>
 
-            {% for updateFeature in updateFeatures %}
-                <a href="{{ path('app_FeatureList_featureInfoShow', {id: updateFeature.id}) }}">
-                    <strong>{{ updateFeature.name }}</strong>
-                </a>
-            {% endfor %}
+    <div class="feature-aside-section">
+        <strong class="feature-aside-heading completed">
+            Completed: {{ completedFeatures|length }}
+        </strong>
 
-            <br>
-
-            <strong>Completed: {{ completedFeatures|length }} features</strong>
-
-            {% for completedFeature in completedFeatures %}
-                <a href="{{ path('app_FeatureList_featureInfoShow', {id: completedFeature.id}) }}">
-                    <strong>{{ completedFeature.name }}</strong>
-                </a>
-            {% endfor %}
-
-            <br>
-        </div>
+        {% for completedFeature in completedFeatures %}
+            <a href="{{ path('app_FeatureList_featureInfoShow', {id: completedFeature.id}) }}">
+                {{ completedFeature.name }}
+            </a>
+        {% endfor %}
     </div>
 </aside>
