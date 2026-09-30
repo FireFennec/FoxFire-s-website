@@ -19,7 +19,7 @@
 .feature-aside-section {
     padding: 15px 0;
 
-    border-top: 1px solid rgba(255, 0, 0, 0.37);
+    border-top: 1px solid var(--border-red);
 }
 
 /* Aside status features margin and font size. */
@@ -67,7 +67,10 @@
 
     color: #d8d2d2;
 
-    transition: 0.15s;
+    transition:
+        color 0.15s ease,
+        padding-left 0.15s ease,
+        text-shadow 0.15s ease;
 }
 
 /* Aside features hover. */
@@ -76,4 +79,16 @@
     padding-left: 5px;
 
     text-shadow: 0 0 8px rgba(255, 40, 40, 0.6);
+}
+
+/* Padding for homepage. */
+.homepage-content {
+    flex: 1;
+    padding: 30px 40px;
+}
+
+/* Margin for p. */
+.homepage-content p {
+    margin-top: 20px;
+    margin-bottom: 30px;
 }

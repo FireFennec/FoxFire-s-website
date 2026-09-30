@@ -1,3 +1,13 @@
+/* Whole body default setting for Font color, line-height, font style. */
+body {
+    margin: 0;
+
+    color: #d8d2d2;
+    line-height: 1.6;
+    font-family: "Share Tech Mono", monospace;
+}
+
+/* Main heading style. */
 h1 {
     color: #ffffff;
     font-size: 35px;
@@ -13,6 +23,7 @@ h1 {
         0 0 22px rgba(255, 0, 0, 0.6);
 }
 
+/* Section heading style. */
 h2 {
     position: relative;
 
@@ -25,7 +36,7 @@ h2 {
     padding-left: 15px;
 }
 
-/* Red cyberpunk accent next to h2. */
+/* Red accent for section headings. */
 h2::before {
     content: "";
 
@@ -43,12 +54,14 @@ h2::before {
         0 0 10px rgba(255, 0, 0, 0.4);
 }
 
+/* Paragraph text style. */
 p {
     color: #c5bebe;
     font-size: 17px;
     line-height: 1.7;
 }
 
+/* Strong text style. */
 strong {
     color: #e7dddd;
     font-size: 18px;

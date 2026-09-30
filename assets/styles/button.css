@@ -1,22 +1,9 @@
-/* Button margin. */
+/* Button setting. */
 .button {
     display: block;
     position: relative;
 
     margin-bottom: 15px;
-
-    transition:
-        color 0.2s ease,
-        background 0.2s ease,
-        text-shadow 0.2s ease,
-        filter 0.2s ease;
-}
-
-/* Button text setting. Padding, position, font and border color. */
-.button {
-    display: block;
-    position: relative;
-
     padding: 9px 12px;
 
     color: #e7dddd;
@@ -32,6 +19,12 @@
         100% 100%,
         0 100%
     );
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        text-shadow 0.2s ease,
+        filter 0.2s ease;
 }
 
 /* Front button layout setting. */

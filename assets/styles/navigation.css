@@ -1,4 +1,4 @@
-/* Whole header setting. Positioning, background and border. */
+/* Header layout, background and border. */
 header {
     display: flex;
     align-items: center;
@@ -9,7 +9,7 @@ header {
     border-bottom: 3px solid var(--border-red);
 }
 
-/* Setting for nav menu. Position, size and gap. */
+/* Navigation layout and spacing. */
 nav {
     display: flex;
     align-items: center;
@@ -20,7 +20,7 @@ nav {
     font-size: 20px;
 }
 
-/* Setting for nav buttons - first layout. Position and border color. */
+/* Navigation button layout and border. */
 nav a {
     position: relative;
     padding: 8px 18px;
