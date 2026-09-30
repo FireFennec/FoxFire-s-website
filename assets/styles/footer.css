@@ -9,7 +9,7 @@ footer {
 
     background: rgba(5, 0, 0, 0.49);
 
-    border-top: 3px solid rgba(255, 40, 40, 0.45);
+    border-top: 3px solid var(--border-red);
 
     box-shadow:
         0 -4px 15px rgba(255, 0, 0, 0.08);

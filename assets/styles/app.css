@@ -19,7 +19,12 @@ body {
     padding: 30px 40px;
 }
 
+/* Margin for p. */
 .homepage-content p {
     margin-top: 20px;
     margin-bottom: 30px;
+}
+
+:root {
+    --border-red: rgba(255, 0, 0, 0.37);
 }

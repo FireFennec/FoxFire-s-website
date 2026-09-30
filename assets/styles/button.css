@@ -1,10 +1,19 @@
 /* Button margin. */
 .button {
+    display: block;
+    position: relative;
+
     margin-bottom: 15px;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        text-shadow 0.2s ease,
+        filter 0.2s ease;
 }
 
 /* Button text setting. Padding, position, font and border color. */
-.button a {
+.button {
     display: block;
     position: relative;
 
@@ -26,7 +35,7 @@
 }
 
 /* Front button layout setting. */
-.button a::before {
+.button::before {
     content: "";
     position: absolute;
     z-index: -1;
@@ -45,7 +54,7 @@
 }
 
 /* Button hover setting with shadow and background. */
-.button a:hover {
+.button:hover {
     color: #ffffff;
 
     text-shadow:

@@ -12,7 +12,7 @@
     padding: 25px 25px;
 
     background: rgba(0, 0, 0, 0.17);
-    border-right: 3px solid rgba(255, 0, 0, 0.37);
+    border-right: 3px solid var(--border-red);
 }
 
 /* Aside bar inside padding and border. */
@@ -66,6 +66,8 @@
     padding: 3px 0;
 
     color: #d8d2d2;
+
+    transition: 0.15s;
 }
 
 /* Aside features hover. */
@@ -74,6 +76,4 @@
     padding-left: 5px;
 
     text-shadow: 0 0 8px rgba(255, 40, 40, 0.6);
-
-    transition: 0.15s;
 }

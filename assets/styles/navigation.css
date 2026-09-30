@@ -6,13 +6,14 @@ header {
     padding: 12px 20px;
 
     background: rgba(255, 0, 0, 0.09);
-    border-bottom: 3px solid rgba(255, 0, 0, 0.37);
+    border-bottom: 3px solid var(--border-red);
 }
 
 /* Setting for nav menu. Position, size and gap. */
 nav {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 35px;
 
     margin-left: auto;
