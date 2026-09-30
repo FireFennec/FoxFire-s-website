@@ -4,6 +4,7 @@
 
 {% block body %}
     <main class="homepage-layout">
+        {# Aside bar with features list. #}
         {{ include('main/_featuresListAside.html.twig') }}
 
         <div class="homepage-content">
@@ -11,42 +12,38 @@
                 FoxFire's website
             </h1>
 
-            <div>
-                <h2>What is the purpose?</h2>
+            <h2>What is the purpose?</h2>
                 <p>I want to test my web developing skill here by creating an interesting apps that can be also useful.</p>
-                <br>
 
-                <h2>The list of existing thing here</h2>
-                <strong>Right now there is {{ completedFeatures|length }} features in "completed" section.</strong>
-                <br><br>
+            <h2>The plan of things I want to add</h2>
+                <strong>Right now there is {{ newFeatures|length }} features to finish in "add new" section.</strong>
+                <p>
+                    {# List of new planned features. #}
+                    {% for newFeature in newFeatures %}
+                        <strong>{{ newFeature.name }}</strong>: {{ newFeature.description }}
+                        <br>
+                    {% endfor %}
+                </p>
 
+            <h2>The plan of things I want to update</h2>
+                <strong>Right now there is {{ updateFeatures|length }} features to finish in "update" section.</strong>
+                <p>
+                    {# List of features for the future update. #}
+                    {% for updateFeature in updateFeatures %}
+                        <strong>{{ updateFeature.name }}</strong>: {{ updateFeature.description }}
+                        <br>
+                    {% endfor %}
+                </p>
+
+            <h2>The list of existing thing here</h2>
+            <strong>Right now there is {{ completedFeatures|length }} features in "completed" section.</strong>
+            <p>
+                {# List of completed features. #}
                 {% for completedFeature in completedFeatures %}
                     <strong>{{ completedFeature.name }}</strong>: {{ completedFeature.description }}
                     <br>
                 {% endfor %}
-
-                <br>
-
-                <h2>The plan of things I want to add</h2>
-                <strong>Right now there is {{ newFeatures|length }} features to finish in "add new" section.</strong>
-                <br><br>
-
-                {% for newFeature in newFeatures %}
-                    <strong>{{ newFeature.name }}</strong>: {{ newFeature.description }}
-                    <br>
-                {% endfor %}
-
-                <br>
-
-                <h2>The plan of things I want to update</h2>
-                <strong>Right now there is {{ updateFeatures|length }} features to finish in "update" section.</strong>
-                <br><br>
-
-                {% for updateFeature in updateFeatures %}
-                    <strong>{{ updateFeature.name }}</strong>: {{ updateFeature.description }}
-                    <br>
-                {% endfor %}
-            </div>
+            </p>
         </div>
     </main>
 {% endblock %}

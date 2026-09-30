@@ -8,6 +8,7 @@
 
         <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.svg') }}">
 
+        {# app.js load from assets. #}
         {% block javascripts %}
             {% block importmap %}
                 {{ importmap('app') }}
@@ -16,7 +17,9 @@
     </head>
 
     <body class="background-main">
+        {# Header with logo + nav-menu. #}
         <header>
+            {# Logo - img + text. #}
             <div>
                 <a href="{{ path('app_mainMenu') }}">
                     <img src="{{ asset('images/logo_fox.png') }}" alt="Fox_Logo">
@@ -25,6 +28,7 @@
                 <p>FoxFire's website</p>
             </div>
 
+            {# Nav-menu #}
             <nav>
                 <a href="{{ path('app_mainMenu') }}">
                     Main menu
@@ -44,10 +48,12 @@
             </nav>
         </header>
 
+        {# Body - page content. #}
         <main>
             {% block body %}{% endblock %}
         </main>
 
+        {# Footer - lower part of website. #}
         <footer>
             Made with fluffy paws by FoxFire
         </footer>

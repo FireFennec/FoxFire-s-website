@@ -4,6 +4,7 @@
 @import "./typography.css";
 @import "./asideLayout.css";
 @import "./button.css";
+@import "./footer.css";
 
 /* Whole body default setting for Font color, line-height, font style. */
 body {
@@ -12,32 +13,13 @@ body {
     font-family: "Share Tech Mono", monospace;
 }
 
-/* Whole header setting. Positioning, background and border. */
-header {
-    display: flex;
-    align-items: center;
-
-    padding: 12px 20px;
-
-    background: rgba(255, 0, 0, 0.09);
-    border-bottom: 3px solid rgba(255, 0, 0, 0.37);
-}
-
-/* Setting for logo with text. Positioning. */
-header > div {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-/* Setting for nav logo size. */
-header img {
-    width: 50px;
-    height: 50px;
-}
-
 /* Padding for homepage. */
 .homepage-content {
     flex: 1;
     padding: 30px 40px;
+}
+
+.homepage-content p {
+    margin-top: 20px;
+    margin-bottom: 30px;
 }
