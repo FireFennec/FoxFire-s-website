@@ -65,3 +65,61 @@
         drop-shadow(0 0 7px #ff0000)
         drop-shadow(0 0 12px rgba(255, 0, 0, 0.8));
 }
+
+/* Small action buttons. */
+.button-edit,
+.button-delete {
+    min-width: 65px;
+    padding: 5px 12px;
+
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+
+    background: rgba(5, 0, 0, 0.7);
+
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease,
+        text-shadow 0.2s ease;
+}
+
+/* Edit button. */
+.button-edit {
+    color: #ffd84a;
+    border: 1px solid rgba(255, 216, 74, 0.45);
+}
+
+.button-edit:hover {
+    color: #fff4b0;
+    border-color: #ffd84a;
+
+    background: rgba(255, 190, 0, 0.08);
+
+    box-shadow:
+        0 0 6px rgba(255, 210, 0, 0.45),
+        inset 0 0 6px rgba(255, 210, 0, 0.12);
+
+    text-shadow: 0 0 7px rgba(255, 220, 80, 0.8);
+}
+
+/* Delete button. */
+.button-delete {
+    color: #ff5555;
+    border: 1px solid rgba(255, 50, 50, 0.45);
+}
+
+.button-delete:hover {
+    color: #ffffff;
+    border-color: #ff3030;
+
+    background: rgba(255, 0, 0, 0.10);
+
+    box-shadow:
+        0 0 6px rgba(255, 0, 0, 0.55),
+        inset 0 0 6px rgba(255, 0, 0, 0.15);
+
+    text-shadow: 0 0 7px rgba(255, 40, 40, 0.9);
+}
