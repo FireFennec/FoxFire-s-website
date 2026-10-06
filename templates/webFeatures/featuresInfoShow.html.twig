@@ -3,54 +3,74 @@
 {% block title %}Feature - {{ feature.name }}{% endblock %}
 
 {% block body %}
-    <div>
-        <div>
-            <a href="{{ path('app_FeaturesList_featureListMenu') }}">
-                Back
-            </a>
-        </div>
+    <div class="feature-detail-page">
 
-        <div>
-            <div>
-                <h1>
-                    {{ feature.name }}
-                </h1>
+        <a
+            class="button feature-detail-back"
+            href="{{ path('app_FeaturesList_featureListMenu') }}"
+        >
+            Back
+        </a>
 
-                {% if feature.deadlineAt %}
-                    <div>
-                        <p>
-                            Priority: {{ feature.getPriorityString }}
-                        </p>
-                        <p>
-                            Deadline: {{ feature.deadlineAt|ago }}
+        <div class="feature-detail-content">
+            <section class="feature-detail-panel">
+
+                <h1>{{ feature.name }}</h1>
+
+                <div>
+                    <div class="feature-detail-overview">
+                        <div class="feature-detail-info">
+                            <span class="feature-detail-label">Status</span>
+
+                            <span class="feature-status-badge">
+                                {{ feature.getStatusString }}
+                            </span>
+                        </div>
+
+                        <div class="feature-detail-info">
+                            <span class="feature-detail-label">Priority</span>
+
+                            <span class="feature-priority-badge">
+                                {{ feature.getPriorityString }}
+                            </span>
+                        </div>
+                    </div>
+
+                    {% if feature.deadlineAt %}
+                        <div class="feature-detail-text-section">
+                            <span class="feature-detail-text-label">Deadline</span>
+                            <p class="feature-detail-deadline-value">
+                                {{ feature.deadlineAt|ago }}
+                            </p>
+                        </div>
+                    {% endif %}
+
+                    <div class="feature-detail-text-section">
+                        <span class="feature-detail-text-label">Description</span>
+                        <p class="feature-detail-description-value">
+                            {{ feature.description }}
                         </p>
                     </div>
-                {% else %}
-                    <div>
-                        <p>
-                            Priority: {{ feature.getPriorityString }}
-                        </p>
-                    </div>
-                {% endif %}
+                </div>
 
-                <p>
-                    {{ feature.description }}
-                </p>
-            </div>
+                <div class="feature-detail-actions">
+                    <a
+                        class="button-edit"
+                        href="{{ path('app_featureList_editFeature', {id: feature.id}) }}"
+                    >
+                        Edit
+                    </a>
 
-            <div>
-                <a href="{{ path('app_featureList_editFeature', {id: feature.id}) }}">
-                    Edit
-                </a>
+                    <a
+                        class="button-delete"
+                        href="{{ path('app_featureDelete', {id: feature.id}) }}"
+                    >
+                        Delete
+                    </a>
+                </div>
 
-                <a href="{{ path('app_featureDelete', {id: feature.id}) }}">
-                    Delete
-                </a>
-            </div>
+            </section>
         </div>
 
-        <div>
-            {{ feature.getStatusString }}
-        </div>
     </div>
 {% endblock %}

@@ -99,3 +99,302 @@
         left: 20px;
     }
 }
+
+/* Main feature form page layout. */
+.feature-form-page {
+    position: relative;
+
+    width: 100%;
+    padding-top: 50px;
+}
+
+/* Centered feature form content. */
+.feature-form-content {
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+/* Back button position. */
+.feature-form-back {
+    position: absolute;
+    z-index: 10;
+
+    top: 50px;
+    left: 20px;
+
+    width: fit-content;
+}
+
+/* Main feature form panel. */
+.feature-form-panel {
+    padding: 30px 35px;
+
+    background: rgba(8, 0, 0, 0.65);
+    border: 1px solid var(--border-red);
+}
+
+/* Feature form heading. */
+.feature-form-panel h1 {
+    margin-top: 0;
+    margin-bottom: 35px;
+
+    padding-left: 14px;
+
+    border-left: 4px solid #ff3030;
+
+    text-shadow:
+        0 0 5px rgba(255, 255, 255, 0.4),
+        0 0 10px rgba(255, 30, 30, 0.5);
+}
+
+/* Form field layout. */
+.feature-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+
+    margin-bottom: 22px;
+}
+
+/* Form field labels. */
+.feature-form-field label {
+    color: #e7dddd;
+    font-weight: bold;
+}
+
+/* Form inputs, textarea and selects. */
+.feature-form-field input,
+.feature-form-field textarea,
+.feature-form-field select {
+    width: 100%;
+    padding: 10px 12px;
+
+    color: #e7dddd;
+    font-family: inherit;
+    font-size: 15px;
+
+    background: rgba(5, 0, 0, 0.8);
+    border: 1px solid rgba(255, 40, 40, 0.35);
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+/* Form field focus effect. */
+.feature-form-field input:focus,
+.feature-form-field textarea:focus,
+.feature-form-field select:focus {
+    background: rgba(15, 0, 0, 0.9);
+    border-color: #ff3030;
+
+    box-shadow:
+        0 0 5px rgba(255, 0, 0, 0.45),
+        0 0 12px rgba(255, 0, 0, 0.20);
+}
+
+/* Description field. */
+.feature-form-field textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+/* Layout for form fields displayed in one row. */
+.feature-form-row {
+    display: flex;
+    gap: 20px;
+}
+
+/* Fields inside a form row share available space. */
+.feature-form-row .feature-form-field {
+    flex: 1;
+}
+
+/* Stack form fields on smaller screens. */
+@media (max-width: 650px) {
+    .feature-form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
+/* Deadline field size. */
+.feature-form-deadline {
+    max-width: 280px;
+}
+
+/* Form action buttons layout. */
+.feature-form-actions {
+    display: flex;
+    justify-content: center;
+
+    margin-top: 30px;
+}
+
+/* Main feature detail page layout. */
+.feature-detail-page {
+    position: relative;
+
+    width: 100%;
+    padding-top: 50px;
+}
+
+/* Back button position. */
+.feature-detail-back {
+    position: absolute;
+    z-index: 10;
+
+    top: 50px;
+    left: 20px;
+
+    width: fit-content;
+}
+
+/* Centered feature detail content. */
+.feature-detail-content {
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+/* Main feature detail panel. */
+.feature-detail-panel {
+    padding: 30px 35px;
+
+    background: rgba(8, 0, 0, 0.65);
+    border: 1px solid var(--border-red);
+}
+
+/* Status and priority layout. */
+.feature-detail-overview {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    margin-top: 30px;
+    margin-bottom: 25px;
+}
+
+/* Status and priority groups. */
+.feature-detail-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 7px;
+}
+
+/* Labels above badges. */
+.feature-detail-label {
+    color: #e7dddd;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* Status badge. */
+.feature-status-badge {
+    padding: 6px 12px;
+
+    color: #eaf4ff;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    background: rgba(15, 65, 105, 0.65);
+    border: 1px solid rgba(40, 140, 220, 0.65);
+
+    box-shadow:
+        0 0 8px rgba(30, 120, 220, 0.25),
+        inset 0 0 8px rgba(40, 140, 220, 0.12);
+
+    clip-path: polygon(
+        6px 0,
+        calc(100% - 6px) 0,
+        100% 6px,
+        100% calc(100% - 6px),
+        calc(100% - 6px) 100%,
+        6px 100%,
+        0 calc(100% - 6px),
+        0 6px
+    );
+}
+
+/* Priority badge. */
+.feature-priority-badge {
+    padding: 6px 12px;
+
+    color: #fff0f0;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    background: rgba(110, 10, 15, 0.75);
+    border: 1px solid rgba(255, 40, 40, 0.65);
+
+    box-shadow:
+        0 0 8px rgba(255, 30, 30, 0.25),
+        inset 0 0 8px rgba(255, 40, 40, 0.12);
+
+    clip-path: polygon(
+        6px 0,
+        calc(100% - 6px) 0,
+        100% 6px,
+        100% calc(100% - 6px),
+        calc(100% - 6px) 100%,
+        6px 100%,
+        0 calc(100% - 6px),
+        0 6px
+    );
+}
+
+/* Deadline and description sections. */
+.feature-detail-text-section {
+    padding: 18px 0;
+
+    border-top: 1px solid rgba(255, 40, 40, 0.18);
+}
+
+/* Labels for text information. */
+.feature-detail-text-label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #9c8f8f;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Deadline value. */
+.feature-detail-deadline-value {
+    margin: 0;
+
+    color: #e7dddd;
+    font-size: 15px;
+}
+
+/* Description text. */
+.feature-detail-description-value {
+    margin: 0;
+
+    color: #e7dddd;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.feature-detail-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+
+    margin-top: 25px;
+}

@@ -1,10 +1,18 @@
 /* Whole body default setting for Font color, line-height, font style. */
 body {
-    margin: 0;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
 
     color: #d8d2d2;
     line-height: 1.6;
     font-family: "Share Tech Mono", monospace;
+}
+
+/* Main page content fills available vertical space. */
+body > main {
+    flex: 1;
 }
 
 /* Main heading style. */
