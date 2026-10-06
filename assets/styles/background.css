@@ -64,6 +64,7 @@
 
     /* edge-glow is the name of keyframes, time for animation cycle, infinite means it's repeatable. */
     animation: edge-glow 11.5s linear infinite;
+    animation-delay: var(--edge-glow-delay, 0s);
 }
 
 /* The percents are how much of the animation time that part will happen. The rest is position where the light will move. */
