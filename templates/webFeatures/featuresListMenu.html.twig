@@ -17,33 +17,8 @@
                 <h2>To Do Features</h2>
 
                 <div class="features-list">
-                    {% for toDoFeature in toDoFeatures %}
-                        <div class="feature-row">
-
-                            <a
-                                class="feature-name"
-                                href="{{ path('app_FeatureList_featureInfoShow', {id: toDoFeature.id}) }}"
-                            >
-                                <strong>{{ toDoFeature.name }}</strong>
-                            </a>
-
-                            <div class="feature-actions">
-                                <a
-                                    class="button-edit"
-                                    href="{{ path('app_featureList_editFeature', {id: toDoFeature.id}) }}"
-                                >
-                                    Edit
-                                </a>
-
-                                <a
-                                    class="button-delete"
-                                    href="{{ path('app_featureDelete', {id: toDoFeature.id}) }}"
-                                >
-                                    Delete
-                                </a>
-                            </div>
-
-                        </div>
+                    {% for feature in toDoFeatures %}
+                        {% include 'webFeatures/_featureRow.html.twig' %}
                     {% endfor %}
                 </div>
             </section>
@@ -52,33 +27,8 @@
                 <h2>Completed Features</h2>
 
                 <div class="features-list">
-                    {% for completedFeature in completedFeatures %}
-                        <div class="feature-row">
-
-                            <a
-                                class="feature-name"
-                                href="{{ path('app_FeatureList_featureInfoShow', {id: completedFeature.id}) }}"
-                            >
-                                <strong>{{ completedFeature.name }}</strong>
-                            </a>
-
-                            <div class="feature-actions">
-                                <a
-                                    class="button-edit"
-                                    href="{{ path('app_featureList_editFeature', {id: completedFeature.id}) }}"
-                                >
-                                    Edit
-                                </a>
-
-                                <a
-                                    class="button-delete"
-                                    href="{{ path('app_featureDelete', {id: completedFeature.id}) }}"
-                                >
-                                    Delete
-                                </a>
-                            </div>
-
-                        </div>
+                    {% for feature in completedFeatures %}
+                        {% include 'webFeatures/_featureRow.html.twig' %}
                     {% endfor %}
                 </div>
             </section>

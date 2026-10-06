@@ -1,0 +1,26 @@
+<div class="feature-row">
+
+    <a
+        class="feature-name"
+        href="{{ path('app_FeatureList_featureInfoShow', {id: feature.id}) }}"
+    >
+        <strong>{{ feature.name }}</strong>
+    </a>
+
+    <div class="feature-actions">
+        <a
+            class="button-edit"
+            href="{{ path('app_featureList_editFeature', {id: feature.id}) }}"
+        >
+            Edit
+        </a>
+
+        <a
+            class="button-delete"
+            href="{{ path('app_featureDelete', {id: feature.id}) }}"
+        >
+            Delete
+        </a>
+    </div>
+
+</div>

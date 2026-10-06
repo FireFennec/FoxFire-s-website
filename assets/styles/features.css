@@ -1,3 +1,15 @@
+/* ==================================================
+   FEATURE LIST
+   ================================================== */
+
+/* Main features page layout. */
+.features-page {
+    position: relative;
+
+    width: 100%;
+    padding-top: 50px;
+}
+
 /* Create feature button position. */
 .features-create {
     position: absolute;
@@ -9,15 +21,7 @@
     width: fit-content;
 }
 
-/* Main layout for the features page. */
-.features-page {
-    position: relative;
-
-    width: 100%;
-    padding-top: 50px;
-}
-
-/* Centered features content. */
+/* Centered features list content. */
 .features-content {
     width: 100%;
     max-width: 1100px;
@@ -26,17 +30,16 @@
     padding: 0 30px;
 }
 
-/* Feature section panel. */
+/* Feature list section panel. */
 .features-section {
     margin-bottom: 35px;
     padding: 25px 30px;
 
     background: rgba(8, 0, 0, 0.65);
-
     border: 1px solid var(--border-red);
 }
 
-/* Feature section heading. */
+/* Feature list section heading. */
 .features-section h2 {
     margin-top: 0;
     margin-bottom: 25px;
@@ -81,14 +84,14 @@
         0 0 18px rgba(255, 0, 0, 0.7);
 }
 
-/* Feature action buttons layout. */
+/* Feature row action buttons layout. */
 .feature-actions {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-/* Responsive layout for smaller screens. */
+/* Move the create button above the content on narrower screens. */
 @media (max-width: 1400px) {
     .features-page {
         padding-top: 110px;
@@ -100,7 +103,12 @@
     }
 }
 
-/* Main feature form and detail pages layout. */
+
+/* ==================================================
+   SHARED FORM AND DETAIL LAYOUT
+   ================================================== */
+
+/* Main layout for feature form and detail pages. */
 .feature-form-page,
 .feature-detail-page {
     position: relative;
@@ -108,6 +116,42 @@
     width: 100%;
     padding-top: 50px;
 }
+
+/* Back button position. */
+.feature-form-back,
+.feature-detail-back {
+    position: absolute;
+    z-index: 10;
+
+    top: 50px;
+    left: 20px;
+
+    width: fit-content;
+}
+
+/* Centered content for feature form and detail pages. */
+.feature-form-content,
+.feature-detail-content {
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+/* Main panel for feature form and detail pages. */
+.feature-form-panel,
+.feature-detail-panel {
+    padding: 30px 35px;
+
+    background: rgba(8, 0, 0, 0.65);
+    border: 1px solid var(--border-red);
+}
+
+
+/* ==================================================
+   FEATURE FORM
+   ================================================== */
 
 /* Feature form heading. */
 .feature-form-panel h1 {
@@ -123,7 +167,7 @@
         0 0 10px rgba(255, 30, 30, 0.5);
 }
 
-/* Form field layout. */
+/* Individual form field layout. */
 .feature-form-field {
     display: flex;
     flex-direction: column;
@@ -138,7 +182,7 @@
     font-weight: bold;
 }
 
-/* Form inputs, textarea and selects. */
+/* Form inputs, textareas and selects. */
 .feature-form-field input,
 .feature-form-field textarea,
 .feature-form-field select {
@@ -171,37 +215,24 @@
         0 0 12px rgba(255, 0, 0, 0.20);
 }
 
-/* Description field. */
+/* Description textarea size and resizing. */
 .feature-form-field textarea {
     min-height: 130px;
     resize: vertical;
 }
 
-/* Layout for form fields displayed in one row. */
+/* Layout for form fields displayed side by side. */
 .feature-form-row {
     display: flex;
     gap: 20px;
 }
 
-/* Fields inside a form row share available space. */
+/* Form fields inside a row share the available space. */
 .feature-form-row .feature-form-field {
     flex: 1;
 }
 
-/* Stack form fields on smaller screens. */
-@media (max-width: 650px) {
-    .feature-form-row {
-        flex-direction: column;
-        gap: 0;
-    }
-}
-
-/* Deadline field size. */
-.feature-form-deadline {
-    max-width: 280px;
-}
-
-/* Form action buttons layout. */
+/* Form submit button layout. */
 .feature-form-actions {
     display: flex;
     justify-content: center;
@@ -209,36 +240,18 @@
     margin-top: 30px;
 }
 
-/* Back button position. */
-.feature-form-back,
-.feature-detail-back {
-    position: absolute;
-    z-index: 10;
-
-    top: 50px;
-    left: 20px;
-
-    width: fit-content;
+/* Stack side-by-side form fields on smaller screens. */
+@media (max-width: 650px) {
+    .feature-form-row {
+        flex-direction: column;
+        gap: 0;
+    }
 }
 
-/* Centered feature form and detail content. */
-.feature-form-content,
-.feature-detail-content {
-    width: 100%;
-    max-width: 900px;
 
-    margin: 0 auto;
-    padding: 0 30px;
-}
-
-/* Main feature form and detail panel. */
-.feature-form-panel,
-.feature-detail-panel {
-    padding: 30px 35px;
-
-    background: rgba(8, 0, 0, 0.65);
-    border: 1px solid var(--border-red);
-}
+/* ==================================================
+   FEATURE DETAIL
+   ================================================== */
 
 /* Status and priority layout. */
 .feature-detail-overview {
@@ -250,7 +263,7 @@
     margin-bottom: 25px;
 }
 
-/* Status and priority groups. */
+/* Status and priority information groups. */
 .feature-detail-info {
     display: flex;
     flex-direction: column;
@@ -258,14 +271,34 @@
     gap: 7px;
 }
 
-/* Labels above badges. */
+/* Labels above status and priority badges. */
 .feature-detail-label {
     color: var(--text-main);
     font-size: 13px;
     font-weight: bold;
 }
 
-/* Status badge. */
+/* Shared status and priority badge style. */
+.feature-badge {
+    padding: 6px 12px;
+
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    clip-path: polygon(
+        6px 0,
+        calc(100% - 6px) 0,
+        100% 6px,
+        100% calc(100% - 6px),
+        calc(100% - 6px) 100%,
+        6px 100%,
+        0 calc(100% - 6px),
+        0 6px
+    );
+}
+
+/* Status badge color style. */
 .feature-status-badge {
     color: #eaf4ff;
 
@@ -277,7 +310,7 @@
         inset 0 0 8px rgba(40, 140, 220, 0.12);
 }
 
-/* Priority badge. */
+/* Priority badge color style. */
 .feature-priority-badge {
     color: #fff0f0;
 
@@ -296,7 +329,7 @@
     border-top: 1px solid rgba(255, 40, 40, 0.18);
 }
 
-/* Labels for text information. */
+/* Deadline and description labels. */
 .feature-detail-text-label {
     display: block;
 
@@ -309,23 +342,21 @@
     letter-spacing: 1px;
 }
 
-/* Deadline value. */
-.feature-detail-deadline-value {
-    margin: 0;
-
-    color: var(--text-main);
-    font-size: 15px;
-}
-
-/* Description text. */
+/* Deadline and description values. */
+.feature-detail-deadline-value,
 .feature-detail-description-value {
     margin: 0;
 
     color: var(--text-main);
     font-size: 15px;
+}
+
+/* Description text spacing. */
+.feature-detail-description-value {
     line-height: 1.7;
 }
 
+/* Edit and delete buttons layout. */
 .feature-detail-actions {
     display: flex;
     justify-content: center;
@@ -333,23 +364,4 @@
     gap: 15px;
 
     margin-top: 25px;
-}
-
-.feature-badge {
-    padding: 6px 12px;
-
-    font-size: 13px;
-    font-weight: bold;
-    text-transform: uppercase;
-
-    clip-path: polygon(
-        6px 0,
-        calc(100% - 6px) 0,
-        100% 6px,
-        100% calc(100% - 6px),
-        calc(100% - 6px) 100%,
-        6px 100%,
-        0 calc(100% - 6px),
-        0 6px
-    );
 }
