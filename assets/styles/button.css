@@ -6,7 +6,7 @@
     margin-bottom: 15px;
     padding: 9px 12px;
 
-    color: #e7dddd;
+    color: var(--text-main);
     text-decoration: none;
     text-align: center;
 

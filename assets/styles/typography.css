@@ -71,6 +71,6 @@ p {
 
 /* Strong text style. */
 strong {
-    color: #e7dddd;
+    color: var(--text-main);
     font-size: 18px;
 }

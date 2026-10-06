@@ -57,7 +57,7 @@
 .feature-name {
     display: inline-block;
 
-    color: #e7dddd;
+    color: var(--text-main);
     text-decoration: none;
 
     transform-origin: left center;
@@ -134,7 +134,7 @@
 
 /* Form field labels. */
 .feature-form-field label {
-    color: #e7dddd;
+    color: var(--text-main);
     font-weight: bold;
 }
 
@@ -145,7 +145,7 @@
     width: 100%;
     padding: 10px 12px;
 
-    color: #e7dddd;
+    color: var(--text-main);
     font-family: inherit;
     font-size: 15px;
 
@@ -260,7 +260,7 @@
 
 /* Labels above badges. */
 .feature-detail-label {
-    color: #e7dddd;
+    color: var(--text-main);
     font-size: 13px;
     font-weight: bold;
 }
@@ -313,7 +313,7 @@
 .feature-detail-deadline-value {
     margin: 0;
 
-    color: #e7dddd;
+    color: var(--text-main);
     font-size: 15px;
 }
 
@@ -321,7 +321,7 @@
 .feature-detail-description-value {
     margin: 0;
 
-    color: #e7dddd;
+    color: var(--text-main);
     font-size: 15px;
     line-height: 1.7;
 }
