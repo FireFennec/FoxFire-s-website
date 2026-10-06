@@ -100,40 +100,13 @@
     }
 }
 
-/* Main feature form page layout. */
-.feature-form-page {
+/* Main feature form and detail pages layout. */
+.feature-form-page,
+.feature-detail-page {
     position: relative;
 
     width: 100%;
     padding-top: 50px;
-}
-
-/* Centered feature form content. */
-.feature-form-content {
-    width: 100%;
-    max-width: 900px;
-
-    margin: 0 auto;
-    padding: 0 30px;
-}
-
-/* Back button position. */
-.feature-form-back {
-    position: absolute;
-    z-index: 10;
-
-    top: 50px;
-    left: 20px;
-
-    width: fit-content;
-}
-
-/* Main feature form panel. */
-.feature-form-panel {
-    padding: 30px 35px;
-
-    background: rgba(8, 0, 0, 0.65);
-    border: 1px solid var(--border-red);
 }
 
 /* Feature form heading. */
@@ -236,15 +209,8 @@
     margin-top: 30px;
 }
 
-/* Main feature detail page layout. */
-.feature-detail-page {
-    position: relative;
-
-    width: 100%;
-    padding-top: 50px;
-}
-
 /* Back button position. */
+.feature-form-back,
 .feature-detail-back {
     position: absolute;
     z-index: 10;
@@ -255,7 +221,8 @@
     width: fit-content;
 }
 
-/* Centered feature detail content. */
+/* Centered feature form and detail content. */
+.feature-form-content,
 .feature-detail-content {
     width: 100%;
     max-width: 900px;
@@ -264,7 +231,8 @@
     padding: 0 30px;
 }
 
-/* Main feature detail panel. */
+/* Main feature form and detail panel. */
+.feature-form-panel,
 .feature-detail-panel {
     padding: 30px 35px;
 
@@ -299,12 +267,7 @@
 
 /* Status badge. */
 .feature-status-badge {
-    padding: 6px 12px;
-
     color: #eaf4ff;
-    font-size: 13px;
-    font-weight: bold;
-    text-transform: uppercase;
 
     background: rgba(15, 65, 105, 0.65);
     border: 1px solid rgba(40, 140, 220, 0.65);
@@ -312,27 +275,11 @@
     box-shadow:
         0 0 8px rgba(30, 120, 220, 0.25),
         inset 0 0 8px rgba(40, 140, 220, 0.12);
-
-    clip-path: polygon(
-        6px 0,
-        calc(100% - 6px) 0,
-        100% 6px,
-        100% calc(100% - 6px),
-        calc(100% - 6px) 100%,
-        6px 100%,
-        0 calc(100% - 6px),
-        0 6px
-    );
 }
 
 /* Priority badge. */
 .feature-priority-badge {
-    padding: 6px 12px;
-
     color: #fff0f0;
-    font-size: 13px;
-    font-weight: bold;
-    text-transform: uppercase;
 
     background: rgba(110, 10, 15, 0.75);
     border: 1px solid rgba(255, 40, 40, 0.65);
@@ -340,17 +287,6 @@
     box-shadow:
         0 0 8px rgba(255, 30, 30, 0.25),
         inset 0 0 8px rgba(255, 40, 40, 0.12);
-
-    clip-path: polygon(
-        6px 0,
-        calc(100% - 6px) 0,
-        100% 6px,
-        100% calc(100% - 6px),
-        calc(100% - 6px) 100%,
-        6px 100%,
-        0 calc(100% - 6px),
-        0 6px
-    );
 }
 
 /* Deadline and description sections. */
@@ -397,4 +333,23 @@
     gap: 15px;
 
     margin-top: 25px;
+}
+
+.feature-badge {
+    padding: 6px 12px;
+
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    clip-path: polygon(
+        6px 0,
+        calc(100% - 6px) 0,
+        100% 6px,
+        100% calc(100% - 6px),
+        calc(100% - 6px) 100%,
+        6px 100%,
+        0 calc(100% - 6px),
+        0 6px
+    );
 }
