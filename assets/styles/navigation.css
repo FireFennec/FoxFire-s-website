@@ -1,4 +1,8 @@
-/* Header layout, background and border. */
+/* ==================================================
+   HEADER
+   ================================================== */
+
+/* Main header layout, background and bottom border. */
 header {
     display: flex;
     align-items: center;
@@ -9,6 +13,24 @@ header {
     border-bottom: 3px solid var(--border-red);
 }
 
+/* Logo and title layout. */
+header > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Header logo size. */
+header img {
+    width: 50px;
+    height: 50px;
+}
+
+
+/* ==================================================
+   NAVIGATION
+   ================================================== */
+
 /* Navigation layout and spacing. */
 nav {
     display: flex;
@@ -17,12 +39,14 @@ nav {
     gap: 35px;
 
     margin-left: auto;
+
     font-size: 20px;
 }
 
-/* Navigation button layout and border. */
+/* Navigation link appearance and layout. */
 nav a {
     position: relative;
+
     padding: 8px 18px;
 
     color: #d8d2d2;
@@ -44,7 +68,7 @@ nav a {
         filter 0.2s ease;
 }
 
-/* Setting for nav buttons - second layout. Position and background color. */
+/* Inner layer of the navigation link. */
 nav a::before {
     content: "";
     position: absolute;
@@ -63,7 +87,7 @@ nav a::before {
     );
 }
 
-/* Nav button hover effect. */
+/* Navigation link hover effect. */
 nav a:hover {
     color: #ffffff;
 
@@ -76,20 +100,7 @@ nav a:hover {
         drop-shadow(0 0 10px rgba(255, 0, 0, 0.4));
 }
 
-/* Makes the inside slightly red when hovering. */
+/* Highlight the inner layer when hovering over the navigation link. */
 nav a:hover::before {
     background: #300000;
-}
-
-/* Setting for logo with text. Positioning. */
-header > div {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-/* Setting for nav logo size. */
-header img {
-    width: 50px;
-    height: 50px;
 }

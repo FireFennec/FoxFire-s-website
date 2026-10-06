@@ -1,30 +1,40 @@
-/* Background for the whole website. */
+/* ==================================================
+   MAIN BACKGROUND
+   ================================================== */
+
+/* Main background for the entire website. */
 .background-main {
     min-height: 100vh;
 
     background-image:
-        /* White grids. */
+        /* Horizontal grid lines. */
         linear-gradient(
             rgba(255, 255, 255, 0.05) 1px,
             transparent 1px
         ),
+
+            /* Vertical grid lines. */
         linear-gradient(
             90deg,
             rgba(255, 255, 255, 0.05) 1px,
             transparent 1px
         ),
-        /* Two light spots. */
+
+            /* Top-left red glow. */
         radial-gradient(
             circle at 15% 25%,
             rgba(180, 0, 0, 0.18),
             transparent 28%
         ),
+
+            /* Bottom-right red glow. */
         radial-gradient(
             circle at 85% 75%,
             rgba(150, 0, 0, 0.14),
             transparent 28%
         ),
-        /* Background color. */
+
+            /* Base background gradient. */
         linear-gradient(
             100deg,
             #050000,
@@ -32,7 +42,7 @@
             #090000
         );
 
-    /* First two px for grids size. The rest for size of background. */
+    /* Grid size followed by the sizes of the remaining background layers. */
     background-size:
         50px 50px,
         50px 50px,
@@ -40,16 +50,21 @@
         auto,
         auto;
 
-    /* During the scrolling background is fixed. */
+    /* Keep the background fixed while scrolling. */
     background-attachment: fixed;
 }
 
-/* The moving light on the side of the website. */
+
+/* ==================================================
+   EDGE GLOW ANIMATION
+   ================================================== */
+
+/* Animated red glow moving around the edges of the viewport. */
 .background-main::before {
     content: "";
     position: fixed;
 
-    /* Appearance of a moving light. */
+    /* Glow appearance. */
     background:
         radial-gradient(
             circle,
@@ -57,17 +72,21 @@
             rgba(255, 0, 0, 0.7) 30%,
             transparent 60%
         );
-    /* Position where the light will move. */
+
+    /* Center the glow on its current animation position. */
     transform: translate(-50%, -50%);
-    /* Light can't cover anything that user can click on. */
+
+    /* Prevent the glow from blocking clickable elements. */
     pointer-events: none;
 
-    /* edge-glow is the name of keyframes, time for animation cycle, infinite means it's repeatable. */
+    /* Run the edge glow animation continuously. */
     animation: edge-glow 11.5s linear infinite;
+
+    /* Synchronize the animation position between page loads. */
     animation-delay: var(--edge-glow-delay, 0s);
 }
 
-/* The percents are how much of the animation time that part will happen. The rest is position where the light will move. */
+/* Move the glow clockwise around the viewport edges, then keep it hidden until the next cycle. */
 @keyframes edge-glow {
     0% {
         left: 0;
@@ -110,7 +129,8 @@
         opacity: 1;
     }
 
-    14%, 100% {
+    14%,
+    100% {
         left: 0;
         top: 0;
         opacity: 0;

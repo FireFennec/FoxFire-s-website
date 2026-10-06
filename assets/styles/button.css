@@ -1,4 +1,8 @@
-/* Button setting. */
+/* ==================================================
+   MAIN BUTTON
+   ================================================== */
+
+/* Main button appearance and layout. */
 .button {
     display: block;
     position: relative;
@@ -27,7 +31,7 @@
         filter 0.2s ease;
 }
 
-/* Front button layout setting. */
+/* Inner layer of the main button. */
 .button::before {
     content: "";
     position: absolute;
@@ -46,7 +50,7 @@
     );
 }
 
-/* Button hover setting with shadow and background. */
+/* Main button hover effect. */
 .button:hover {
     color: #ffffff;
 
@@ -66,7 +70,12 @@
         drop-shadow(0 0 12px rgba(255, 0, 0, 0.8));
 }
 
-/* Small action buttons. */
+
+/* ==================================================
+   ACTION BUTTONS
+   ================================================== */
+
+/* Shared layout and appearance for edit and delete buttons. */
 .button-edit,
 .button-delete {
     min-width: 65px;
@@ -86,12 +95,13 @@
         text-shadow 0.2s ease;
 }
 
-/* Edit button. */
+/* Edit button appearance. */
 .button-edit {
     color: #ffd84a;
     border: 1px solid rgba(255, 216, 74, 0.45);
 }
 
+/* Edit button hover effect. */
 .button-edit:hover {
     color: #fff4b0;
     border-color: #ffd84a;
@@ -105,12 +115,13 @@
     text-shadow: 0 0 7px rgba(255, 220, 80, 0.8);
 }
 
-/* Delete button. */
+/* Delete button appearance. */
 .button-delete {
     color: #ff5555;
     border: 1px solid rgba(255, 50, 50, 0.45);
 }
 
+/* Delete button hover effect. */
 .button-delete:hover {
     color: #ffffff;
     border-color: #ff3030;
