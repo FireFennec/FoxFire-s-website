@@ -15,22 +15,16 @@
         <div class="features-content">
             <section class="features-section">
                 <h2>To Do Features</h2>
-
-                <div class="features-list">
                     {% for feature in toDoFeatures %}
                         {% include 'webFeatures/_featureRow.html.twig' %}
                     {% endfor %}
-                </div>
             </section>
 
             <section class="features-section">
                 <h2>Completed Features</h2>
-
-                <div class="features-list">
                     {% for feature in completedFeatures %}
                         {% include 'webFeatures/_featureRow.html.twig' %}
                     {% endfor %}
-                </div>
             </section>
         </div>
 

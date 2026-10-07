@@ -3,62 +3,96 @@
 {% block title %}{{ parent() }}About me{% endblock %}
 
 {% block body %}
-    <div>
-        <div>
+    <main class="about-page">
+
+        <div class="about-content">
             <h1>About me</h1>
 
-            <table>
-                <tr>
-                    <th>Contact me</th>
-                </tr>
-                <tr>
-                    <td><strong>Email:</strong> {{ myContactInformation.email }}</td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>Telegram:</strong>
-                        <a href="https://t.me/{{ myContactInformation.telegram }}">
-                            {{ myContactInformation.telegram }}
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td><strong>Discord:</strong> {{ myContactInformation.discord }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Phone number:</strong> {{ myContactInformation.phoneNumber }}</td>
-                </tr>
-            </table>
+            <div class="about-panel">
 
-            <table>
-                <tr>
-                    <th>Follow me</th>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>X:</strong>
-                        {% if myContactInformation.xLink %}
-                            <a href="{{ myContactInformation.xLink }}">
-                                {{ myContactInformation.x }} - (Link)
-                            </a>
-                        {% else %}
+                <section class="about-section">
+                    <h2>Contact me</h2>
+
+                    <div class="about-row">
+                        <span class="about-label">Email</span>
+
+                        <span class="about-value">
+                            {{ myContactInformation.email }}
+                        </span>
+                    </div>
+
+                    <div class="about-row">
+                        <span class="about-label">Telegram</span>
+
+                        <span class="about-value">
+                            {{ myContactInformation.telegram }}
+                        </span>
+
+                        <a
+                            class="about-link"
+                            href="https://t.me/{{ myContactInformation.telegram }}"
+                        >
+                            Open ↗
+                        </a>
+                    </div>
+
+                    <div class="about-row">
+                        <span class="about-label">Discord</span>
+
+                        <span class="about-value">
+                            {{ myContactInformation.discord }}
+                        </span>
+                    </div>
+
+                    <div class="about-row">
+                        <span class="about-label">Phone</span>
+
+                        <span class="about-value">
+                            {{ myContactInformation.phoneNumber }}
+                        </span>
+                    </div>
+                </section>
+
+                <section class="about-section">
+                    <h2>Follow me</h2>
+
+                    <div class="about-row">
+                        <span class="about-label">X</span>
+
+                        <span class="about-value">
                             {{ myContactInformation.x }}
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>Barq:</strong>
-                        {% if myContactInformation.BarqLink %}
-                            <a href="{{ myContactInformation.BarqLink }}">
-                                {{ myContactInformation.barq }} - (Link)
+                        </span>
+
+                        {% if myContactInformation.xLink %}
+                            <a
+                                class="about-link"
+                                href="{{ myContactInformation.xLink }}"
+                            >
+                                Open ↗
                             </a>
-                        {% else %}
-                            {{ myContactInformation.barq }}
                         {% endif %}
-                    </td>
-                </tr>
-            </table>
+                    </div>
+
+                    <div class="about-row">
+                        <span class="about-label">Barq</span>
+
+                        <span class="about-value">
+                            {{ myContactInformation.barq }}
+                        </span>
+
+                        {% if myContactInformation.BarqLink %}
+                            <a
+                                class="about-link"
+                                href="{{ myContactInformation.BarqLink }}"
+                            >
+                                Open ↗
+                            </a>
+                        {% endif %}
+                    </div>
+                </section>
+
+            </div>
         </div>
-    </div>
+
+    </main>
 {% endblock %}

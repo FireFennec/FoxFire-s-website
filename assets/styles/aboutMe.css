@@ -1,0 +1,141 @@
+/* ==================================================
+   ABOUT ME PAGE
+   ================================================== */
+
+/* Main About Me page layout. */
+.about-page {
+    width: 100%;
+    padding: 50px 30px;
+}
+
+/* Centered About Me content. */
+.about-content {
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto;
+}
+
+/* Main About Me panel. */
+.about-panel {
+    padding: 30px 35px;
+
+    background: rgba(8, 0, 0, 0.65);
+    border: 1px solid var(--border-red);
+}
+
+
+/* ==================================================
+   ABOUT SECTIONS
+   ================================================== */
+
+/* Individual contact and social sections. */
+.about-section {
+    margin-bottom: 35px;
+}
+
+/* Remove spacing after the final section. */
+.about-section:last-child {
+    margin-bottom: 0;
+}
+
+/* Adjust the global section heading spacing inside the About Me panel. */
+.about-section h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+
+/* ==================================================
+   CONTACT ROWS
+   ================================================== */
+
+/* Individual contact information row. */
+.about-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 80px;
+    align-items: center;
+    gap: 20px;
+
+    min-height: 52px;
+    padding: 10px 15px;
+
+    border-bottom: 1px solid rgba(255, 40, 40, 0.18);
+}
+
+/* Contact information label. */
+.about-label {
+    color: #9c8f8f;
+
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Contact information value. */
+.about-value {
+    color: var(--text-main);
+    font-size: 16px;
+}
+
+/* External contact link. */
+.about-link {
+    justify-self: end;
+
+    padding: 5px 10px;
+
+    color: #ff5555;
+    text-decoration: none;
+    font-size: 13px;
+
+    background: rgba(5, 0, 0, 0.7);
+    border: 1px solid rgba(255, 50, 50, 0.45);
+
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+/* External contact link hover effect. */
+.about-link:hover {
+    color: #ffffff;
+    border-color: #ff3030;
+
+    background: rgba(255, 0, 0, 0.10);
+
+    box-shadow:
+        0 0 6px rgba(255, 0, 0, 0.55),
+        inset 0 0 6px rgba(255, 0, 0, 0.15);
+}
+
+
+/* ==================================================
+   RESPONSIVE LAYOUT
+   ================================================== */
+
+/* Stack contact information on smaller screens. */
+@media (max-width: 650px) {
+    .about-page {
+        padding: 30px 20px;
+    }
+
+    .about-panel {
+        padding: 25px 20px;
+    }
+
+    .about-row {
+        grid-template-columns: 1fr;
+        gap: 5px;
+
+        padding: 15px 10px;
+    }
+
+    .about-link {
+        justify-self: start;
+
+        margin-top: 5px;
+    }
+}
