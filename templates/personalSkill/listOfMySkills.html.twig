@@ -3,19 +3,35 @@
 {% block title %}List of my skills{% endblock %}
 
 {% block body %}
-    <div>
-        <div>
+    <main class="skills-page">
+
+        <div class="skills-content">
             <h1>My personal skills</h1>
 
-            <table>
+            <div class="skills-list">
                 {% for skill in skills %}
-                    <tr>
-                        <td>{{ skill.skillName }}</td>
-                        <td>{{ skill.skillDescription }}</td>
-                        <td>{{ skill.getLevelOfSkillString }}</td>
-                    </tr>
+                    <article class="skill-card">
+
+                        <div class="skill-header">
+                            <h2 class="skill-name">
+                                {{ skill.skillName }}
+                            </h2>
+
+                            <span class="skill-level">
+                                {{ skill.getLevelOfSkillString }}
+                            </span>
+                        </div>
+
+                        <p class="skill-description">
+                            {{ skill.skillDescription }}
+                        </p>
+
+                    </article>
+                {% else %}
+                    <p>No skills available yet.</p>
                 {% endfor %}
-            </table>
+            </div>
         </div>
-    </div>
+
+    </main>
 {% endblock %}

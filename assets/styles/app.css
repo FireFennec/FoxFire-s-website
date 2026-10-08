@@ -8,6 +8,7 @@
 @import "./features.css";
 @import "./aboutMe.css";
 @import "./cooking.css";
+@import "./personalSkill.css";
 
 /* Global variables. */
 :root {
