@@ -1,13 +1,13 @@
 
 {{ form_start(form) }}
 
-<div class="recipe-form-field">
+<div class="form-field">
     {{ form_label(form.recipe_name, 'Recipe name') }}
     {{ form_widget(form.recipe_name) }}
     {{ form_errors(form.recipe_name) }}
 </div>
 
-<div class="recipe-form-field">
+<div class="form-field">
     {{ form_label(form.ingredience, 'Ingredients') }}
 
     <div
@@ -38,13 +38,13 @@
     </button>
 </div>
 
-<div class="recipe-form-field">
+<div class="form-field">
     {{ form_label(form.cooking_process, 'Cooking process') }}
     {{ form_widget(form.cooking_process) }}
     {{ form_errors(form.cooking_process) }}
 </div>
 
-<div class="recipe-form-actions">
+<div class="form-actions">
     {{ form_widget(form.submit, {
         label: submitLabel,
         attr: {

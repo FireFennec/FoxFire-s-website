@@ -1,3 +1,4 @@
+
 /* ==================================================
    FEATURE LIST
    ================================================== */
@@ -167,56 +168,8 @@
         0 0 10px rgba(255, 30, 30, 0.5);
 }
 
-/* Individual form field layout. */
-.feature-form-field {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-
-    margin-bottom: 22px;
-}
-
-/* Form field labels. */
-.feature-form-field label {
-    color: var(--text-main);
-    font-weight: bold;
-}
-
-/* Form inputs, textareas and selects. */
-.feature-form-field input,
-.feature-form-field textarea,
-.feature-form-field select {
-    width: 100%;
-    padding: 10px 12px;
-
-    color: var(--text-main);
-    font-family: inherit;
-    font-size: 15px;
-
-    background: rgba(5, 0, 0, 0.8);
-    border: 1px solid rgba(255, 40, 40, 0.35);
-    outline: none;
-
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        background 0.2s ease;
-}
-
-/* Form field focus effect. */
-.feature-form-field input:focus,
-.feature-form-field textarea:focus,
-.feature-form-field select:focus {
-    background: rgba(15, 0, 0, 0.9);
-    border-color: #ff3030;
-
-    box-shadow:
-        0 0 5px rgba(255, 0, 0, 0.45),
-        0 0 12px rgba(255, 0, 0, 0.20);
-}
-
 /* Description textarea size and resizing. */
-.feature-form-field textarea {
+.feature-form-panel .form-field textarea {
     min-height: 130px;
     resize: vertical;
 }
@@ -228,16 +181,8 @@
 }
 
 /* Form fields inside a row share the available space. */
-.feature-form-row .feature-form-field {
+.feature-form-row .form-field {
     flex: 1;
-}
-
-/* Form submit button layout. */
-.feature-form-actions {
-    display: flex;
-    justify-content: center;
-
-    margin-top: 30px;
 }
 
 /* Stack side-by-side form fields on smaller screens. */
@@ -291,9 +236,8 @@
         calc(100% - 6px) 0,
         100% 6px,
         100% calc(100% - 6px),
-        calc(100% - 6px) 100%,
         6px 100%,
-        0 calc(100% - 6px),
+        0 100%,
         0 6px
     );
 }
@@ -319,7 +263,7 @@
 
     box-shadow:
         0 0 8px rgba(255, 30, 30, 0.25),
-        inset 0 0 8px rgba(255, 40, 40, 0.12);
+        inset 0 0 8px rgba(255, 40, 30, 0.12);
 }
 
 /* Deadline and description sections. */

@@ -4,39 +4,39 @@
     }
 }) }}
 
-<div class="feature-form-field">
+<div class="form-field">
     {{ form_label(form.name) }}
     {{ form_widget(form.name) }}
     {{ form_errors(form.name) }}
 </div>
 
-<div class="feature-form-field">
+<div class="form-field">
     {{ form_label(form.description) }}
     {{ form_widget(form.description) }}
     {{ form_errors(form.description) }}
 </div>
 
-<div class="feature-form-row">
-    <div class="feature-form-field">
+<div class="form-row">
+    <div class="form-field">
         {{ form_label(form.status) }}
         {{ form_widget(form.status) }}
         {{ form_errors(form.status) }}
     </div>
 
-    <div class="feature-form-field">
+    <div class="form-field">
         {{ form_label(form.priority) }}
         {{ form_widget(form.priority) }}
         {{ form_errors(form.priority) }}
     </div>
 </div>
 
-<div class="feature-form-field">
+<div class="form-field">
     {{ form_label(form.deadlineAt) }}
     {{ form_widget(form.deadlineAt) }}
     {{ form_errors(form.deadlineAt) }}
 </div>
 
-<div class="feature-form-actions">
+<div class="form-actions">
     {{ form_widget(form.submit, {
         label: submitLabel,
         attr: {
