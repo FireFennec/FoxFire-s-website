@@ -1,39 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Recipe - cooking.recipeName{% endblock %}
+{% block title %}Recipe - {{ cookingRecipe.recipeName }}{% endblock %}
 
 {% block body %}
-    <div>
-        <div>
-            <a href="{{ path('app_cookingRecipe_editCookingRecipe', {id: cookingRecipe.id}) }}">
-                Update Recipe
-            </a>
+    <div class="recipe-detail-page">
 
-            <a href="{{ path('app_cooking_recipe') }}">
-                Back
-            </a>
+        <a
+            class="button recipe-detail-back"
+            href="{{ path('app_cooking_recipe') }}"
+        >
+            Back
+        </a>
 
-            <h1>
-                {{ cookingRecipe.recipeName }}
-            </h1>
+        <div class="recipe-detail-content">
+            <section class="recipe-detail-panel">
+
+                <div class="recipe-detail-header">
+                    <h1>{{ cookingRecipe.recipeName }}</h1>
+
+                    <a
+                        class="button-edit"
+                        href="{{ path('app_cookingRecipe_editCookingRecipe', {id: cookingRecipe.id}) }}"
+                    >
+                        Update Recipe
+                    </a>
+                </div>
+
+                <section class="recipe-detail-section">
+                    <h2>Ingredients</h2>
+
+                    <ul class="recipe-ingredients">
+                        {% for oneIngredience in cookingRecipe.ingredience %}
+                            <li>{{ oneIngredience }}</li>
+                        {% endfor %}
+                    </ul>
+                </section>
+
+                <section class="recipe-detail-section">
+                    <h2>Cooking process</h2>
+
+                    <p class="recipe-process">
+                        {{ cookingRecipe.cookingProcess }}
+                    </p>
+                </section>
+
+            </section>
         </div>
 
-        <h2>
-            Ingrediences
-        </h2>
-
-        <ul>
-            {% for oneIngredience in cookingRecipe.ingredience %}
-                <li>{{ oneIngredience }}</li>
-            {% endfor %}
-        </ul>
-
-        <h2>
-            Cooking process
-        </h2>
-
-        <p>
-            {{ cookingRecipe.cookingProcess }}
-        </p>
     </div>
 {% endblock %}

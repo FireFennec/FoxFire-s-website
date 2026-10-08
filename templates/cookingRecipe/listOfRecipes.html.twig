@@ -3,25 +3,34 @@
 {% block title %}List of Recipes{% endblock %}
 
 {% block body %}
-    <div>
-        <a href="{{ path('app_cooking_recipe_create') }}">
-            Create Recipe
+    <main class="recipes-page">
+
+        <a
+            class="button recipes-create"
+            href="{{ path('app_cooking_recipe_create') }}"
+        >
+            + Create Recipe
         </a>
 
-        <div>
-            <h1>Cooking recipes</h1>
+        <div class="recipes-content">
+            <section class="recipes-section">
+                <h1>Cooking recipes</h1>
 
-            <table>
-                {% for recipe in recipes %}
-                    <tr>
-                        <th>
-                            <a href="{{ path('app_cooking_recipe_showRecipeInfo', {id: recipe.id}) }}">
+                <div class="recipes-list">
+                    {% for recipe in recipes %}
+                        <div class="recipe-row">
+                            <a
+                                class="recipe-name"
+                                href="{{ path('app_cooking_recipe_showRecipeInfo', {id: recipe.id}) }}"
+                            >
                                 {{ recipe.recipeName }}
                             </a>
-                        </th>
-                    </tr>
-                {% endfor %}
-            </table>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </section>
         </div>
-    </div>
+
+    </main>
 {% endblock %}

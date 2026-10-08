@@ -3,96 +3,26 @@
 {% block title %}Create cooking recipe{% endblock %}
 
 {% block body %}
-    <div>
-        <a href="{{ path('app_cooking_recipe') }}">
+    <div class="recipe-form-page">
+
+        <a
+            class="button recipe-form-back"
+            href="{{ path('app_cooking_recipe') }}"
+        >
             Back
         </a>
 
-        <div>
-            <div>
+        <div class="recipe-form-content">
+            <section class="recipe-form-panel">
                 <h1>Create Recipe</h1>
 
-                {{ form_start(form) }}
-
-                <div>
-                    {{ form_label(form.recipe_name, 'Recipe name') }}
-                    {{ form_widget(form.recipe_name) }}
-                </div>
-
-                <div>
-                    {{ form_label(form.ingredience, 'Ingredients') }}
-
-                    <div
-                        id="ingredients-list"
-                        data-prototype="{{ form_widget(form.ingredience.vars.prototype)|e('html_attr') }}"
-                    >
-                        {% for ingredient in form.ingredience %}
-                            <div class="ingredient-item">
-                                {{ form_widget(ingredient) }}
-
-                                <button type="button" class="remove-ingredient">
-                                    X
-                                </button>
-                            </div>
-                        {% endfor %}
-                    </div>
-
-                    <button type="button" id="add-ingredient">
-                        Add ingredient
-                    </button>
-                </div>
-
-                <div>
-                    {{ form_label(form.cooking_process, 'Cooking process') }}
-                    {{ form_widget(form.cooking_process) }}
-                </div>
-
-                <div>
-                    {{ form_widget(form.submit) }}
-                </div>
-
-                {{ form_end(form, {'render_rest': false}) }}
-            </div>
+                {% include 'cookingRecipe/_recipeForm.html.twig' with {
+                    submitLabel: 'Create Recipe'
+                } %}
+            </section>
         </div>
+
     </div>
 
-    <script>
-        const ingredientsList = document.getElementById('ingredients-list');
-        const addIngredientButton = document.getElementById('add-ingredient');
-
-        function addRemoveListener(button) {
-            button.addEventListener('click', function () {
-                button.parentElement.remove();
-            });
-        }
-
-        addIngredientButton.addEventListener('click', function () {
-            const index = ingredientsList.children.length;
-            let prototype = ingredientsList.dataset.prototype;
-
-            prototype = prototype.replace(/__name__/g, index);
-
-            const wrapper = document.createElement('div');
-            wrapper.classList.add('ingredient-item');
-
-            wrapper.innerHTML = `
-                ${prototype}
-                <button type="button" class="remove-ingredient">
-                    X
-                </button>
-            `;
-
-            ingredientsList.appendChild(wrapper);
-
-            addRemoveListener(wrapper.querySelector('.remove-ingredient'));
-        });
-
-        document.querySelectorAll('.remove-ingredient').forEach(button => {
-            addRemoveListener(button);
-        });
-
-        if (ingredientsList.children.length === 0) {
-            addIngredientButton.click();
-        }
-    </script>
+    {% include 'cookingRecipe/_ingredientsScript.html.twig' %}
 {% endblock %}
