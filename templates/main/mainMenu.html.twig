@@ -21,7 +21,6 @@
                     {# List of new planned features. #}
                     {% for newFeature in newFeatures %}
                         <strong>{{ newFeature.name }}</strong>: {{ newFeature.description }}
-                        <br>
                     {% endfor %}
                 </p>
 
@@ -31,7 +30,6 @@
                     {# List of features for the future update. #}
                     {% for updateFeature in updateFeatures %}
                         <strong>{{ updateFeature.name }}</strong>: {{ updateFeature.description }}
-                        <br>
                     {% endfor %}
                 </p>
 
@@ -41,7 +39,6 @@
                 {# List of completed features. #}
                 {% for completedFeature in completedFeatures %}
                     <strong>{{ completedFeature.name }}</strong>: {{ completedFeature.description }}
-                    <br>
                 {% endfor %}
             </p>
         </div>

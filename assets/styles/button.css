@@ -6,6 +6,7 @@
 .button {
     display: block;
     position: relative;
+    box-sizing: border-box;
 
     margin-bottom: 15px;
     padding: 9px 12px;
@@ -13,8 +14,12 @@
     color: var(--text-main);
     text-decoration: none;
     text-align: center;
+    font: inherit;
 
     background: rgba(255, 40, 40, 0.7);
+    border: none;
+
+    cursor: pointer;
 
     clip-path: polygon(
         0 0,
@@ -78,6 +83,8 @@
 /* Shared layout and appearance for edit and delete buttons. */
 .button-edit,
 .button-delete {
+    box-sizing: border-box;
+
     min-width: 65px;
     padding: 5px 12px;
 
@@ -86,6 +93,8 @@
     font-size: 14px;
 
     background: rgba(5, 0, 0, 0.7);
+
+    cursor: pointer;
 
     transition:
         color 0.2s ease,
@@ -133,4 +142,27 @@
         inset 0 0 6px rgba(255, 0, 0, 0.15);
 
     text-shadow: 0 0 7px rgba(255, 40, 40, 0.9);
+}
+
+
+/* ==================================================
+   KEYBOARD ACCESSIBILITY
+   ================================================== */
+
+/* Highlight the main button during keyboard navigation. */
+.button:focus-visible {
+    color: #ffffff;
+
+    text-shadow: 0 0 8px rgba(255, 40, 40, 0.9);
+
+    filter:
+        drop-shadow(0 0 4px #ff3030)
+        drop-shadow(0 0 8px rgba(255, 0, 0, 0.6));
+}
+
+/* Highlight edit and delete buttons during keyboard navigation. */
+.button-edit:focus-visible,
+.button-delete:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
 }

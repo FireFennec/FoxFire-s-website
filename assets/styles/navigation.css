@@ -22,6 +22,7 @@ header > div {
 
 /* Header logo size. */
 header img {
+    display: block;
     width: 50px;
     height: 50px;
 }
@@ -51,6 +52,7 @@ nav a {
 
     color: #d8d2d2;
     text-decoration: none;
+    text-align: center;
 
     background: rgba(255, 40, 40, 0.7);
 
@@ -103,4 +105,80 @@ nav a:hover {
 /* Highlight the inner layer when hovering over the navigation link. */
 nav a:hover::before {
     background: #300000;
+}
+
+
+/* ==================================================
+   KEYBOARD ACCESSIBILITY
+   ================================================== */
+
+/* Make keyboard navigation clearly visible. */
+nav a:focus-visible {
+    color: #ffffff;
+
+    outline: 2px solid #ffffff;
+    outline-offset: 3px;
+
+    text-shadow: 0 0 8px rgba(255, 40, 40, 0.9);
+}
+
+
+/* ==================================================
+   RESPONSIVE NAVIGATION
+   ================================================== */
+
+/* Stack header content and reduce spacing on tablets. */
+@media (max-width: 1024px) {
+    header {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    nav {
+        justify-content: center;
+        gap: 15px;
+
+        width: 100%;
+        margin-left: 0;
+
+        font-size: 18px;
+    }
+}
+
+/* Display navigation links in two columns on mobile. */
+@media (max-width: 650px) {
+    header {
+        gap: 15px;
+        padding: 15px;
+    }
+
+    header img {
+        width: 45px;
+        height: 45px;
+    }
+
+    nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+
+        font-size: 15px;
+    }
+
+    nav a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        min-height: 44px;
+        padding: 10px 8px;
+    }
+}
+
+/* Use a single navigation column on very narrow screens. */
+@media (max-width: 360px) {
+    nav {
+        grid-template-columns: 1fr;
+    }
 }
