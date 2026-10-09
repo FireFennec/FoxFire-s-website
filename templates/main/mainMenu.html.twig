@@ -3,7 +3,7 @@
 {% block title %}{{ parent() }}Homepage{% endblock %}
 
 {% block body %}
-    <main class="homepage-layout">
+    <div class="homepage-layout">
         {# Aside bar with features list. #}
         {{ include('main/_featuresListAside.html.twig') }}
 
@@ -45,5 +45,5 @@
                 {% endfor %}
             </p>
         </div>
-    </main>
+    </div>
 {% endblock %}

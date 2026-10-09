@@ -108,6 +108,8 @@
 /* Main homepage content layout. */
 .homepage-content {
     flex: 1;
+    min-width: 0;
+
     padding: 30px 40px;
 }
 
@@ -116,3 +118,48 @@
     margin-top: 20px;
     margin-bottom: 30px;
 }
+
+
+/* ==================================================
+   RESPONSIVE LAYOUT
+   ================================================== */
+
+/* Reduce sidebar width and content spacing on tablets. */
+@media (max-width: 1024px) {
+    .homepage-layout aside {
+        width: 260px;
+        padding: 20px;
+    }
+
+    .homepage-content {
+        padding: 25px;
+    }
+}
+
+/* Stack the sidebar above the content on mobile devices. */
+@media (max-width: 650px) {
+    .homepage-layout {
+        flex-direction: column;
+    }
+
+    .homepage-layout aside {
+        width: 100%;
+        padding: 20px;
+
+        border-right: none;
+        border-bottom: 3px solid var(--border-red);
+    }
+
+    .homepage-content {
+        padding: 25px 20px;
+    }
+
+    .feature-aside-section {
+        padding: 12px 0;
+    }
+
+    .feature-aside-heading {
+        font-size: 16px;
+    }
+}
+
