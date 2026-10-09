@@ -28,12 +28,12 @@
     display: grid;
     grid-template-columns: 140px 1fr 80px;
     align-items: center;
-    gap: 20px;
+    gap: 25px;
 
     min-height: 52px;
     padding: 10px 15px;
 
-    border-bottom: 1px solid rgba(255, 40, 40, 0.18);
+    border-bottom: 1px solid var(--list-line);
 }
 
 /* Contact information label. */
@@ -63,7 +63,7 @@
     font-size: 13px;
 
     background: rgba(5, 0, 0, 0.7);
-    border: 1px solid rgba(255, 50, 50, 0.45);
+    border: 1px solid var(--button-border);
 
     transition:
         color 0.2s ease,

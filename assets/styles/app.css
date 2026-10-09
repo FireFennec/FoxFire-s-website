@@ -16,6 +16,8 @@
 :root {
     --border-red: rgba(255, 0, 0, 0.37);
     --text-main: #e7dddd;
+    --list-line: rgba(255, 40, 40, 0.18);
+    --button-border: rgba(255, 50, 50, 0.45);
 }
 
 /* Include padding and borders in the total element size. */

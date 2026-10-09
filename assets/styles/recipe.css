@@ -40,7 +40,7 @@
 .recipe-detail-section {
     padding: 20px 0;
 
-    border-top: 1px solid rgba(255, 40, 40, 0.18);
+    border-top: 1px solid var(--list-line);
 }
 
 /* Section heading spacing. */
@@ -148,7 +148,7 @@
     color: #ff5555;
 
     background: rgba(5, 0, 0, 0.7);
-    border: 1px solid rgba(255, 50, 50, 0.45);
+    border: 1px solid var(--button-border);
 
     cursor: pointer;
 }
