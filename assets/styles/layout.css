@@ -81,3 +81,16 @@
 .page-panel-compact {
     padding: 25px 30px;
 }
+
+/* Move list page action buttons above the content. */
+@media (max-width: 1400px) {
+    .features-page,
+    .recipes-page {
+        padding-top: 110px;
+    }
+
+    .features-page .page-action,
+    .recipes-page .page-action {
+        top: 30px;
+    }
+}

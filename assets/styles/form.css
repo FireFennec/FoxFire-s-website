@@ -72,3 +72,17 @@
 .recipe-form-page {
     padding-bottom: 50px;
 }
+
+/* Shared form page headings. */
+.feature-form-panel h1,
+.recipe-form-panel h1 {
+    margin-top: 0;
+    margin-bottom: 35px;
+    padding-left: 14px;
+
+    border-left: 4px solid #ff3030;
+
+    text-shadow:
+        0 0 5px rgba(255, 255, 255, 0.4),
+        0 0 10px rgba(255, 30, 30, 0.5);
+}

@@ -5,12 +5,12 @@
 @import "./asideLayout.css";
 @import "./button.css";
 @import "./footer.css";
+@import "./layout.css";
 @import "./features.css";
 @import "./aboutMe.css";
-@import "./cooking.css";
+@import "./recipe.css";
 @import "./personalSkill.css";
 @import "./form.css";
-@import "./layout.css";
 
 /* Global variables. */
 :root {
