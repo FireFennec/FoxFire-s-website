@@ -1,10 +1,14 @@
-/* Aside bar place setting. */
+/* ==================================================
+   HOMEPAGE LAYOUT
+   ================================================== */
+
+/* Homepage layout with sidebar. */
 .homepage-layout {
     display: flex;
     align-items: stretch;
 }
 
-/* Aside bar size, padding, border and background color. */
+/* Sidebar dimensions and appearance. */
 .homepage-layout aside {
     width: 320px;
     flex-shrink: 0;
@@ -15,14 +19,19 @@
     border-right: 3px solid var(--border-red);
 }
 
-/* Aside bar inside padding and border. */
+
+/* ==================================================
+   SIDEBAR SECTIONS
+   ================================================== */
+
+/* Sidebar section spacing and border. */
 .feature-aside-section {
     padding: 15px 0;
 
     border-top: 1px solid var(--border-red);
 }
 
-/* Aside status features margin and font size. */
+/* Feature status heading typography and spacing. */
 .feature-aside-heading {
     display: block;
 
@@ -32,7 +41,12 @@
     letter-spacing: 0.03em;
 }
 
-/* Color and shadow for Planned features. */
+
+/* ==================================================
+   FEATURE STATUS COLORS
+   ================================================== */
+
+/* Red text and glow for planned features. */
 .feature-aside-heading.planned {
     color: #ff4545;
 
@@ -41,7 +55,7 @@
         0 0 10px rgba(255, 40, 40, 0.35);
 }
 
-/* Color and shadow for In progress features. */
+/* Yellow text and glow for features in progress. */
 .feature-aside-heading.progress {
     color: #ffd84a;
 
@@ -50,7 +64,7 @@
         0 0 10px rgba(255, 190, 40, 0.35);
 }
 
-/* Color and shadow for Completed features. */
+/* Green text and glow for completed features. */
 .feature-aside-heading.completed {
     color: #55e879;
 
@@ -59,7 +73,12 @@
         0 0 10px rgba(40, 220, 100, 0.35);
 }
 
-/* Aside features padding and font color. */
+
+/* ==================================================
+   SIDEBAR LINKS
+   ================================================== */
+
+/* Sidebar feature link appearance. */
 .feature-aside-section a {
     display: block;
 
@@ -73,7 +92,7 @@
         text-shadow 0.15s ease;
 }
 
-/* Aside features hover. */
+/* Sidebar feature link hover effect. */
 .feature-aside-section a:hover {
     color: #ffffff;
     padding-left: 5px;
@@ -81,13 +100,18 @@
     text-shadow: 0 0 8px rgba(255, 40, 40, 0.6);
 }
 
-/* Padding for homepage. */
+
+/* ==================================================
+   HOMEPAGE CONTENT
+   ================================================== */
+
+/* Main homepage content layout. */
 .homepage-content {
     flex: 1;
     padding: 30px 40px;
 }
 
-/* Margin for p. */
+/* Homepage paragraph spacing. */
 .homepage-content p {
     margin-top: 20px;
     margin-bottom: 30px;
