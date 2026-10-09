@@ -1,16 +1,17 @@
+
 {% extends 'base.html.twig' %}
 
 {% block title %}List of my skills{% endblock %}
 
 {% block body %}
-    <main class="skills-page">
+    <div class="page-layout-simple skills-page">
 
-        <div class="skills-content">
+        <div class="page-content-simple page-width-1000">
             <h1>My personal skills</h1>
 
             <div class="skills-list">
                 {% for skill in skills %}
-                    <article class="skill-card">
+                    <article class="page-panel page-panel-compact skill-card">
 
                         <div class="skill-header">
                             <h2 class="skill-name">
@@ -33,5 +34,5 @@
             </div>
         </div>
 
-    </main>
+    </div>
 {% endblock %}

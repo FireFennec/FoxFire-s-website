@@ -3,17 +3,14 @@
 {% block title %}List of Recipes{% endblock %}
 
 {% block body %}
-    <main class="recipes-page">
-
-        <a
-            class="button recipes-create"
-            href="{{ path('app_cooking_recipe_create') }}"
-        >
+    <div class="page-layout recipes-page">
+        <a class="button page-action"
+            href="{{ path('app_cooking_recipe_create') }}">
             + Create Recipe
         </a>
 
-        <div class="recipes-content">
-            <section class="recipes-section">
+        <div class="page-content page-width-800">
+            <section class="page-panel page-panel-compact recipes-section">
                 <h1>Cooking recipes</h1>
 
                 <div class="recipes-list">
@@ -32,5 +29,5 @@
             </section>
         </div>
 
-    </main>
+    </div>
 {% endblock %}

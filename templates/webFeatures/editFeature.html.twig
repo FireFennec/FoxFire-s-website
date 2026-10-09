@@ -3,17 +3,14 @@
 {% block title %}Edit Feature{% endblock %}
 
 {% block body %}
-    <div class="feature-form-page">
-
-        <a
-            class="button feature-form-back"
-            href="{{ path('app_FeaturesList_featureListMenu') }}"
-        >
+    <div class="page-layout feature-form-page">
+        <a class="button page-action"
+            href="{{ path('app_FeaturesList_featureListMenu') }}">
             Back
         </a>
 
-        <div class="feature-form-content">
-            <section class="feature-form-panel">
+        <div class="page-content page-width-900">
+            <section class="page-panel page-panel-standard feature-form-panel">
 
                 <h1>Edit Feature</h1>
 

@@ -1,0 +1,83 @@
+/* ==================================================
+   PAGE LAYOUT
+   ================================================== */
+
+/* Base layout for pages with action buttons. */
+.page-layout {
+    position: relative;
+    width: 100%;
+    padding-top: 50px;
+}
+
+/* Spacing for pages without action buttons. */
+.page-layout-simple {
+    width: 100%;
+    padding: 50px 30px;
+}
+
+/* Position for Back and Create buttons. */
+.page-action {
+    position: absolute;
+    z-index: 10;
+
+    top: 50px;
+    left: 20px;
+
+    width: fit-content;
+}
+
+
+/* ==================================================
+   CONTENT WIDTH
+   ================================================== */
+
+/* Centered content with horizontal spacing. */
+.page-content {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+/* Centered content without extra spacing. */
+.page-content-simple {
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Content width variants. */
+.page-width-800 {
+    max-width: 800px;
+}
+
+.page-width-900 {
+    max-width: 900px;
+}
+
+.page-width-1000 {
+    max-width: 1000px;
+}
+
+.page-width-1100 {
+    max-width: 1100px;
+}
+
+
+/* ==================================================
+   PAGE PANELS
+   ================================================== */
+
+/* Shared panel appearance. */
+.page-panel {
+    background: rgba(8, 0, 0, 0.65);
+    border: 1px solid var(--border-red);
+}
+
+/* Standard form and detail panel spacing. */
+.page-panel-standard {
+    padding: 30px 35px;
+}
+
+/* List and card panel spacing. */
+.page-panel-compact {
+    padding: 25px 30px;
+}

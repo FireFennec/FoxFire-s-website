@@ -10,6 +10,7 @@
 @import "./cooking.css";
 @import "./personalSkill.css";
 @import "./form.css";
+@import "./layout.css";
 
 /* Global variables. */
 :root {

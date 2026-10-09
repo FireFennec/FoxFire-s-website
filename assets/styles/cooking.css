@@ -2,42 +2,6 @@
    RECIPES LIST
    ================================================== */
 
-/* Main recipes page layout. */
-.recipes-page {
-    position: relative;
-
-    width: 100%;
-    padding-top: 50px;
-}
-
-/* Create recipe button position. */
-.recipes-create {
-    position: absolute;
-    z-index: 10;
-
-    top: 50px;
-    left: 20px;
-
-    width: fit-content;
-}
-
-/* Centered recipes content. */
-.recipes-content {
-    width: 100%;
-    max-width: 800px;
-
-    margin: 0 auto;
-    padding: 0 30px;
-}
-
-/* Recipes list panel. */
-.recipes-section {
-    padding: 25px 30px;
-
-    background: rgba(8, 0, 0, 0.65);
-    border: 1px solid var(--border-red);
-}
-
 /* Recipes list heading. */
 .recipes-section h1 {
     margin-top: 0;
@@ -81,7 +45,7 @@
 
 
 /* ==================================================
-   RESPONSIVE LAYOUT
+   RESPONSIVE RECIPES LIST
    ================================================== */
 
 /* Move the create button above the content on narrower screens. */
@@ -90,7 +54,7 @@
         padding-top: 110px;
     }
 
-    .recipes-create {
+    .recipes-page .page-action {
         top: 30px;
         left: 20px;
     }
@@ -100,42 +64,6 @@
 /* ==================================================
    RECIPE DETAIL
    ================================================== */
-
-/* Main recipe detail page layout. */
-.recipe-detail-page {
-    position: relative;
-
-    width: 100%;
-    padding-top: 50px;
-}
-
-/* Back button position. */
-.recipe-detail-back {
-    position: absolute;
-    z-index: 10;
-
-    top: 50px;
-    left: 20px;
-
-    width: fit-content;
-}
-
-/* Centered recipe detail content. */
-.recipe-detail-content {
-    width: 100%;
-    max-width: 900px;
-
-    margin: 0 auto;
-    padding: 0 30px;
-}
-
-/* Main recipe detail panel. */
-.recipe-detail-panel {
-    padding: 30px 35px;
-
-    background: rgba(8, 0, 0, 0.65);
-    border: 1px solid var(--border-red);
-}
 
 /* Recipe title and edit button layout. */
 .recipe-detail-header {
@@ -194,7 +122,7 @@
 
 
 /* ==================================================
-   RESPONSIVE LAYOUT
+   RESPONSIVE RECIPE DETAIL
    ================================================== */
 
 /* Adjust the recipe detail layout on smaller screens. */
@@ -203,15 +131,15 @@
         padding-top: 100px;
     }
 
-    .recipe-detail-back {
+    .recipe-detail-page .page-action {
         top: 30px;
     }
 
-    .recipe-detail-content {
+    .recipe-detail-page .page-content {
         padding: 0 20px;
     }
 
-    .recipe-detail-panel {
+    .recipe-detail-page .page-panel {
         padding: 25px 20px;
     }
 
@@ -225,42 +153,6 @@
 /* ==================================================
    RECIPE FORM
    ================================================== */
-
-/* Main layout for recipe create and edit pages. */
-.recipe-form-page {
-    position: relative;
-
-    width: 100%;
-    padding-top: 50px;
-}
-
-/* Back button position. */
-.recipe-form-back {
-    position: absolute;
-    z-index: 10;
-
-    top: 50px;
-    left: 20px;
-
-    width: fit-content;
-}
-
-/* Centered recipe form content. */
-.recipe-form-content {
-    width: 100%;
-    max-width: 900px;
-
-    margin: 0 auto;
-    padding: 0 30px;
-}
-
-/* Main recipe form panel. */
-.recipe-form-panel {
-    padding: 30px 35px;
-
-    background: rgba(8, 0, 0, 0.65);
-    border: 1px solid var(--border-red);
-}
 
 /* Recipe form heading. */
 .recipe-form-panel h1 {
@@ -354,24 +246,24 @@
 
 
 /* ==================================================
-   RESPONSIVE FORM LAYOUT
+   RESPONSIVE RECIPE FORM
    ================================================== */
 
-/* Responsive recipe form layout. */
+/* Adjust recipe forms on smaller screens. */
 @media (max-width: 650px) {
     .recipe-form-page {
         padding-top: 100px;
     }
 
-    .recipe-form-back {
+    .recipe-form-page .page-action {
         top: 30px;
     }
 
-    .recipe-form-content {
+    .recipe-form-page .page-content {
         padding: 0 20px;
     }
 
-    .recipe-form-panel {
+    .recipe-form-page .page-panel {
         padding: 25px 20px;
     }
 }

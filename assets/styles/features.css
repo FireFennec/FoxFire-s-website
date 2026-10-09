@@ -1,43 +1,10 @@
-
 /* ==================================================
    FEATURE LIST
    ================================================== */
 
-/* Main features page layout. */
-.features-page {
-    position: relative;
-
-    width: 100%;
-    padding-top: 50px;
-}
-
-/* Create feature button position. */
-.features-create {
-    position: absolute;
-    z-index: 10;
-
-    top: 50px;
-    left: 20px;
-
-    width: fit-content;
-}
-
-/* Centered features list content. */
-.features-content {
-    width: 100%;
-    max-width: 1100px;
-
-    margin: 0 auto;
-    padding: 0 30px;
-}
-
-/* Feature list section panel. */
+/* Spacing between feature list sections. */
 .features-section {
     margin-bottom: 35px;
-    padding: 25px 30px;
-
-    background: rgba(8, 0, 0, 0.65);
-    border: 1px solid var(--border-red);
 }
 
 /* Feature list section heading. */
@@ -98,55 +65,10 @@
         padding-top: 110px;
     }
 
-    .features-create {
+    .features-page .page-action {
         top: 30px;
         left: 20px;
     }
-}
-
-
-/* ==================================================
-   SHARED FORM AND DETAIL LAYOUT
-   ================================================== */
-
-/* Main layout for feature form and detail pages. */
-.feature-form-page,
-.feature-detail-page {
-    position: relative;
-
-    width: 100%;
-    padding-top: 50px;
-}
-
-/* Back button position. */
-.feature-form-back,
-.feature-detail-back {
-    position: absolute;
-    z-index: 10;
-
-    top: 50px;
-    left: 20px;
-
-    width: fit-content;
-}
-
-/* Centered content for feature form and detail pages. */
-.feature-form-content,
-.feature-detail-content {
-    width: 100%;
-    max-width: 900px;
-
-    margin: 0 auto;
-    padding: 0 30px;
-}
-
-/* Main panel for feature form and detail pages. */
-.feature-form-panel,
-.feature-detail-panel {
-    padding: 30px 35px;
-
-    background: rgba(8, 0, 0, 0.65);
-    border: 1px solid var(--border-red);
 }
 
 
@@ -236,8 +158,9 @@
         calc(100% - 6px) 0,
         100% 6px,
         100% calc(100% - 6px),
+        calc(100% - 6px) 100%,
         6px 100%,
-        0 100%,
+        0 calc(100% - 6px),
         0 6px
     );
 }

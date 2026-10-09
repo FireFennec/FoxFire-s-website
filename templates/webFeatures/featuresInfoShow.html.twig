@@ -3,17 +3,14 @@
 {% block title %}Feature - {{ feature.name }}{% endblock %}
 
 {% block body %}
-    <div class="feature-detail-page">
-
-        <a
-            class="button feature-detail-back"
-            href="{{ path('app_FeaturesList_featureListMenu') }}"
-        >
+    <div class="page-layout feature-form-page">
+        <a class="button page-action"
+            href="{{ path('app_FeaturesList_featureListMenu') }}">
             Back
         </a>
 
-        <div class="feature-detail-content">
-            <section class="feature-detail-panel">
+        <div class="page-content page-width-900">
+            <section class="page-panel page-panel-standard feature-form-panel">
                 <h1>{{ feature.name }}</h1>
 
                 <div class="feature-detail-overview">

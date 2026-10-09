@@ -3,30 +3,32 @@
 {% block title %}Features list{% endblock %}
 
 {% block body %}
-    <main class="features-page">
+    <div class="page-layout features-page">
 
         <a
-            class="button features-create"
+            class="button page-action"
             href="{{ path('app_featureList_createFeature') }}"
         >
             + Create Feature
         </a>
 
-        <div class="features-content">
-            <section class="features-section">
+        <div class="page-content page-width-1100">
+            <section class="page-panel page-panel-compact features-section">
                 <h2>To Do Features</h2>
-                    {% for feature in toDoFeatures %}
-                        {% include 'webFeatures/_featureRow.html.twig' %}
-                    {% endfor %}
+
+                {% for feature in toDoFeatures %}
+                    {% include 'webFeatures/_featureRow.html.twig' %}
+                {% endfor %}
             </section>
 
-            <section class="features-section">
+            <section class="page-panel page-panel-compact features-section">
                 <h2>Completed Features</h2>
-                    {% for feature in completedFeatures %}
-                        {% include 'webFeatures/_featureRow.html.twig' %}
-                    {% endfor %}
+
+                {% for feature in completedFeatures %}
+                    {% include 'webFeatures/_featureRow.html.twig' %}
+                {% endfor %}
             </section>
         </div>
 
-    </main>
+    </div>
 {% endblock %}
