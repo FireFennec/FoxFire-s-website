@@ -97,7 +97,7 @@ class WebsiteFeature
 
     public function getPriorityString(): ?string
     {
-        return $this->priority->value;
+        return $this->priority?->label();
     }
 
     public function getDeadlineAt(): ?DateTimeImmutable

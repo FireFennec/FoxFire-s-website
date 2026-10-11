@@ -2,13 +2,24 @@
 
 namespace App\Model;
 
-enum FeaturePriorityEnum: string
+enum FeaturePriorityEnum: int
 {
-    case NICE_TO_HAVE = 'Nice to have';
-    case ANYTIME = 'Anytime';
-    case SOON = 'Soon';
-    case HIGH_PRIORITY = 'High priority';
-    case ASAP = 'ASAP';
+    case NICE_TO_HAVE = 1;
+    case ANYTIME = 2;
+    case SOON = 3;
+    case HIGH_PRIORITY = 4;
+    case ASAP = 5;
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::NICE_TO_HAVE => 'Nice to have',
+            self::ANYTIME => 'Anytime',
+            self::SOON => 'Soon',
+            self::HIGH_PRIORITY => 'High priority',
+            self::ASAP => 'ASAP',
+        };
+    }
 
     public function priorityColor(): string
     {

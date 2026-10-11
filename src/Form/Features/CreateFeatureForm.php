@@ -27,7 +27,7 @@ class CreateFeatureForm extends AbstractType
             ])
             ->add('priority', EnumType::class, [
                 'class' => FeaturePriorityEnum::class,
-                'choice_label' => fn (FeaturePriorityEnum $choice) => $choice->value,
+                'choice_label' => fn (FeaturePriorityEnum $choice) => $choice->label(),
             ])
             ->add('deadlineAt', DateType::class, [
                 'input' => 'datetime_immutable',
