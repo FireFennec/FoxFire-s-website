@@ -89,7 +89,6 @@ class FeaturesListController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($feature);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_FeatureList_featureInfoShow', ['id' => $feature->getId()]);
@@ -106,10 +105,11 @@ class FeaturesListController extends AbstractController
         $feature = $repository->findOne($id);
         if (!$feature) {
             throw $this->createNotFoundException('Feature not found');
-        } else {
-            $entityManager->remove($feature);
-            $entityManager->flush();
         }
+
+        $entityManager->remove($feature);
+        $entityManager->flush();
+        
         return $this->redirectToRoute('app_FeaturesList_featureListMenu');
     }
 }
