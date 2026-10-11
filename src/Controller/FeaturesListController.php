@@ -99,17 +99,32 @@ class FeaturesListController extends AbstractController
         ]);
     }
 
-    #[Route('/deleteFeature/{id<\d+>}', name: 'app_featureDelete')]
-    public function deleteFeature($id, WebsiteFeatureRepository $repository, EntityManagerInterface $entityManager,): Response
-    {
+    #[Route('/deleteFeature/{id<\d+>}', name: 'app_featureDelete', methods: ['POST'])]
+    public function deleteFeature(
+        int $id,
+        Request $request,
+        WebsiteFeatureRepository $repository,
+        EntityManagerInterface $entityManager
+    ): Response {
         $feature = $repository->findOne($id);
+
         if (!$feature) {
             throw $this->createNotFoundException('Feature not found');
         }
 
+        // Verify the CSRF token before deleting the feature.
+        if (!$this->isCsrfTokenValid(
+            'delete_feature_' . $feature->getId(),
+            $request->request->getString('_token')
+        )) {
+            throw $this->createAccessDeniedException('Invalid CSRF token.');
+        }
+
+        // Remove the feature from the database.
         $entityManager->remove($feature);
         $entityManager->flush();
-        
+
         return $this->redirectToRoute('app_FeaturesList_featureListMenu');
     }
+
 }
