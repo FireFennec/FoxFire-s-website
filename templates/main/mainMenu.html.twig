@@ -1,3 +1,4 @@
+
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ parent() }}Homepage{% endblock %}
@@ -8,39 +9,76 @@
         {{ include('main/_featuresListAside.html.twig') }}
 
         <div class="homepage-content">
-            <h1>
-                FoxFire's website
-            </h1>
+            <h1>FoxFire's website</h1>
 
             <h2>What is the purpose?</h2>
-                <p>I want to test my web developing skill here by creating an interesting apps that can be also useful.</p>
-
-            <h2>The plan of things I want to add</h2>
-                <strong>Right now there is {{ newFeatures|length }} features to finish in "add new" section.</strong>
-                <p>
-                    {# List of new planned features. #}
-                    {% for newFeature in newFeatures %}
-                        <strong>{{ newFeature.name }}</strong>: {{ newFeature.description }}
-                    {% endfor %}
-                </p>
-
-            <h2>The plan of things I want to update</h2>
-                <strong>Right now there is {{ updateFeatures|length }} features to finish in "update" section.</strong>
-                <p>
-                    {# List of features for the future update. #}
-                    {% for updateFeature in updateFeatures %}
-                        <strong>{{ updateFeature.name }}</strong>: {{ updateFeature.description }}
-                    {% endfor %}
-                </p>
-
-            <h2>The list of existing thing here</h2>
-            <strong>Right now there is {{ completedFeatures|length }} features in "completed" section.</strong>
             <p>
-                {# List of completed features. #}
-                {% for completedFeature in completedFeatures %}
-                    <strong>{{ completedFeature.name }}</strong>: {{ completedFeature.description }}
-                {% endfor %}
+                I want to improve my web development skills by creating
+                interesting and useful applications.
             </p>
+
+            {# List of new planned features. #}
+            <section class="homepage-feature-section">
+                <h2>The plan of things I want to add</h2>
+
+                <p>
+                    There are currently {{ newFeatures|length }}
+                    features planned in the "add new" section.
+                </p>
+
+                <ul class="homepage-feature-list">
+                    {% for newFeature in newFeatures %}
+                        <li>
+                            <strong>{{ newFeature.name }}</strong>:
+                            {{ newFeature.description }}
+                        </li>
+                    {% else %}
+                        <li>No new features planned.</li>
+                    {% endfor %}
+                </ul>
+            </section>
+
+            {# List of features planned for updates. #}
+            <section class="homepage-feature-section">
+                <h2>The plan of things I want to update</h2>
+
+                <p>
+                    There are currently {{ updateFeatures|length }}
+                    features planned for updates.
+                </p>
+
+                <ul class="homepage-feature-list">
+                    {% for updateFeature in updateFeatures %}
+                        <li>
+                            <strong>{{ updateFeature.name }}</strong>:
+                            {{ updateFeature.description }}
+                        </li>
+                    {% else %}
+                        <li>No features are currently planned for updates.</li>
+                    {% endfor %}
+                </ul>
+            </section>
+
+            {# List of completed features. #}
+            <section class="homepage-feature-section">
+                <h2>The list of existing features</h2>
+
+                <p>
+                    There are currently {{ completedFeatures|length }}
+                    completed features.
+                </p>
+
+                <ul class="homepage-feature-list">
+                    {% for completedFeature in completedFeatures %}
+                        <li>
+                            <strong>{{ completedFeature.name }}</strong>:
+                            {{ completedFeature.description }}
+                        </li>
+                    {% else %}
+                        <li>No features have been completed yet.</li>
+                    {% endfor %}
+                </ul>
+            </section>
         </div>
     </div>
 {% endblock %}
