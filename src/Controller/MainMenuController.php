@@ -10,15 +10,19 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class MainMenuController extends AbstractController
 {
+    // Display the homepage.
     #[Route('/', name: 'app_mainMenu', methods: ['GET'])]
     public function mainMenu(WebsiteFeatureRepository $websiteFeaturesRepository): Response
     {
+        // Initialize arrays for features grouped by their status.
         $newFeatures = [];
         $updateFeatures = [];
         $completedFeatures = [];
 
+        // Retrieve all website features ordered by priority.
         $websiteFeatures = $websiteFeaturesRepository->findAll();
 
+        // Sort features into separate arrays based on their status.
         foreach ($websiteFeatures as $websiteFeature) {
             $status = $websiteFeature->getStatus();
 
@@ -31,6 +35,7 @@ class MainMenuController extends AbstractController
             }
         }
 
+        // Render the homepage and pass the grouped features to Twig.
         return $this->render('main/mainMenu.html.twig', [
             'newFeatures' => $newFeatures,
             'updateFeatures' => $updateFeatures,

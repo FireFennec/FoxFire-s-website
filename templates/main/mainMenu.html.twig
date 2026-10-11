@@ -1,4 +1,3 @@
-
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ parent() }}Homepage{% endblock %}
@@ -18,67 +17,28 @@
             </p>
 
             {# List of new planned features. #}
-            <section class="homepage-feature-section">
-                <h2>The plan of things I want to add</h2>
-
-                <p>
-                    There are currently {{ newFeatures|length }}
-                    features planned in the "add new" section.
-                </p>
-
-                <ul class="homepage-feature-list">
-                    {% for newFeature in newFeatures %}
-                        <li>
-                            <strong>{{ newFeature.name }}</strong>:
-                            {{ newFeature.description }}
-                        </li>
-                    {% else %}
-                        <li>No new features planned.</li>
-                    {% endfor %}
-                </ul>
-            </section>
+            {{ include('main/_featureSection.html.twig', {
+                heading: 'The plan of things I want to add',
+                description: 'There are currently ' ~ (newFeatures|length) ~ ' features planned in the "add new" section.',
+                features: newFeatures,
+                emptyMessage: 'No new features planned.'
+            }, with_context = false) }}
 
             {# List of features planned for updates. #}
-            <section class="homepage-feature-section">
-                <h2>The plan of things I want to update</h2>
-
-                <p>
-                    There are currently {{ updateFeatures|length }}
-                    features planned for updates.
-                </p>
-
-                <ul class="homepage-feature-list">
-                    {% for updateFeature in updateFeatures %}
-                        <li>
-                            <strong>{{ updateFeature.name }}</strong>:
-                            {{ updateFeature.description }}
-                        </li>
-                    {% else %}
-                        <li>No features are currently planned for updates.</li>
-                    {% endfor %}
-                </ul>
-            </section>
+            {{ include('main/_featureSection.html.twig', {
+                heading: 'The plan of things I want to update',
+                description: 'There are currently ' ~ (updateFeatures|length) ~ ' features planned for updates.',
+                features: updateFeatures,
+                emptyMessage: 'No features are currently planned for updates.'
+            }, with_context = false) }}
 
             {# List of completed features. #}
-            <section class="homepage-feature-section">
-                <h2>The list of existing features</h2>
-
-                <p>
-                    There are currently {{ completedFeatures|length }}
-                    completed features.
-                </p>
-
-                <ul class="homepage-feature-list">
-                    {% for completedFeature in completedFeatures %}
-                        <li>
-                            <strong>{{ completedFeature.name }}</strong>:
-                            {{ completedFeature.description }}
-                        </li>
-                    {% else %}
-                        <li>No features have been completed yet.</li>
-                    {% endfor %}
-                </ul>
-            </section>
+            {{ include('main/_featureSection.html.twig', {
+                heading: 'The list of existing features',
+                description: 'There are currently ' ~ (completedFeatures|length) ~ ' completed features.',
+                features: completedFeatures,
+                emptyMessage: 'No features have been completed yet.'
+            }, with_context = false) }}
         </div>
     </div>
 {% endblock %}

@@ -1,0 +1,16 @@
+<section class="homepage-feature-section">
+    <h2>{{ heading }}</h2>
+
+    <p>{{ description }}</p>
+
+    <ul class="homepage-feature-list">
+        {% for feature in features %}
+            <li>
+                <strong>{{ feature.name }}</strong>:
+                {{ feature.description }}
+            </li>
+        {% else %}
+            <li>{{ emptyMessage }}</li>
+        {% endfor %}
+    </ul>
+</section>

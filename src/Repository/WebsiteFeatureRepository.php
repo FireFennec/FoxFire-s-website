@@ -7,11 +7,13 @@ use Doctrine\ORM\EntityManagerInterface;
 
 readonly class WebsiteFeatureRepository
 {
+    // Inject the EntityManager to interact with the database.
     public function __construct(
         private EntityManagerInterface $entityManager
     ) {
     }
 
+    // Retrieve all website features, ordered by priority from highest to lowest.
     public function findAll(): array
     {
         return $this->entityManager->createQueryBuilder()
@@ -22,6 +24,7 @@ readonly class WebsiteFeatureRepository
             ->getResult();
     }
 
+    // Find a single website feature by its ID, or return null if it does not exist.
     public function findOne(int $id): ?WebsiteFeature
     {
         return $this->entityManager->createQueryBuilder()
