@@ -19,13 +19,14 @@ class MainMenuController extends AbstractController
 
         $websiteFeatures = $websiteFeaturesRepository->findAll();
 
-        foreach ($websiteFeatures as $websiteFeature)
-        {
-            if ($websiteFeature->getStatus() === FeaturesStatusEnum::NEW_FEATURE){
+        foreach ($websiteFeatures as $websiteFeature) {
+            $status = $websiteFeature->getStatus();
+
+            if ($status === FeaturesStatusEnum::NEW_FEATURE) {
                 $newFeatures[] = $websiteFeature;
-            } else if ($websiteFeature->getStatus() === FeaturesStatusEnum::UPDATE_FEATURE){
+            } elseif ($status === FeaturesStatusEnum::UPDATE_FEATURE) {
                 $updateFeatures[] = $websiteFeature;
-            } else if ($websiteFeature->getStatus() === FeaturesStatusEnum::COMPLETED_FEATURE){
+            } elseif ($status === FeaturesStatusEnum::COMPLETED_FEATURE) {
                 $completedFeatures[] = $websiteFeature;
             }
         }

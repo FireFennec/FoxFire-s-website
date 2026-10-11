@@ -8,6 +8,7 @@ use App\Repository\WebsiteFeatureRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: WebsiteFeatureRepository::class)]
 class WebsiteFeature
@@ -23,10 +24,12 @@ class WebsiteFeature
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column(enumType: FeaturesStatusEnum::class)]
+    #[ORM\Column(nullable: false, enumType: FeaturesStatusEnum::class)]
+    #[Assert\NotNull(message: 'Feature status must be selected.')]
     private ?FeaturesStatusEnum $status = null;
 
-    #[ORM\Column(enumType: FeaturePriorityEnum::class)]
+    #[ORM\Column(nullable: false, enumType: FeaturePriorityEnum::class)]
+    #[Assert\NotNull(message: 'Feature priority must be selected.')]
     private ?FeaturePriorityEnum $priority = null;
 
     #[ORM\Column(nullable: true)]
@@ -92,7 +95,7 @@ class WebsiteFeature
 
     public function getPriorityColor(): ?string
     {
-        return $this->priority->priorityColor();
+        return $this->priority?->priorityColor();
     }
 
     public function getPriorityString(): ?string
