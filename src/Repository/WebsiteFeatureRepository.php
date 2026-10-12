@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\WebsiteFeature;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Model\FeaturesStatusEnum;
 
 readonly class WebsiteFeatureRepository
 {
@@ -19,6 +20,32 @@ readonly class WebsiteFeatureRepository
         return $this->entityManager->createQueryBuilder()
             ->select('s')
             ->from(WebsiteFeature::class, 's')
+            ->orderBy('s.priority', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    // Retrieve completed features, ordered by priority.
+    public function findCompleted(): array
+    {
+        return $this->entityManager->createQueryBuilder()
+            ->select('s')
+            ->from(WebsiteFeature::class, 's')
+            ->where('s.status = :status')
+            ->setParameter('status', FeaturesStatusEnum::COMPLETED_FEATURE)
+            ->orderBy('s.priority', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    // Retrieve all unfinished features, ordered by priority.
+    public function findToDo(): array
+    {
+        return $this->entityManager->createQueryBuilder()
+            ->select('s')
+            ->from(WebsiteFeature::class, 's')
+            ->where('s.status != :status')
+            ->setParameter('status', FeaturesStatusEnum::COMPLETED_FEATURE)
             ->orderBy('s.priority', 'DESC')
             ->getQuery()
             ->getResult();

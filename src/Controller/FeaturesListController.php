@@ -11,29 +11,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 
 #[Route('/feature')]
 class FeaturesListController extends AbstractController
 {
-    # Displays the feature list split into completed and to-do features.
+    // Display the feature list split into completed and to-do features.
     #[Route('/list', name: 'app_FeaturesList_featureListMenu', methods: ['GET'])]
     public function featuresListMenu(WebsiteFeatureRepository $repository): Response
     {
-        $features = $repository->findAll();
-
-        $completedFeatures = [];
-        $toDoFeatures = [];
-        foreach ($features as $feature) {
-            if ($feature->getStatus() === FeaturesStatusEnum::COMPLETED_FEATURE) {
-                $completedFeatures[] = $feature;
-            } else {
-                $toDoFeatures[] = $feature;
-            }
-        }
-
         return $this->render('webFeatures/featuresListMenu.html.twig', [
-            'completedFeatures' => $completedFeatures,
-            'toDoFeatures' => $toDoFeatures
+            'completedFeatures' => $repository->findCompleted(),
+            'toDoFeatures' => $repository->findToDo(),
         ]);
     }
 
