@@ -3,16 +3,23 @@
 {% block title %}Feature - {{ feature.name }}{% endblock %}
 
 {% block body %}
+    {# Main layout for the feature detail page. #}
     <div class="page-layout feature-form-page">
+
+        {# Navigation button to return to the feature list. #}
         <a class="button page-action"
-            href="{{ path('app_FeaturesList_featureListMenu') }}">
+           href="{{ path('app_FeaturesList_featureListMenu') }}">
             Back
         </a>
 
+        {# Main content container displaying feature information. #}
         <div class="page-content page-width-900">
             <section class="page-panel page-panel-standard feature-form-panel">
+
+                {# Display the feature name as the page heading. #}
                 <h1>{{ feature.name }}</h1>
 
+                {# Display the current status and priority of the feature. #}
                 <div class="feature-detail-overview">
                     <div class="feature-detail-info">
                         <span class="feature-detail-label">Status</span>
@@ -31,6 +38,7 @@
                     </div>
                 </div>
 
+                {# Display the relative deadline if one is set. #}
                 {% if feature.deadlineAt %}
                     <div class="feature-detail-text-section">
                         <span class="feature-detail-text-label">Deadline</span>
@@ -41,6 +49,7 @@
                     </div>
                 {% endif %}
 
+                {# Display the feature description. #}
                 <div class="feature-detail-text-section">
                     <span class="feature-detail-text-label">Description</span>
 
@@ -49,10 +58,11 @@
                     </p>
                 </div>
 
-                {# Include the edit and delete actions. #}
+                {# Include the reusable edit and delete actions. #}
                 {{ include('webFeatures/_featureActions.html.twig', {
                     feature: feature
                 }, with_context = false) }}
+
             </section>
         </div>
 

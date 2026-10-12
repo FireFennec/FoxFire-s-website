@@ -3,18 +3,22 @@
 {% block title %}Create Feature{% endblock %}
 
 {% block body %}
+    {# Main layout for the feature creation page. #}
     <div class="page-layout feature-form-page">
 
+        {# Navigation button to return to the feature list. #}
         <a class="button page-action"
-            href="{{ path('app_FeaturesList_featureListMenu') }}">
+           href="{{ path('app_FeaturesList_featureListMenu') }}">
             Back
         </a>
 
+        {# Main content container for the creation form. #}
         <div class="page-content page-width-900">
             <section class="page-panel page-panel-standard feature-form-panel">
 
                 <h1>Create Feature</h1>
 
+                {# Include the reusable feature form with a custom submit label. #}
                 {% include 'webFeatures/_featureForm.html.twig' with {
                     submitLabel: 'Create Feature'
                 } %}

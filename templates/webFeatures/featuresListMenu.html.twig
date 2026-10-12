@@ -3,8 +3,10 @@
 {% block title %}Features list{% endblock %}
 
 {% block body %}
+    {# Main layout for the feature list page. #}
     <div class="page-layout features-page">
 
+        {# Navigation button to create a new feature. #}
         <a
             class="button page-action"
             href="{{ path('app_featureList_createFeature') }}"
@@ -12,18 +14,24 @@
             + Create Feature
         </a>
 
+        {# Main content container for the feature lists. #}
         <div class="page-content page-width-1100">
+
+            {# Display all unfinished features. #}
             <section class="page-panel page-panel-compact features-section">
                 <h2>To Do Features</h2>
 
+                {# Render each unfinished feature using the reusable row template. #}
                 {% for feature in toDoFeatures %}
                     {% include 'webFeatures/_featureRow.html.twig' %}
                 {% endfor %}
             </section>
 
+            {# Display all completed features. #}
             <section class="page-panel page-panel-compact features-section">
                 <h2>Completed Features</h2>
 
+                {# Render each completed feature using the reusable row template. #}
                 {% for feature in completedFeatures %}
                     {% include 'webFeatures/_featureRow.html.twig' %}
                 {% endfor %}
