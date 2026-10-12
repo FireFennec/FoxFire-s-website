@@ -83,9 +83,15 @@ class FeaturesListController extends AbstractController
     {
         $feature = $repository->findOne($id);
 
-        $form = $this->createForm(CreateFeatureForm::class , $feature, [
+        // Return a 404 response if the feature does not exist.
+        if (!$feature) {
+            throw $this->createNotFoundException('Feature not found');
+        }
+
+        $form = $this->createForm(CreateFeatureForm::class, $feature, [
             'submit_label' => 'Edit Feature',
         ]);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
