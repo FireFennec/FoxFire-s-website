@@ -4,14 +4,12 @@ namespace App\Controller;
 
 use App\Entity\WebsiteFeature;
 use App\Form\Features\CreateFeatureForm;
-use App\Model\FeaturesStatusEnum;
 use App\Repository\WebsiteFeatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 
 #[Route('/feature')]
 class FeaturesListController extends AbstractController
