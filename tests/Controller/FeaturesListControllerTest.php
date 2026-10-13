@@ -9,8 +9,8 @@ use App\Model\FeaturePriorityEnum;
 use App\Model\FeaturesStatusEnum;
 use App\Repository\WebsiteFeatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use DateTimeImmutable;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class FeaturesListControllerTest extends WebTestCase
 {
@@ -167,18 +167,23 @@ class FeaturesListControllerTest extends WebTestCase
             FeaturePriorityEnum::ANYTIME
         );
 
+        // Start with an existing deadline.
+        $feature->setDeadlineAt(new DateTimeImmutable('2027-01-15'));
+        $entityManager->flush();
+
         $featureId = $feature->getId();
         self::assertNotNull($featureId);
 
         $client->request('GET', '/feature/editFeature/' . $featureId);
         self::assertResponseIsSuccessful();
 
-        // Update the existing feature through its form.
+        // Update the feature fields and its deadline through the form.
         $client->submitForm('Save Changes', [
             'create_feature_form[name]' => 'Updated Feature',
             'create_feature_form[description]' => 'Updated description.',
             'create_feature_form[status]' => FeaturesStatusEnum::COMPLETED_FEATURE->value,
             'create_feature_form[priority]' => (string) FeaturePriorityEnum::ASAP->value,
+            'create_feature_form[deadlineAt]' => '2027-06-15',
         ]);
 
         self::assertResponseRedirects('/feature/' . $featureId);
@@ -186,7 +191,8 @@ class FeaturesListControllerTest extends WebTestCase
         self::assertResponseIsSuccessful();
         self::assertSelectorTextContains('body', 'Updated Feature');
 
-        // Read fresh values from the database.
+        // Reload the updated values from the database.
+        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $entityManager->clear();
         $repository = static::getContainer()->get(WebsiteFeatureRepository::class);
         $updatedFeature = $repository->findOne($featureId);
@@ -196,6 +202,30 @@ class FeaturesListControllerTest extends WebTestCase
         self::assertSame('Updated description.', $updatedFeature->getDescription());
         self::assertSame(FeaturesStatusEnum::COMPLETED_FEATURE, $updatedFeature->getStatus());
         self::assertSame(FeaturePriorityEnum::ASAP, $updatedFeature->getPriority());
+        self::assertSame('2027-06-15', $updatedFeature->getDeadlineAt()?->format('Y-m-d'));
+
+        // Edit the same feature again and remove its deadline.
+        $client->request('GET', '/feature/editFeature/' . $featureId);
+        self::assertResponseIsSuccessful();
+
+        $client->submitForm('Save Changes', [
+            'create_feature_form[name]' => 'Updated Feature',
+            'create_feature_form[description]' => 'Updated description.',
+            'create_feature_form[status]' => FeaturesStatusEnum::COMPLETED_FEATURE->value,
+            'create_feature_form[priority]' => (string) FeaturePriorityEnum::ASAP->value,
+            'create_feature_form[deadlineAt]' => '',
+        ]);
+
+        self::assertResponseRedirects('/feature/' . $featureId);
+
+        // Verify that removing the deadline was persisted.
+        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
+        $entityManager->clear();
+        $repository = static::getContainer()->get(WebsiteFeatureRepository::class);
+        $featureWithoutDeadline = $repository->findOne($featureId);
+
+        self::assertNotNull($featureWithoutDeadline);
+        self::assertNull($featureWithoutDeadline->getDeadlineAt());
     }
 
     public function testFeatureCanBeDeleted(): void

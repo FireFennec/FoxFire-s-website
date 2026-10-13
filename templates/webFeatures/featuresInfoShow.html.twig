@@ -44,7 +44,8 @@
                         <span class="feature-detail-text-label">Deadline</span>
 
                         <p class="feature-detail-deadline-value">
-                            {{ feature.deadlineAt|ago }}
+                            {{ feature.deadlineAt|date('d.m.Y') }}
+                            ({{ feature.deadlineAt|ago }})
                         </p>
                     </div>
                 {% endif %}
