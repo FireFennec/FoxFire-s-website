@@ -6,3 +6,6 @@ For insert data to database in dev mode you can use Fixtures and command:
 
 Just my own path for powershell
 - cd "D:\Programming - My Web\My_Website\"
+
+For tests
+- php bin/phpunit
