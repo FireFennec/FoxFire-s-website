@@ -311,7 +311,6 @@ class FeaturesListControllerTest extends WebTestCase
         );
     }
 
-
     public function testFeatureCannotBeCreatedWithBlankFields(): void
     {
         $client = static::createClient();
@@ -352,7 +351,6 @@ class FeaturesListControllerTest extends WebTestCase
         ));
     }
 
-
     public function testFeatureCannotBeCreatedWithTooLongName(): void
     {
         $client = static::createClient();
@@ -388,4 +386,55 @@ class FeaturesListControllerTest extends WebTestCase
         }
     }
 
+    public function testFeaturesAreOrderedByPriority(): void
+    {
+        $client = static::createClient();
+
+        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
+
+        // Create features in a deliberately incorrect priority order.
+        $this->createFeature(
+            $entityManager,
+            'Low Priority Feature',
+            'Feature with the lowest priority.',
+            FeaturesStatusEnum::NEW_FEATURE,
+            FeaturePriorityEnum::NICE_TO_HAVE
+        );
+
+        $this->createFeature(
+            $entityManager,
+            'High Priority Feature',
+            'Feature with the highest priority.',
+            FeaturesStatusEnum::NEW_FEATURE,
+            FeaturePriorityEnum::ASAP
+        );
+
+        $this->createFeature(
+            $entityManager,
+            'Medium Priority Feature',
+            'Feature with medium priority.',
+            FeaturesStatusEnum::NEW_FEATURE,
+            FeaturePriorityEnum::SOON
+        );
+
+        // Request the feature list page.
+        $crawler = $client->request('GET', '/feature/list');
+
+        self::assertResponseIsSuccessful();
+
+        // Select the unfinished features section.
+        $toDoSection = $crawler->filter('section.features-section')->eq(0);
+
+        // Retrieve the feature names in their displayed order.
+        $featureNames = $toDoSection
+            ->filter('.feature-row .feature-name')
+            ->each(fn ($node) => trim($node->text()));
+
+        // Verify that features are sorted from highest to lowest priority.
+        self::assertSame([
+            'High Priority Feature',
+            'Medium Priority Feature',
+            'Low Priority Feature',
+        ], $featureNames);
+    }
 }
