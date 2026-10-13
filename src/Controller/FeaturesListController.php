@@ -77,7 +77,7 @@ class FeaturesListController extends AbstractController
     // Display and process the form for editing an existing feature.
     #[Route('/editFeature/{id<\d+>}', name: 'app_featureList_editFeature')]
     public function editFeature(
-        $id,
+        int $id,
         Request $request,
         EntityManagerInterface $entityManager,
         WebsiteFeatureRepository $repository
