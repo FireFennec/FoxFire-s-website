@@ -296,4 +296,18 @@ class FeaturesListControllerTest extends WebTestCase
 
         return $feature;
     }
+
+    public function testRepositoryIsRegisteredWithDoctrine(): void
+    {
+        static::createClient();
+
+        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
+
+        $repository = $entityManager->getRepository(WebsiteFeature::class);
+
+        self::assertInstanceOf(
+            WebsiteFeatureRepository::class,
+            $repository
+        );
+    }
 }

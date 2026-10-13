@@ -4,8 +4,8 @@
     <option name="directories">
       <list>
         <option value="$PROJECT_DIR$/vendor_backup/nikic/php-parser/test" />
-        <option value="$PROJECT_DIR$/vendor_backup/doctrine/data-fixtures/tests" />
         <option value="$PROJECT_DIR$/vendor_backup/doctrine/doctrine-fixtures-bundle/tests" />
+        <option value="$PROJECT_DIR$/vendor_backup/doctrine/data-fixtures/tests" />
       </list>
     </option>
   </component>

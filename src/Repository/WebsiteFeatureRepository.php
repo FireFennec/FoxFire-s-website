@@ -1,65 +1,58 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\WebsiteFeature;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Model\FeaturesStatusEnum;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
-readonly class WebsiteFeatureRepository
+/**
+ * @extends ServiceEntityRepository<WebsiteFeature>
+ */
+class WebsiteFeatureRepository extends ServiceEntityRepository
 {
-    // Inject the EntityManager to interact with the database.
-    public function __construct(
-        private EntityManagerInterface $entityManager
-    ) {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, WebsiteFeature::class);
     }
 
-    // Retrieve all website features, ordered by priority from highest to lowest.
+    // Retrieve all website features ordered by priority.
     public function findAll(): array
     {
-        return $this->entityManager->createQueryBuilder()
-            ->select('s')
-            ->from(WebsiteFeature::class, 's')
-            ->orderBy('s.priority', 'DESC')
+        return $this->createQueryBuilder('f')
+            ->orderBy('f.priority', 'DESC')
             ->getQuery()
             ->getResult();
     }
 
-    // Retrieve completed features, ordered by priority.
+    // Retrieve completed features ordered by priority.
     public function findCompleted(): array
     {
-        return $this->entityManager->createQueryBuilder()
-            ->select('s')
-            ->from(WebsiteFeature::class, 's')
-            ->where('s.status = :status')
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.status = :status')
             ->setParameter('status', FeaturesStatusEnum::COMPLETED_FEATURE)
-            ->orderBy('s.priority', 'DESC')
+            ->orderBy('f.priority', 'DESC')
             ->getQuery()
             ->getResult();
     }
 
-    // Retrieve all unfinished features, ordered by priority.
+    // Retrieve unfinished features ordered by priority.
     public function findToDo(): array
     {
-        return $this->entityManager->createQueryBuilder()
-            ->select('s')
-            ->from(WebsiteFeature::class, 's')
-            ->where('s.status != :status')
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.status != :status')
             ->setParameter('status', FeaturesStatusEnum::COMPLETED_FEATURE)
-            ->orderBy('s.priority', 'DESC')
+            ->orderBy('f.priority', 'DESC')
             ->getQuery()
             ->getResult();
     }
 
-    // Find a single website feature by its ID, or return null if it does not exist.
+    // Find a single website feature by its ID.
     public function findOne(int $id): ?WebsiteFeature
     {
-        return $this->entityManager->createQueryBuilder()
-            ->select('s')
-            ->from(WebsiteFeature::class, 's')
-            ->where('s.id = :id')
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getOneOrNullResult();
+        return $this->find($id);
     }
 }
