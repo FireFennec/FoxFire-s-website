@@ -310,4 +310,82 @@ class FeaturesListControllerTest extends WebTestCase
             $repository
         );
     }
+
+
+    public function testFeatureCannotBeCreatedWithBlankFields(): void
+    {
+        $client = static::createClient();
+
+        // Open the feature creation form.
+        $client->request('GET', '/feature/createFeature');
+
+        self::assertResponseIsSuccessful();
+
+        // Submit fields containing only whitespace.
+        $client->submitForm('Create Feature', [
+            'create_feature_form[name]' => '   ',
+            'create_feature_form[description]' => '   ',
+            'create_feature_form[status]' => FeaturesStatusEnum::NEW_FEATURE->value,
+            'create_feature_form[priority]' => (string) FeaturePriorityEnum::SOON->value,
+        ]);
+
+        // Invalid form data must not cause a redirect.
+        self::assertResponseStatusCodeSame(200);
+
+        // Verify that both validation errors are displayed.
+        self::assertSelectorTextContains(
+            'body',
+            'Feature name cannot be empty.'
+        );
+
+        self::assertSelectorTextContains(
+            'body',
+            'Feature description cannot be empty.'
+        );
+
+        // Verify that no invalid feature was saved.
+        $repository = static::getContainer()->get(WebsiteFeatureRepository::class);
+
+        self::assertSame([], array_filter(
+            $repository->findAll(),
+            fn (WebsiteFeature $feature) => trim($feature->getName() ?? '') === ''
+        ));
+    }
+
+
+    public function testFeatureCannotBeCreatedWithTooLongName(): void
+    {
+        $client = static::createClient();
+
+        $client->request('GET', '/feature/createFeature');
+
+        self::assertResponseIsSuccessful();
+
+        // Generate a feature name exceeding the database limit.
+        $longName = str_repeat('A', 256);
+
+        $client->submitForm('Create Feature', [
+            'create_feature_form[name]' => $longName,
+            'create_feature_form[description]' => 'Valid feature description.',
+            'create_feature_form[status]' => FeaturesStatusEnum::NEW_FEATURE->value,
+            'create_feature_form[priority]' => (string) FeaturePriorityEnum::SOON->value,
+        ]);
+
+        // The invalid form should be displayed again.
+        self::assertResponseStatusCodeSame(200);
+
+        // Verify that Symfony displays the validation error.
+        self::assertSelectorTextContains(
+            'body',
+            'Feature name cannot exceed 255 characters.'
+        );
+
+        // Verify that the invalid feature was not saved.
+        $repository = static::getContainer()->get(WebsiteFeatureRepository::class);
+
+        foreach ($repository->findAll() as $feature) {
+            self::assertNotSame($longName, $feature->getName());
+        }
+    }
+
 }

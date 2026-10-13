@@ -19,9 +19,15 @@ class WebsiteFeature
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Feature name cannot be empty.')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'Feature name cannot exceed {{ limit }} characters.'
+    )]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message: 'Feature description cannot be empty.')]
     private ?string $description = null;
 
     #[ORM\Column(nullable: false, enumType: FeaturesStatusEnum::class)]
