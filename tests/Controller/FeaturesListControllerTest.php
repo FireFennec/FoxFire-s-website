@@ -10,6 +10,7 @@ use App\Model\FeaturesStatusEnum;
 use App\Repository\WebsiteFeatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use DateTimeImmutable;
 
 class FeaturesListControllerTest extends WebTestCase
 {
@@ -436,5 +437,47 @@ class FeaturesListControllerTest extends WebTestCase
             'Medium Priority Feature',
             'Low Priority Feature',
         ], $featureNames);
+    }
+
+    public function testFeatureCanBeCreatedWithDeadline(): void
+    {
+        $client = static::createClient();
+
+        $client->request('GET', '/feature/createFeature');
+
+        self::assertResponseIsSuccessful();
+
+        // Submit a feature with a deadline.
+        $client->submitForm('Create Feature', [
+            'create_feature_form[name]' => 'Feature With Deadline',
+            'create_feature_form[description]' => 'Testing deadline persistence.',
+            'create_feature_form[status]' => FeaturesStatusEnum::NEW_FEATURE->value,
+            'create_feature_form[priority]' => (string) FeaturePriorityEnum::SOON->value,
+            'create_feature_form[deadlineAt]' => '2027-06-15',
+        ]);
+
+        self::assertResponseRedirects();
+
+        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
+
+        // Reload the feature from the database.
+        $entityManager->clear();
+
+        $feature = $entityManager
+            ->getRepository(WebsiteFeature::class)
+            ->findOneBy(['name' => 'Feature With Deadline']);
+
+        self::assertNotNull($feature);
+
+        // Verify that the deadline is stored as an immutable date.
+        self::assertInstanceOf(
+            DateTimeImmutable::class,
+            $feature->getDeadlineAt()
+        );
+
+        self::assertSame(
+            '2027-06-15',
+            $feature->getDeadlineAt()->format('Y-m-d')
+        );
     }
 }
