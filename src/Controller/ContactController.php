@@ -16,7 +16,9 @@ class ContactController extends AbstractController
     public function aboutMe(ContactInformationRepository $repository): Response
     {
         // Retrieve the contact information for the current profile.
-        $myContactInformation = $repository->findOneByEmail('DanVraspir@protonmail.com');
+        $myContactInformation = $repository->findOneBy([
+            'email' => 'DanVraspir@protonmail.com',
+        ]);
 
         return $this->render('contact/aboutMe.html.twig', [
             'myContactInformation' => $myContactInformation,
