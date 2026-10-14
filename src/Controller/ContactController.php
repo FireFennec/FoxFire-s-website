@@ -20,6 +20,11 @@ class ContactController extends AbstractController
             'email' => 'DanVraspir@protonmail.com',
         ]);
 
+        // Return HTTP 404 if the contact information does not exist.
+        if ($myContactInformation === null) {
+            throw $this->createNotFoundException('Contact information not found.');
+        }
+
         return $this->render('contact/aboutMe.html.twig', [
             'myContactInformation' => $myContactInformation,
         ]);
