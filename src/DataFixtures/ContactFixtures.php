@@ -19,6 +19,9 @@ class ContactFixtures extends Fixture
         $myContact->setXLink('https://x.com/FoxFireCZ');
         $myContact->setBarq('FoxFireCZ');
         $myContact->setBarqLink('https://barq.app/@FoxFireCZ');
+        $myContact->setSteam('FoxFire');
+        $myContact->setSteamLink('https://steamcommunity.com/profiles/76561198063270997/');
+        $myContact->setBattleNet('FoxFire#21881');
 
         $manager->persist($myContact);
 

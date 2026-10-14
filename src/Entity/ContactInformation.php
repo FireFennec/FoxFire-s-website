@@ -37,6 +37,15 @@ class ContactInformation
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $barqLink = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $steam = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $steamLink = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $battleNet = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -137,4 +146,41 @@ class ContactInformation
 
         return $this;
     }
+
+    public function getSteam(): ?string
+    {
+        return $this->steam;
+    }
+
+    public function setSteam(?string $steam): static
+    {
+        $this->steam = $steam;
+
+        return $this;
+    }
+
+    public function getSteamLink(): ?string
+    {
+        return $this->steamLink;
+    }
+
+    public function setSteamLink(?string $steamLink): static
+    {
+        $this->steamLink = $steamLink;
+
+        return $this;
+    }
+
+    public function getBattleNet(): ?string
+    {
+        return $this->battleNet;
+    }
+
+    public function setBattleNet(?string $battleNet): static
+    {
+        $this->battleNet = $battleNet;
+
+        return $this;
+    }
+
 }

@@ -92,6 +92,37 @@
                     </div>
                 </section>
 
+                <section class="about-section">
+                    <h2>Other platforms</h2>
+
+                    <div class="about-row">
+                        <span class="about-label">Steam</span>
+
+                        <span class="about-value">
+                            {{ myContactInformation.steam }}
+                        </span>
+
+                        {% if myContactInformation.steamLink %}
+                            <a
+                                class="about-link"
+                                href="{{ myContactInformation.steamLink }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Open ↗
+                            </a>
+                        {% endif %}
+                    </div>
+
+                    <div class="about-row">
+                        <span class="about-label">Battle.net</span>
+
+                        <span class="about-value">
+                            {{ myContactInformation.battleNet }}
+                        </span>
+                    </div>
+                </section>
+
             </div>
         </div>
 
