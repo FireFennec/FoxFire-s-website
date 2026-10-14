@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Repository\ContactInformationRepository;
@@ -9,9 +11,11 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ContactController extends AbstractController
 {
+    // Display the About Me page.
     #[Route('/aboutMe', name: 'app_contact_aboutMe', methods: ['GET'])]
     public function aboutMe(ContactInformationRepository $repository): Response
     {
+        // Retrieve the contact information for the current profile.
         $myContactInformation = $repository->findOneByEmail('DanVraspir@protonmail.com');
 
         return $this->render('contact/aboutMe.html.twig', [

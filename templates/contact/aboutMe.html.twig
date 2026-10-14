@@ -1,9 +1,9 @@
-
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ parent() }}About me{% endblock %}
 
 {% block body %}
+    {# Main layout for the About Me page. #}
     <div class="page-layout-simple about-page">
 
         <div class="page-content-simple page-width-900">
@@ -11,9 +11,12 @@
 
             <div class="page-panel page-panel-standard">
 
+                {# CONTACT INFORMATION #}
+                {# Direct contact methods. #}
                 <section class="about-section">
                     <h2>Contact me</h2>
 
+                    {# Email address. #}
                     <div class="about-row">
                         <span class="about-label">Email</span>
 
@@ -22,6 +25,7 @@
                         </span>
                     </div>
 
+                    {# Telegram username and profile link. #}
                     <div class="about-row">
                         <span class="about-label">Telegram</span>
 
@@ -37,6 +41,7 @@
                         </a>
                     </div>
 
+                    {# Discord username. #}
                     <div class="about-row">
                         <span class="about-label">Discord</span>
 
@@ -45,6 +50,7 @@
                         </span>
                     </div>
 
+                    {# Phone number. #}
                     <div class="about-row">
                         <span class="about-label">Phone</span>
 
@@ -54,9 +60,12 @@
                     </div>
                 </section>
 
+                {# SOCIAL MEDIA #}
+                {# Social media profiles with optional external links. #}
                 <section class="about-section">
                     <h2>Follow me</h2>
 
+                    {# X (formerly Twitter) profile. #}
                     <div class="about-row">
                         <span class="about-label">X</span>
 
@@ -74,6 +83,7 @@
                         {% endif %}
                     </div>
 
+                    {# Barq profile. #}
                     <div class="about-row">
                         <span class="about-label">Barq</span>
 
@@ -92,9 +102,12 @@
                     </div>
                 </section>
 
+                {# OTHER PLATFORMS #}
+                {# Gaming platforms and account information. #}
                 <section class="about-section">
                     <h2>Other platforms</h2>
 
+                    {# Steam profile with an optional external link. #}
                     <div class="about-row">
                         <span class="about-label">Steam</span>
 
@@ -114,6 +127,7 @@
                         {% endif %}
                     </div>
 
+                    {# Battle.net BattleTag. #}
                     <div class="about-row">
                         <span class="about-label">Battle.net</span>
 
@@ -125,6 +139,5 @@
 
             </div>
         </div>
-
     </div>
 {% endblock %}
