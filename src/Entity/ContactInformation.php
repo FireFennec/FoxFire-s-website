@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ContactInformationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ContactInformationRepository::class)]
 class ContactInformation
@@ -17,6 +18,8 @@ class ContactInformation
     private ?string $phoneNumber = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Email cannot be empty.')]
+    #[Assert\Email(message: 'Please enter a valid email address.')]
     private ?string $email = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -29,18 +32,33 @@ class ContactInformation
     private ?string $x = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Url(
+        message: 'Please enter a valid URL.',
+        protocols: ['http', 'https'],
+        requireTld: true
+    )]
     private ?string $xLink = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $barq = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Url(
+        message: 'Please enter a valid URL.',
+        protocols: ['http', 'https'],
+        requireTld: true
+    )]
     private ?string $barqLink = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $steam = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Url(
+        message: 'Please enter a valid URL.',
+        protocols: ['http', 'https'],
+        requireTld: true
+    )]
     private ?string $steamLink = null;
 
     #[ORM\Column(length: 255, nullable: true)]
