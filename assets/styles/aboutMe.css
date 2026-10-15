@@ -77,6 +77,21 @@
         box-shadow 0.2s ease;
 }
 
+/* Visible keyboard focus for external contact links. */
+.about-link:focus-visible {
+    outline: 2px solid #ff5555;
+    outline-offset: 4px;
+
+    color: #ffffff;
+    border-color: #ff3030;
+
+    background: rgba(255, 0, 0, 0.10);
+
+    box-shadow:
+        0 0 8px rgba(255, 0, 0, 0.45),
+        inset 0 0 6px rgba(255, 0, 0, 0.15);
+}
+
 /* External contact link hover effect. */
 .about-link:hover {
     color: #ffffff;

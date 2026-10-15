@@ -17,7 +17,7 @@ class ContactInformation
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phoneNumber = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     #[Assert\NotBlank(message: 'Email cannot be empty.')]
     #[Assert\Email(message: 'Please enter a valid email address.')]
     private ?string $email = null;
