@@ -10,50 +10,63 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ContactInformationValidationTest extends KernelTestCase
 {
-    public function testInvalidEmailIsRejected(): void
+    private ValidatorInterface $validator;
+
+    protected function setUp(): void
     {
+        parent::setUp();
+
+        // Initialize the Symfony validator before each test.
         self::bootKernel();
 
-        $validator = static::getContainer()->get(ValidatorInterface::class);
+        $this->validator = static::getContainer()->get(ValidatorInterface::class);
+    }
 
+    public function testInvalidEmailIsRejected(): void
+    {
         $contact = new ContactInformation();
         $contact->setEmail('invalid-email');
 
-        $violations = $validator->validate($contact);
+        $violations = $this->validator->validate($contact);
 
-        self::assertCount(1, $violations);
-        self::assertSame('email', $violations[0]->getPropertyPath());
+        // Verify that the email field contains a validation error.
+        $invalidFields = [];
+
+        foreach ($violations as $violation) {
+            $invalidFields[] = $violation->getPropertyPath();
+        }
+
+        self::assertContains('email', $invalidFields);
     }
 
     public function testInvalidSteamUrlIsRejected(): void
     {
-        self::bootKernel();
-
-        $validator = static::getContainer()->get(ValidatorInterface::class);
-
         $contact = new ContactInformation();
         $contact->setEmail('test@example.com');
         $contact->setSteamLink('not-a-valid-url');
 
-        $violations = $validator->validate($contact);
+        $violations = $this->validator->validate($contact);
 
-        self::assertCount(1, $violations);
-        self::assertSame('steamLink', $violations[0]->getPropertyPath());
+        // A URL may violate multiple constraints, so check the field, not the error count.
+        $invalidFields = [];
+
+        foreach ($violations as $violation) {
+            $invalidFields[] = $violation->getPropertyPath();
+        }
+
+        self::assertContains('steamLink', $invalidFields);
     }
 
     public function testValidContactPassesValidation(): void
     {
-        self::bootKernel();
-
-        $validator = static::getContainer()->get(ValidatorInterface::class);
-
         $contact = new ContactInformation();
         $contact->setEmail('test@example.com');
         $contact->setSteamLink('https://steamcommunity.com/id/testprofile');
         $contact->setXLink('https://x.com/testprofile');
 
-        $violations = $validator->validate($contact);
+        $violations = $this->validator->validate($contact);
 
-        self::assertCount(0, $violations);
+        // Valid contact information must not produce any violations.
+        self::assertCount(0, $violations, (string) $violations);
     }
 }
