@@ -17,47 +17,57 @@
                     <h2>Contact me</h2>
 
                     {# Email address. #}
-                    <div class="about-row">
-                        <span class="about-label">Email</span>
+                    {% if myContactInformation.email %}
+                        <div class="about-row">
+                            <span class="about-label">Email</span>
 
-                        <span class="about-value">
-                            {{ myContactInformation.email }}
-                        </span>
-                    </div>
+                            <span class="about-value">
+                                {{ myContactInformation.email }}
+                            </span>
+                        </div>
+                    {% endif %}
 
                     {# Telegram username and profile link. #}
-                    <div class="about-row">
-                        <span class="about-label">Telegram</span>
+                    {% if myContactInformation.telegram %}
+                        <div class="about-row">
+                            <span class="about-label">Telegram</span>
 
-                        <span class="about-value">
-                            {{ myContactInformation.telegram }}
-                        </span>
+                            <span class="about-value">
+                                {{ myContactInformation.telegram }}
+                            </span>
 
-                        <a
-                            class="about-link"
-                            href="https://t.me/{{ myContactInformation.telegram }}"
-                        >
-                            Open ↗
-                        </a>
-                    </div>
+                            <a
+                                class="about-link"
+                                href="https://t.me/{{ myContactInformation.telegram|url_encode }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Open ↗
+                            </a>
+                        </div>
+                    {% endif %}
 
                     {# Discord username. #}
-                    <div class="about-row">
-                        <span class="about-label">Discord</span>
+                    {% if myContactInformation.discord %}
+                        <div class="about-row">
+                            <span class="about-label">Discord</span>
 
-                        <span class="about-value">
-                            {{ myContactInformation.discord }}
-                        </span>
-                    </div>
+                            <span class="about-value">
+                                {{ myContactInformation.discord }}
+                            </span>
+                        </div>
+                    {% endif %}
 
                     {# Phone number. #}
-                    <div class="about-row">
-                        <span class="about-label">Phone</span>
+                    {% if myContactInformation.phoneNumber %}
+                        <div class="about-row">
+                            <span class="about-label">Phone</span>
 
-                        <span class="about-value">
-                            {{ myContactInformation.phoneNumber }}
-                        </span>
-                    </div>
+                            <span class="about-value">
+                                {{ myContactInformation.phoneNumber }}
+                            </span>
+                        </div>
+                    {% endif %}
                 </section>
 
                 {# SOCIAL MEDIA #}
@@ -66,40 +76,48 @@
                     <h2>Follow me</h2>
 
                     {# X (formerly Twitter) profile. #}
-                    <div class="about-row">
-                        <span class="about-label">X</span>
+                    {% if myContactInformation.x %}
+                        <div class="about-row">
+                            <span class="about-label">X</span>
 
-                        <span class="about-value">
-                            {{ myContactInformation.x }}
-                        </span>
+                            <span class="about-value">
+                                {{ myContactInformation.x }}
+                            </span>
 
-                        {% if myContactInformation.xLink %}
-                            <a
-                                class="about-link"
-                                href="{{ myContactInformation.xLink }}"
-                            >
-                                Open ↗
-                            </a>
-                        {% endif %}
-                    </div>
+                            {% if myContactInformation.xLink %}
+                                <a
+                                    class="about-link"
+                                    href="{{ myContactInformation.xLink }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Open ↗
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
 
                     {# Barq profile. #}
-                    <div class="about-row">
-                        <span class="about-label">Barq</span>
+                    {% if myContactInformation.barq %}
+                        <div class="about-row">
+                            <span class="about-label">Barq</span>
 
-                        <span class="about-value">
-                            {{ myContactInformation.barq }}
-                        </span>
+                            <span class="about-value">
+                                {{ myContactInformation.barq }}
+                            </span>
 
-                        {% if myContactInformation.BarqLink %}
-                            <a
-                                class="about-link"
-                                href="{{ myContactInformation.BarqLink }}"
-                            >
-                                Open ↗
-                            </a>
-                        {% endif %}
-                    </div>
+                            {% if myContactInformation.barqLink %}
+                                <a
+                                    class="about-link"
+                                    href="{{ myContactInformation.barqLink }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Open ↗
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
                 </section>
 
                 {# OTHER PLATFORMS #}
@@ -108,33 +126,37 @@
                     <h2>Other platforms</h2>
 
                     {# Steam profile with an optional external link. #}
-                    <div class="about-row">
-                        <span class="about-label">Steam</span>
+                    {% if myContactInformation.steam %}
+                        <div class="about-row">
+                            <span class="about-label">Steam</span>
 
-                        <span class="about-value">
-                            {{ myContactInformation.steam }}
-                        </span>
+                            <span class="about-value">
+                                {{ myContactInformation.steam }}
+                            </span>
 
-                        {% if myContactInformation.steamLink %}
-                            <a
-                                class="about-link"
-                                href="{{ myContactInformation.steamLink }}"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                Open ↗
-                            </a>
-                        {% endif %}
-                    </div>
+                            {% if myContactInformation.steamLink %}
+                                <a
+                                    class="about-link"
+                                    href="{{ myContactInformation.steamLink }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Open ↗
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
 
                     {# Battle.net BattleTag. #}
-                    <div class="about-row">
-                        <span class="about-label">Battle.net</span>
+                    {% if myContactInformation.battleNet %}
+                        <div class="about-row">
+                            <span class="about-label">Battle.net</span>
 
-                        <span class="about-value">
-                            {{ myContactInformation.battleNet }}
-                        </span>
-                    </div>
+                            <span class="about-value">
+                                {{ myContactInformation.battleNet }}
+                            </span>
+                        </div>
+                    {% endif %}
                 </section>
 
             </div>
