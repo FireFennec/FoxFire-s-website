@@ -128,4 +128,41 @@ class ContactControllerTest extends WebTestCase
 
         return $contact;
     }
+
+    public function testAboutMeHidesEmptyContactInformation(): void
+    {
+        $client = static::createClient();
+
+        // Create a contact with some optional fields missing.
+        $contact = $this->createContact();
+
+        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
+
+        $contact->setTelegram(null);
+        $contact->setDiscord(null);
+        $contact->setX(null);
+        $contact->setXLink(null);
+        $contact->setSteam(null);
+        $contact->setSteamLink(null);
+
+        $entityManager->flush();
+
+        // Load the About Me page.
+        $crawler = $client->request('GET', '/aboutMe');
+
+        self::assertResponseIsSuccessful();
+
+        // Verify that empty contact rows are not displayed.
+        self::assertCount(0, $crawler->filter('.about-label:contains("Telegram")'));
+        self::assertCount(0, $crawler->filter('.about-label:contains("Discord")'));
+        self::assertCount(0, $crawler->filter('.about-label:contains("X")'));
+        self::assertCount(0, $crawler->filter('.about-label:contains("Steam")'));
+
+        // Verify that the Telegram link is not generated.
+        self::assertCount(0, $crawler->filter('a[href^="https://t.me/"]'));
+
+        // Verify that populated contact information remains visible.
+        self::assertSelectorTextContains('body', 'TestBarq');
+        self::assertSelectorTextContains('body', 'TestPlayer#1234');
+    }
 }
