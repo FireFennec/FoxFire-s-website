@@ -23,7 +23,7 @@ class ContactInformation
     private ?int $id = null;
 
     // Optional phone number.
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 30, nullable: true)]
     #[Assert\Length(max: 30)]
     #[Assert\Regex(
         pattern: '/^\+?[0-9][0-9 ()-]*$/',
@@ -81,7 +81,7 @@ class ContactInformation
     )]
     private ?string $barqLink = null;
 
-    // Steam profile display name.
+    // Steam profile URL.
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
     #[Assert\Url(
