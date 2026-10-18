@@ -2,21 +2,21 @@
 {{ form_start(form) }}
 
 <div class="form-field">
-    {{ form_label(form.recipe_name, 'Recipe name') }}
-    {{ form_widget(form.recipe_name) }}
-    {{ form_errors(form.recipe_name) }}
+    {{ form_label(form.recipeName, 'Recipe name') }}
+    {{ form_widget(form.recipeName) }}
+    {{ form_errors(form.recipeName) }}
 </div>
 
 <div class="form-field">
-    {{ form_label(form.ingredience, 'Ingredients') }}
+    {{ form_label(form.ingredients, 'Ingredients') }}
 
     <div
         id="ingredients-list"
         class="recipe-ingredients-list"
-        data-index="{{ form.ingredience|length }}"
-        data-prototype="{{ form_widget(form.ingredience.vars.prototype)|e('html_attr') }}"
+        data-index="{{ form.ingredients|length }}"
+        data-prototype="{{ form_widget(form.ingredients.vars.prototype)|e('html_attr') }}"
     >
-        {% for ingredient in form.ingredience %}
+        {% for ingredient in form.ingredients %}
             <div class="ingredient-entry">
                 <div class="ingredient-item">
                     {{ form_widget(ingredient) }}
@@ -36,7 +36,7 @@
 
     </div>
 
-    {{ form_errors(form.ingredience) }}
+    {{ form_errors(form.ingredients) }}
 
     <button
         type="button"
@@ -48,9 +48,9 @@
 </div>
 
 <div class="form-field">
-    {{ form_label(form.cooking_process, 'Cooking process') }}
-    {{ form_widget(form.cooking_process) }}
-    {{ form_errors(form.cooking_process) }}
+    {{ form_label(form.cookingProcess, 'Cooking process') }}
+    {{ form_widget(form.cookingProcess) }}
+    {{ form_errors(form.cookingProcess) }}
 </div>
 
 <div class="form-actions">

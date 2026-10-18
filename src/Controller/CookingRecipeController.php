@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\CookingRecipe;
-use App\Form\CookingRecipes\CreateRecipeForm;
+use App\Form\CookingRecipes\CookingRecipeType;
 use App\Repository\CookingRecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,7 +35,7 @@ class CookingRecipeController extends AbstractController
     ): Response {
         $cookingRecipe = new CookingRecipe();
 
-        $form = $this->createForm(CreateRecipeForm::class, $cookingRecipe, [
+        $form = $this->createForm(CookingRecipeType::class, $cookingRecipe, [
             'submit_label' => 'Create Recipe',
         ]);
 
@@ -71,7 +71,7 @@ class CookingRecipeController extends AbstractController
             throw $this->createNotFoundException('Cooking recipe not found.');
         }
 
-        $form = $this->createForm(CreateRecipeForm::class, $cookingRecipe, [
+        $form = $this->createForm(CookingRecipeType::class, $cookingRecipe, [
             'submit_label' => 'Save Changes',
         ]);
 

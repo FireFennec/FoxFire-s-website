@@ -41,7 +41,7 @@ class CookingRecipe
             maxMessage: 'Ingredient cannot exceed {{ limit }} characters.'
         ),
     ])]
-    private array $ingredience = [];
+    private array $ingredients = [];
 
     // Cooking instructions must not be empty.
     #[ORM\Column(type: Types::TEXT)]
@@ -69,14 +69,14 @@ class CookingRecipe
         return $this;
     }
 
-    public function getIngredience(): array
+    public function getIngredients(): array
     {
-        return $this->ingredience;
+        return $this->ingredients;
     }
 
-    public function setIngredience(array $ingredience): static
+    public function setIngredients(array $ingredients): static
     {
-        $this->ingredience = $ingredience;
+        $this->ingredients = $ingredients;
 
         return $this;
     }

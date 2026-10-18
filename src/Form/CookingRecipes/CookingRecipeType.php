@@ -13,15 +13,15 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CreateRecipeForm extends AbstractType
+class CookingRecipeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('recipe_name', TextType::class, [
+            ->add('recipeName', TextType::class, [
                 'required' => true,
             ])
-            ->add('ingredience', CollectionType::class, [
+            ->add('ingredients', CollectionType::class, [
                 'entry_type' => TextType::class,
                 'entry_options' => [
                     'required' => false,
@@ -31,7 +31,7 @@ class CreateRecipeForm extends AbstractType
                 'by_reference' => false,
                 'prototype' => true,
             ])
-            ->add('cooking_process', TextareaType::class, [
+            ->add('cookingProcess', TextareaType::class, [
                 'required' => true,
             ])
             ->add('submit', SubmitType::class, [
