@@ -3,22 +3,21 @@
 {% block title %}Edit cooking recipe{% endblock %}
 
 {% block body %}
-    <div class="page-layout feature-form-page">
-        <a class="button page-action"
-            href="{{ path('app_cooking_recipe') }}">
+    <div class="page-layout recipe-form-page">
+        <a
+            class="button page-action"
+            href="{{ path('app_cooking_recipe') }}"
+        >
             Back
         </a>
 
         <div class="page-content page-width-900">
-            <section class="page-panel page-panel-standard feature-form-panel">
+            <section class="page-panel page-panel-standard recipe-form-panel">
                 <h1>Edit Recipe</h1>
 
-                {% include 'cookingRecipe/_recipeForm.html.twig' with {
-                    submitLabel: 'Save Changes'
-                } %}
+                {% include 'cookingRecipe/_recipeForm.html.twig' %}
             </section>
         </div>
-
     </div>
 
     {% include 'cookingRecipe/_ingredientsScript.html.twig' %}

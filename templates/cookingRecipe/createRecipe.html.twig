@@ -4,8 +4,10 @@
 
 {% block body %}
     <div class="page-layout recipe-form-page">
-        <a class="button page-action"
-           href="{{ path('app_cooking_recipe') }}">
+        <a
+            class="button page-action"
+            href="{{ path('app_cooking_recipe') }}"
+        >
             Back
         </a>
 
@@ -13,12 +15,9 @@
             <section class="page-panel page-panel-standard recipe-form-panel">
                 <h1>Create Recipe</h1>
 
-                {% include 'cookingRecipe/_recipeForm.html.twig' with {
-                    submitLabel: 'Create Recipe'
-                } %}
+                {% include 'cookingRecipe/_recipeForm.html.twig' %}
             </section>
         </div>
-
     </div>
 
     {% include 'cookingRecipe/_ingredientsScript.html.twig' %}

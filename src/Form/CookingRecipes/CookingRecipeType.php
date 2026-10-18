@@ -25,6 +25,9 @@ class CookingRecipeType extends AbstractType
                 'entry_type' => TextType::class,
                 'entry_options' => [
                     'required' => false,
+                    'attr' => [
+                        'aria-label' => 'Ingredient',
+                    ],
                 ],
                 'allow_add' => true,
                 'allow_delete' => true,

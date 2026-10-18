@@ -120,6 +120,16 @@
     gap: 6px;
 }
 
+/* Message displayed when no recipes exist. */
+.recipes-empty {
+    margin: 0;
+    padding: 15px 0;
+
+    color: var(--text-main);
+    text-align: center;
+    opacity: 0.75;
+}
+
 
 /* ==================================================
    INGREDIENT FIELDS
@@ -212,4 +222,18 @@
     .recipe-form-page .page-panel {
         padding: 25px 20px;
     }
+}
+
+/* Visible keyboard focus for ingredient controls. */
+.remove-ingredient:focus-visible,
+.recipe-add-ingredient:focus-visible {
+    outline: 2px solid #ff5555;
+    outline-offset: 3px;
+}
+
+/* Keep ingredient fields grouped with their validation errors. */
+.ingredient-entry {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }

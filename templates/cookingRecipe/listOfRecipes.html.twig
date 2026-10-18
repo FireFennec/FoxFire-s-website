@@ -4,8 +4,10 @@
 
 {% block body %}
     <div class="page-layout recipes-page">
-        <a class="button page-action"
-            href="{{ path('app_cooking_recipe_create') }}">
+        <a
+            class="button page-action"
+            href="{{ path('app_cooking_recipe_create') }}"
+        >
             + Create Recipe
         </a>
 
@@ -23,11 +25,13 @@
                                 {{ recipe.recipeName }}
                             </a>
                         </div>
+                    {% else %}
+                        <p class="recipes-empty">
+                            No recipes have been added yet.
+                        </p>
                     {% endfor %}
                 </div>
-
             </section>
         </div>
-
     </div>
 {% endblock %}
