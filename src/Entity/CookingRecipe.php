@@ -27,7 +27,7 @@ class CookingRecipe
     private ?string $recipeName = null;
 
     // A recipe must contain at least one valid ingredient.
-    #[ORM\Column(type: Types::SIMPLE_ARRAY)]
+    #[ORM\Column(type: Types::JSON)]
     #[Assert\Count(
         min: 1,
         minMessage: 'Add at least one ingredient.'

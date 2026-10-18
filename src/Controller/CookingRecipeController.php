@@ -41,6 +41,10 @@ class CookingRecipeController extends AbstractController
 
         $form->handleRequest($request);
 
+        if ($form->isSubmitted() && !$form->isValid()) {
+            dd((string) $form->getErrors(true, false));
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($cookingRecipe);
             $entityManager->flush();
