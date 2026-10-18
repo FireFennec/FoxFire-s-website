@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\CookingRecipe;
 use App\Form\CookingRecipes\CreateRecipeForm;
-use App\Repository\CookingRecipesRepository;
+use App\Repository\CookingRecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,12 +15,12 @@ use Symfony\Component\Routing\Attribute\Route;
 class CookingRecipeController extends AbstractController
 {
     #[Route('/', name: 'app_cooking_recipe', methods: ['GET'])]
-    public function listOfRecipes(CookingRecipesRepository $repository): Response
+    public function listOfRecipes(CookingRecipeRepository $repository): Response
     {
-        $recipes = $repository->findAll();
+        $recipes = $repository->findAllOrderedById();
 
         return $this->render('cookingRecipe/listOfRecipes.html.twig', [
-            'recipes' => $recipes
+            'recipes' => $recipes,
         ]);
     }
 
@@ -51,10 +51,14 @@ class CookingRecipeController extends AbstractController
         $id,
         Request $request,
         EntityManagerInterface $entityManager,
-        CookingRecipesRepository $repository,
+        CookingRecipeRepository $repository,
     ): Response
     {
-        $cookingRecipe = $repository->findOne($id);
+        $cookingRecipe = $repository->find($id);
+
+        if ($cookingRecipe === null) {
+            throw $this->createNotFoundException('Cooking recipe not found.');
+        }
 
         $form = $this->createForm(CreateRecipeForm::Class, $cookingRecipe, [
             'submit_label' => 'Edit Recipe',
@@ -75,9 +79,13 @@ class CookingRecipeController extends AbstractController
     }
 
     #[Route('/{id<\d+>}', name: 'app_cooking_recipe_showRecipeInfo')]
-    public function showRecipeInfo($id, CookingRecipesRepository $repository): Response
+    public function showRecipeInfo($id, CookingRecipeRepository $repository): Response
     {
-        $cookingRecipe = $repository->findOne($id);
+        $cookingRecipe = $repository->find($id);
+
+        if ($cookingRecipe === null) {
+            throw $this->createNotFoundException('Cooking recipe not found.');
+        }
 
         if (!$cookingRecipe) {
             throw $this->createNotFoundException('Cooking recipe not found');
