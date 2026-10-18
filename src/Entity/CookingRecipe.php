@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\CookingRecipeRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CookingRecipeRepository::class)]
 class CookingRecipe
@@ -14,13 +17,39 @@ class CookingRecipe
     #[ORM\Column]
     private ?int $id = null;
 
+    // Recipe name must not be empty.
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Recipe name cannot be empty.')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'Recipe name cannot exceed {{ limit }} characters.'
+    )]
     private ?string $recipeName = null;
 
+    // A recipe must contain at least one valid ingredient.
     #[ORM\Column(type: Types::SIMPLE_ARRAY)]
+    #[Assert\Count(
+        min: 1,
+        minMessage: 'Add at least one ingredient.'
+    )]
+    #[Assert\All([
+        new Assert\NotBlank(
+            message: 'Ingredient cannot be empty.'
+        ),
+        new Assert\Length(
+            max: 255,
+            maxMessage: 'Ingredient cannot exceed {{ limit }} characters.'
+        ),
+    ])]
     private array $ingredience = [];
 
+    // Cooking instructions must not be empty.
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message: 'Cooking process cannot be empty.')]
+    #[Assert\Length(
+        max: 10000,
+        maxMessage: 'Cooking process cannot exceed {{ limit }} characters.'
+    )]
     private ?string $cookingProcess = null;
 
     public function getId(): ?int

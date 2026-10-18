@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form\CookingRecipes;
 
 use App\Entity\CookingRecipe;
@@ -13,24 +15,31 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateRecipeForm extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('recipe_name', TextType::class)
+            ->add('recipe_name', TextType::class, [
+                'required' => true,
+            ])
             ->add('ingredience', CollectionType::class, [
                 'entry_type' => TextType::class,
+                'entry_options' => [
+                    'required' => false,
+                ],
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
                 'prototype' => true,
             ])
-            ->add('cooking_process', TextAreaType::class)
+            ->add('cooking_process', TextareaType::class, [
+                'required' => true,
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => $options['submit_label'],
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => CookingRecipe::class,

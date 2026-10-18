@@ -114,6 +114,12 @@
     resize: vertical;
 }
 
+.ingredient-entry {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
 
 /* ==================================================
    INGREDIENT FIELDS

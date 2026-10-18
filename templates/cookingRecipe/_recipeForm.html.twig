@@ -17,14 +17,23 @@
         data-prototype="{{ form_widget(form.ingredience.vars.prototype)|e('html_attr') }}"
     >
         {% for ingredient in form.ingredience %}
-            <div class="ingredient-item">
-                {{ form_widget(ingredient) }}
+            <div class="ingredient-entry">
+                <div class="ingredient-item">
+                    {{ form_widget(ingredient) }}
 
-                <button type="button" class="remove-ingredient">
-                    X
-                </button>
+                    <button
+                        type="button"
+                        class="remove-ingredient"
+                        aria-label="Remove ingredient"
+                    >
+                        X
+                    </button>
+                </div>
+
+                {{ form_errors(ingredient) }}
             </div>
         {% endfor %}
+
     </div>
 
     {{ form_errors(form.ingredience) }}
