@@ -19,7 +19,10 @@ class CookingRecipe
 
     // Recipe name must not be empty.
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'Recipe name cannot be empty.')]
+    #[Assert\NotBlank(
+        message: 'Recipe name cannot be empty.',
+        normalizer: 'trim'
+    )]
     #[Assert\Length(
         max: 255,
         maxMessage: 'Recipe name cannot exceed {{ limit }} characters.'
@@ -34,7 +37,8 @@ class CookingRecipe
     )]
     #[Assert\All([
         new Assert\NotBlank(
-            message: 'Ingredient cannot be empty.'
+            message: 'Ingredient cannot be empty.',
+            normalizer: 'trim'
         ),
         new Assert\Length(
             max: 255,
@@ -45,7 +49,10 @@ class CookingRecipe
 
     // Cooking instructions must not be empty.
     #[ORM\Column(type: Types::TEXT)]
-    #[Assert\NotBlank(message: 'Cooking process cannot be empty.')]
+    #[Assert\NotBlank(
+        message: 'Cooking process cannot be empty.',
+        normalizer: 'trim'
+    )]
     #[Assert\Length(
         max: 10000,
         maxMessage: 'Cooking process cannot exceed {{ limit }} characters.'
