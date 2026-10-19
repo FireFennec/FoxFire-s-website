@@ -1,67 +1,70 @@
-{{ form_start(form) }}
+<div data-controller="ingredients">
+    {{ form_start(form) }}
 
-<div class="form-field">
-    {{ form_label(form.recipeName) }}
-    {{ form_widget(form.recipeName) }}
-    {{ form_errors(form.recipeName) }}
-</div>
-
-<div class="form-field">
-    {{ form_label(form.ingredients) }}
-
-    <div
-        id="ingredients-list"
-        class="recipe-ingredients-list"
-        data-index="{{ form.ingredients|length }}"
-        data-prototype="{{ form_widget(form.ingredients.vars.prototype)|e('html_attr') }}"
-    >
-        {% for ingredient in form.ingredients %}
-            <div class="ingredient-entry">
-                <div class="ingredient-item">
-                    {{ form_widget(ingredient, {
-                        attr: {
-                            'aria-label': 'Ingredient'
-                        }
-                    }) }}
-
-                    <button
-                        type="button"
-                        class="remove-ingredient"
-                        aria-label="Remove ingredient"
-                    >
-                        X
-                    </button>
-                </div>
-
-                {{ form_errors(ingredient) }}
-            </div>
-        {% endfor %}
+    <div class="form-field">
+        {{ form_label(form.recipeName) }}
+        {{ form_widget(form.recipeName) }}
+        {{ form_errors(form.recipeName) }}
     </div>
 
-    {{ form_errors(form.ingredients) }}
+    <div class="form-field">
+        {{ form_label(form.ingredients) }}
 
-    <button
-        type="button"
-        id="add-ingredient"
-        class="recipe-add-ingredient"
-        aria-controls="ingredients-list"
-    >
-        + Add ingredient
-    </button>
+        <div
+            class="recipe-ingredients-list"
+            data-ingredients-target="list"
+            data-index="{{ form.ingredients|length }}"
+            data-prototype="{{ form_widget(form.ingredients.vars.prototype)|e('html_attr') }}"
+        >
+            {% for ingredient in form.ingredients %}
+                <div class="ingredient-entry">
+                    <div class="ingredient-item">
+                        {{ form_widget(ingredient, {
+                            attr: {
+                                'aria-label': 'Ingredient'
+                            }
+                        }) }}
+
+                        <button
+                            type="button"
+                            class="remove-ingredient"
+                            aria-label="Remove ingredient"
+                            data-action="ingredients#remove"
+                        >
+                            X
+                        </button>
+                    </div>
+
+                    {{ form_errors(ingredient) }}
+                </div>
+            {% endfor %}
+        </div>
+
+        {{ form_errors(form.ingredients) }}
+
+        <button
+            type="button"
+            class="recipe-add-ingredient"
+            data-ingredients-target="addButton"
+            data-action="ingredients#add"
+        >
+            + Add ingredient
+        </button>
+    </div>
+
+    <div class="form-field">
+        {{ form_label(form.cookingProcess) }}
+        {{ form_widget(form.cookingProcess) }}
+        {{ form_errors(form.cookingProcess) }}
+    </div>
+
+    <div class="form-actions">
+        {{ form_widget(form.submit, {
+            attr: {
+                class: 'button'
+            }
+        }) }}
+    </div>
+
+    {{ form_end(form) }}
 </div>
-
-<div class="form-field">
-    {{ form_label(form.cookingProcess) }}
-    {{ form_widget(form.cookingProcess) }}
-    {{ form_errors(form.cookingProcess) }}
-</div>
-
-<div class="form-actions">
-    {{ form_widget(form.submit, {
-        attr: {
-            class: 'button'
-        }
-    }) }}
-</div>
-
-{{ form_end(form) }}
