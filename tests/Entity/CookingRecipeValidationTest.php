@@ -173,4 +173,46 @@ class CookingRecipeValidationTest extends KernelTestCase
 
         self::assertCount(0, $violations, (string) $violations);
     }
+
+    public function testRecipeNameIsTrimmed(): void
+    {
+        $recipe = new CookingRecipe();
+
+        $recipe->setRecipeName('   Mac and Cheese   ');
+
+        self::assertSame(
+            'Mac and Cheese',
+            $recipe->getRecipeName()
+        );
+    }
+
+    public function testIngredientsAreTrimmed(): void
+    {
+        $recipe = new CookingRecipe();
+
+        $recipe->setIngredients([
+            '   Macaroni   ',
+            ' Cheddar ',
+            '  Milk  ',
+        ]);
+
+        self::assertSame(
+            ['Macaroni', 'Cheddar', 'Milk'],
+            $recipe->getIngredients()
+        );
+    }
+
+    public function testCookingProcessIsTrimmedButPreservesParagraphs(): void
+    {
+        $recipe = new CookingRecipe();
+
+        $recipe->setCookingProcess(
+            "  Cook the pasta.\n\nPrepare the sauce.  "
+        );
+
+        self::assertSame(
+            "Cook the pasta.\n\nPrepare the sauce.",
+            $recipe->getCookingProcess()
+        );
+    }
 }

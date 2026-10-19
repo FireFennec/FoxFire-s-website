@@ -71,7 +71,9 @@ class CookingRecipe
 
     public function setRecipeName(?string $recipeName): static
     {
-        $this->recipeName = $recipeName;
+        $this->recipeName = $recipeName === null
+            ? null
+            : trim($recipeName);
 
         return $this;
     }
@@ -83,7 +85,10 @@ class CookingRecipe
 
     public function setIngredients(array $ingredients): static
     {
-        $this->ingredients = $ingredients;
+        $this->ingredients = array_map(
+            static fn (?string $ingredient): string => trim($ingredient ?? ''),
+            $ingredients
+        );
 
         return $this;
     }
@@ -95,7 +100,9 @@ class CookingRecipe
 
     public function setCookingProcess(?string $cookingProcess): static
     {
-        $this->cookingProcess = $cookingProcess;
+        $this->cookingProcess = $cookingProcess === null
+            ? null
+            : trim($cookingProcess);
 
         return $this;
     }

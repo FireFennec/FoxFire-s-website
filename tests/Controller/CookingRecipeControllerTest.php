@@ -542,7 +542,7 @@ class CookingRecipeControllerTest extends WebTestCase
             'Test Mac and Cheese'
         );
     }
-    
+
     private function createRecipe(): CookingRecipe
     {
         $entityManager = static::getContainer()->get(
