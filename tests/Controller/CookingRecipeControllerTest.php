@@ -268,6 +268,205 @@ class CookingRecipeControllerTest extends WebTestCase
         self::assertResponseStatusCodeSame(405);
     }
 
+    public function testInvalidEditDoesNotChangeStoredRecipe(): void
+    {
+        $client = static::createClient();
+        $recipe = $this->createRecipe();
+        $id = $recipe->getId();
+
+        $crawler = $client->request('GET', '/cooking-recipes/' . $id . '/edit');
+
+        $token = $crawler
+            ->filter('input[name="cooking_recipe[_token]"]')
+            ->attr('value');
+
+        $client->request('POST', '/cooking-recipes/' . $id . '/edit', [
+            'cooking_recipe' => [
+                'recipeName' => '   ',
+                'ingredients' => ['Changed ingredient'],
+                'cookingProcess' => 'Changed instructions.',
+                '_token' => $token,
+            ],
+        ]);
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('body', 'Recipe name cannot be empty.');
+
+        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
+        $entityManager->clear();
+
+        $storedRecipe = $entityManager->find(CookingRecipe::class, $id);
+
+        self::assertNotNull($storedRecipe);
+        self::assertSame('Test Mac and Cheese', $storedRecipe->getRecipeName());
+        self::assertSame(
+            ['Macaroni', 'Cheddar', 'Milk'],
+            $storedRecipe->getIngredients()
+        );
+        self::assertSame(
+            'Cook the pasta and prepare the cheese sauce.',
+            $storedRecipe->getCookingProcess()
+        );
+    }
+
+    public function testInvalidCsrfTokenPreventsRecipeCreation(): void
+    {
+        $client = static::createClient();
+
+        // Initialize the form and its CSRF protection.
+        $client->request('GET', '/cooking-recipes/create');
+
+        $client->request('POST', '/cooking-recipes/create', [
+            'cooking_recipe' => [
+                'recipeName' => 'Invalid CSRF Recipe',
+                'ingredients' => ['Flour'],
+                'cookingProcess' => 'Mix everything.',
+                '_token' => 'invalid-token',
+            ],
+        ]);
+
+        self::assertResponseIsSuccessful();
+
+        $repository = static::getContainer()->get(CookingRecipeRepository::class);
+
+        self::assertNull($repository->findOneBy([
+            'recipeName' => 'Invalid CSRF Recipe',
+        ]));
+    }
+
+    public function testInvalidCsrfTokenPreventsRecipeEdit(): void
+    {
+        $client = static::createClient();
+        $recipe = $this->createRecipe();
+        $id = $recipe->getId();
+
+        $client->request('GET', '/cooking-recipes/' . $id . '/edit');
+
+        $client->request('POST', '/cooking-recipes/' . $id . '/edit', [
+            'cooking_recipe' => [
+                'recipeName' => 'Unauthorized Change',
+                'ingredients' => ['Changed ingredient'],
+                'cookingProcess' => 'Changed instructions.',
+                '_token' => 'invalid-token',
+            ],
+        ]);
+
+        self::assertResponseIsSuccessful();
+
+        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
+        $entityManager->clear();
+
+        $storedRecipe = $entityManager->find(CookingRecipe::class, $id);
+
+        self::assertNotNull($storedRecipe);
+        self::assertSame('Test Mac and Cheese', $storedRecipe->getRecipeName());
+        self::assertSame(
+            ['Macaroni', 'Cheddar', 'Milk'],
+            $storedRecipe->getIngredients()
+        );
+    }
+
+    public function testRecipeWithoutIngredientsIsNotCreated(): void
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/cooking-recipes/create');
+
+        $token = $crawler
+            ->filter('input[name="cooking_recipe[_token]"]')
+            ->attr('value');
+
+        $client->request('POST', '/cooking-recipes/create', [
+            'cooking_recipe' => [
+                'recipeName' => 'Recipe Without Ingredients',
+                'ingredients' => [],
+                'cookingProcess' => 'Cook everything.',
+                '_token' => $token,
+            ],
+        ]);
+
+        self::assertResponseIsSuccessful();
+
+        // Display validation errors for debugging.
+        $crawler = $client->getCrawler();
+
+        dump($crawler->filter('.form-error-message')->each(
+            static fn ($node): string => trim($node->text())
+        ));
+
+        $repository = static::getContainer()->get(
+            CookingRecipeRepository::class
+        );
+
+        // Verify that the invalid recipe was not saved.
+        self::assertNull($repository->findOneBy([
+            'recipeName' => 'Recipe Without Ingredients',
+        ]));
+    }
+
+    public function testWhitespaceOnlyIngredientIsNotAccepted(): void
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/cooking-recipes/create');
+
+        $token = $crawler
+            ->filter('input[name="cooking_recipe[_token]"]')
+            ->attr('value');
+
+        $client->request('POST', '/cooking-recipes/create', [
+            'cooking_recipe' => [
+                'recipeName' => 'Recipe With Blank Ingredient',
+                'ingredients' => ['   '],
+                'cookingProcess' => 'Cook everything.',
+                '_token' => $token,
+            ],
+        ]);
+
+        self::assertResponseIsSuccessful();
+
+        $repository = static::getContainer()->get(CookingRecipeRepository::class);
+
+        self::assertNull($repository->findOneBy([
+            'recipeName' => 'Recipe With Blank Ingredient',
+        ]));
+    }
+
+    public function testRecipeNameExceedingLimitIsNotAccepted(): void
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/cooking-recipes/create');
+
+        $token = $crawler
+            ->filter('input[name="cooking_recipe[_token]"]')
+            ->attr('value');
+
+        $client->request('POST', '/cooking-recipes/create', [
+            'cooking_recipe' => [
+                'recipeName' => str_repeat('A', 256),
+                'ingredients' => ['Flour'],
+                'cookingProcess' => 'Mix everything.',
+                '_token' => $token,
+            ],
+        ]);
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains(
+            'body',
+            'Recipe name cannot exceed 255 characters.'
+        );
+    }
+
+    public function testPutRequestToCreateRecipeIsRejected(): void
+    {
+        $client = static::createClient();
+
+        $client->request('PUT', '/cooking-recipes/create');
+
+        self::assertResponseStatusCodeSame(405);
+    }
+
     private function createRecipe(): CookingRecipe
     {
         $entityManager = static::getContainer()->get(

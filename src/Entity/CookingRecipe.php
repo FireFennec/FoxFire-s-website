@@ -69,7 +69,7 @@ class CookingRecipe
         return $this->recipeName;
     }
 
-    public function setRecipeName(string $recipeName): static
+    public function setRecipeName(?string $recipeName): static
     {
         $this->recipeName = $recipeName;
 
@@ -93,7 +93,7 @@ class CookingRecipe
         return $this->cookingProcess;
     }
 
-    public function setCookingProcess(string $cookingProcess): static
+    public function setCookingProcess(?string $cookingProcess): static
     {
         $this->cookingProcess = $cookingProcess;
 
