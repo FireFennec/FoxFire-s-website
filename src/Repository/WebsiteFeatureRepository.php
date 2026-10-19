@@ -29,6 +29,9 @@ class WebsiteFeatureRepository extends ServiceEntityRepository
     }
 
     // Retrieve completed features ordered by priority.
+    /**
+     * @return list<WebsiteFeature>
+     */
     public function findCompleted(): array
     {
         return $this->createQueryBuilder('f')
@@ -40,6 +43,9 @@ class WebsiteFeatureRepository extends ServiceEntityRepository
     }
 
     // Retrieve unfinished features ordered by priority.
+    /**
+     * @return list<WebsiteFeature>
+     */
     public function findToDo(): array
     {
         return $this->createQueryBuilder('f')

@@ -293,6 +293,9 @@ class ContactControllerTest extends WebTestCase
         $entityManager->flush();
     }
 
+    /**
+     * @return list<string>
+     */
     private function getVisibleLabels(Crawler $crawler): array
     {
         // Return the exact labels of all visible contact rows.

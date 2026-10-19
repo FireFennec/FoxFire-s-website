@@ -30,6 +30,7 @@ class CookingRecipe
     private ?string $recipeName = null;
 
     // A recipe must contain at least one valid ingredient.
+    /** @var list<string> */
     #[ORM\Column(type: Types::JSON)]
     #[Assert\Count(
         min: 1,
@@ -78,11 +79,17 @@ class CookingRecipe
         return $this;
     }
 
+    /**
+     * @return list<string>
+     */
     public function getIngredients(): array
     {
         return $this->ingredients;
     }
 
+    /**
+     * @param list<string|null> $ingredients
+     */
     public function setIngredients(array $ingredients): static
     {
         $this->ingredients = array_map(
