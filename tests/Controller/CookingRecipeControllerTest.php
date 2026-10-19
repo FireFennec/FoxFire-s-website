@@ -467,6 +467,82 @@ class CookingRecipeControllerTest extends WebTestCase
         self::assertResponseStatusCodeSame(405);
     }
 
+    public function testRecipeListIsPaginated(): void
+    {
+        $client = static::createClient();
+
+        $entityManager = static::getContainer()->get(
+            EntityManagerInterface::class
+        );
+
+        // Create 12 recipes to test pagination.
+        for ($i = 1; $i <= 12; $i++) {
+            $recipe = new CookingRecipe();
+            $recipe->setRecipeName('Pagination Recipe ' . $i);
+            $recipe->setIngredients(['Flour']);
+            $recipe->setCookingProcess('Mix ingredients.');
+
+            $entityManager->persist($recipe);
+        }
+
+        $entityManager->flush();
+
+        // Verify the first page.
+        $crawler = $client->request('GET', '/cooking-recipes/');
+
+        self::assertResponseIsSuccessful();
+        self::assertCount(10, $crawler->filter('.recipe-row'));
+        self::assertSelectorTextContains(
+            '.recipes-page-indicator',
+            'Page 1 of 2'
+        );
+
+        // Verify that the newest recipes appear first.
+        self::assertSelectorTextContains(
+            '.recipe-row:first-child',
+            'Pagination Recipe 12'
+        );
+
+        // Verify the second page.
+        $crawler = $client->request('GET', '/cooking-recipes/?page=2');
+
+        self::assertResponseIsSuccessful();
+        self::assertCount(2, $crawler->filter('.recipe-row'));
+        self::assertSelectorTextContains(
+            '.recipes-page-indicator',
+            'Page 2 of 2'
+        );
+    }
+
+    public function testInvalidPageNumberFallsBackToFirstPage(): void
+    {
+        $client = static::createClient();
+
+        $this->createRecipe();
+
+        $crawler = $client->request('GET', '/cooking-recipes/?page=-5');
+
+        self::assertResponseIsSuccessful();
+        self::assertCount(1, $crawler->filter('.recipe-row'));
+        self::assertSelectorTextContains('h1', 'Cooking recipes');
+    }
+
+    public function testPageBeyondAvailableResultsFallsBackToLastPage(): void
+    {
+        $client = static::createClient();
+
+        $this->createRecipe();
+
+        $crawler = $client->request('GET', '/cooking-recipes/?page=999');
+
+        self::assertResponseIsSuccessful();
+        self::assertCount(1, $crawler->filter('.recipe-row'));
+        self::assertSelectorTextContains(
+            '.recipe-row',
+            'Test Mac and Cheese'
+        );
+    }
+    
     private function createRecipe(): CookingRecipe
     {
         $entityManager = static::getContainer()->get(

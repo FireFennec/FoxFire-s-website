@@ -12,18 +12,34 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 
 #[Route('/cooking-recipes')]
 class CookingRecipeController extends AbstractController
 {
     // Display all cooking recipes.
     #[Route('/', name: 'app_cooking_recipe', methods: ['GET'])]
-    public function listOfRecipes(CookingRecipeRepository $repository): Response
-    {
-        $recipes = $repository->findAllOrderedById();
+    public function listOfRecipes(
+        Request $request,
+        CookingRecipeRepository $repository
+    ): Response {
+        $queryBuilder = $repository->createOrderedQueryBuilder();
+
+        $pager = new Pagerfanta(new QueryAdapter($queryBuilder));
+        $pager->setMaxPerPage(10);
+
+        // Normalize invalid page numbers to the first page.
+        $page = $request->query->getInt('page', 1);
+        $page = max(1, $page);
+
+        // Prevent requesting a page beyond the available results.
+        $page = min($page, max(1, $pager->getNbPages()));
+
+        $pager->setCurrentPage($page);
 
         return $this->render('cookingRecipe/listOfRecipes.html.twig', [
-            'recipes' => $recipes,
+            'recipes' => $pager,
         ]);
     }
 

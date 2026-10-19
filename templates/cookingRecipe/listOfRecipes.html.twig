@@ -31,6 +31,40 @@
                         </p>
                     {% endfor %}
                 </div>
+
+                {# Pagination navigation #}
+                {% if recipes.nbPages > 1 %}
+                    <nav
+                        class="recipes-pagination"
+                        aria-label="Recipe pagination"
+                    >
+                        {% if recipes.hasPreviousPage %}
+                            <a
+                                class="button"
+                                href="{{ path('app_cooking_recipe', {
+                                    page: recipes.previousPage
+                                }) }}"
+                            >
+                                ← Previous
+                            </a>
+                        {% endif %}
+
+                        <span class="recipes-page-indicator">
+                            Page {{ recipes.currentPage }} of {{ recipes.nbPages }}
+                        </span>
+
+                        {% if recipes.hasNextPage %}
+                            <a
+                                class="button"
+                                href="{{ path('app_cooking_recipe', {
+                                    page: recipes.nextPage
+                                }) }}"
+                            >
+                                Next →
+                            </a>
+                        {% endif %}
+                    </nav>
+                {% endif %}
             </section>
         </div>
     </div>

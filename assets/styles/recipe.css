@@ -237,3 +237,24 @@
     flex-direction: column;
     gap: 6px;
 }
+
+.recipes-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.recipes-page-indicator {
+    color: #d1d1d1;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+    .recipes-pagination {
+        gap: 0.75rem;
+    }
+}

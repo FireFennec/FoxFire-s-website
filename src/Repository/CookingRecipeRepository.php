@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Entity\CookingRecipe;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -18,12 +19,10 @@ class CookingRecipeRepository extends ServiceEntityRepository
         parent::__construct($registry, CookingRecipe::class);
     }
 
-    // Return all recipes ordered by their ID.
-    public function findAllOrderedById(): array
+    // Build a query for recipes ordered from newest to oldest.
+    public function createOrderedQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('recipe')
-            ->orderBy('recipe.id', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->orderBy('recipe.id', 'DESC');
     }
 }
