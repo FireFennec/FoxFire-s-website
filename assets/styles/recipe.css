@@ -15,6 +15,40 @@
     border-bottom: 1px solid rgba(255, 0, 0, 0.15);
 }
 
+/* Message displayed when no recipes exist. */
+.recipes-empty {
+    margin: 0;
+    padding: 15px 0;
+
+    color: var(--text-main);
+    text-align: center;
+    opacity: 0.75;
+}
+
+
+/* ==================================================
+   RECIPES PAGINATION
+   ================================================== */
+
+/* Pagination navigation layout. */
+.recipes-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    margin-top: 1.5rem;
+}
+
+/* Current page indicator. */
+.recipes-page-indicator {
+    color: #d1d1d1;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+
 /* ==================================================
    RECIPE DETAIL
    ================================================== */
@@ -76,35 +110,6 @@
 
 
 /* ==================================================
-   RESPONSIVE RECIPE DETAIL
-   ================================================== */
-
-/* Adjust the recipe detail layout on smaller screens. */
-@media (max-width: 650px) {
-    .recipe-detail-page {
-        padding-top: 100px;
-    }
-
-    .recipe-detail-page .page-action {
-        top: 30px;
-    }
-
-    .recipe-detail-page .page-content {
-        padding: 0 20px;
-    }
-
-    .recipe-detail-page .page-panel {
-        padding: 25px 20px;
-    }
-
-    .recipe-detail-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-}
-
-
-/* ==================================================
    RECIPE FORM
    ================================================== */
 
@@ -112,22 +117,6 @@
 .recipe-form-panel .form-field textarea {
     min-height: 180px;
     resize: vertical;
-}
-
-.ingredient-entry {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-/* Message displayed when no recipes exist. */
-.recipes-empty {
-    margin: 0;
-    padding: 15px 0;
-
-    color: var(--text-main);
-    text-align: center;
-    opacity: 0.75;
 }
 
 
@@ -140,6 +129,13 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+/* Keep ingredient fields grouped with their validation errors. */
+.ingredient-entry {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 /* Individual ingredient input and remove button layout. */
@@ -200,6 +196,54 @@
     background: rgba(255, 0, 0, 0.10);
 }
 
+/* Visible keyboard focus for ingredient controls. */
+.remove-ingredient:focus-visible,
+.recipe-add-ingredient:focus-visible {
+    outline: 2px solid #ff5555;
+    outline-offset: 3px;
+}
+
+
+/* ==================================================
+   RESPONSIVE RECIPES PAGINATION
+   ================================================== */
+
+/* Adjust pagination spacing on smaller screens. */
+@media (max-width: 480px) {
+    .recipes-pagination {
+        gap: 0.75rem;
+    }
+}
+
+
+/* ==================================================
+   RESPONSIVE RECIPE DETAIL
+   ================================================== */
+
+/* Adjust the recipe detail layout on smaller screens. */
+@media (max-width: 650px) {
+    .recipe-detail-page {
+        padding-top: 100px;
+    }
+
+    .recipe-detail-page .page-action {
+        top: 30px;
+    }
+
+    .recipe-detail-page .page-content {
+        padding: 0 20px;
+    }
+
+    .recipe-detail-page .page-panel {
+        padding: 25px 20px;
+    }
+
+    .recipe-detail-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
 
 /* ==================================================
    RESPONSIVE RECIPE FORM
@@ -221,40 +265,5 @@
 
     .recipe-form-page .page-panel {
         padding: 25px 20px;
-    }
-}
-
-/* Visible keyboard focus for ingredient controls. */
-.remove-ingredient:focus-visible,
-.recipe-add-ingredient:focus-visible {
-    outline: 2px solid #ff5555;
-    outline-offset: 3px;
-}
-
-/* Keep ingredient fields grouped with their validation errors. */
-.ingredient-entry {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.recipes-pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 1.5rem;
-}
-
-.recipes-page-indicator {
-    color: #d1d1d1;
-    font-size: 0.9rem;
-    white-space: nowrap;
-}
-
-@media (max-width: 480px) {
-    .recipes-pagination {
-        gap: 0.75rem;
     }
 }
