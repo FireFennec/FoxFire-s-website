@@ -2,12 +2,29 @@
 
 namespace App\Model;
 
-enum PersonalSkillLevelEnum: string
+enum PersonalSkillLevelEnum: int
 {
-    case AMATEUR = 'Amateur (1/6)';
-    case BEGINNER = 'Beginner (2/6)';
-    case ADVANCED = 'Advanced (3/6)';
-    case EXPERIENCED = 'Experienced (4/6)';
-    case PROFESSIONAL = 'Professional (5/6)';
-    case MASTER = 'Master (6/6)';
+    case AMATEUR = 1;
+    case BEGINNER = 2;
+    case ADVANCED = 3;
+    case EXPERIENCED = 4;
+    case PROFESSIONAL = 5;
+    case MASTER = 6;
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::AMATEUR => 'Amateur',
+            self::BEGINNER => 'Beginner',
+            self::ADVANCED => 'Advanced',
+            self::EXPERIENCED => 'Experienced',
+            self::PROFESSIONAL => 'Professional',
+            self::MASTER => 'Master',
+        };
+    }
+
+    public function displayLabel(): string
+    {
+        return sprintf('%s (%d/6)', $this->label(), $this->value);
+    }
 }

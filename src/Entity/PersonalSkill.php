@@ -67,6 +67,6 @@ class PersonalSkill
 
     public function getLevelOfSkillString(): string
     {
-        return $this->levelOfSkill->value;
+        return $this->levelOfSkill?->displayLabel() ?? '';
     }
 }
