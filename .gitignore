@@ -30,3 +30,8 @@ phpstan.neon
 
 # Local backup of Composer dependencies
 /vendor_backup/
+
+# Local database backups
+/backups/
+
+/migration_archive/
