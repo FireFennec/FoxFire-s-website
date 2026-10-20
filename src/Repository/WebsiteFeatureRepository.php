@@ -61,4 +61,19 @@ class WebsiteFeatureRepository extends ServiceEntityRepository
     {
         return $this->find($id);
     }
+
+    /**
+     * @return list<WebsiteFeature>
+     */
+    public function findByStatusOrderedByPriority(
+        FeaturesStatusEnum $status
+    ): array {
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.status = :status')
+            ->setParameter('status', $status)
+            ->orderBy('f.priority', 'DESC')
+            ->addOrderBy('f.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

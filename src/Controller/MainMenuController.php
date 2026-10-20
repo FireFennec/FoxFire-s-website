@@ -12,36 +12,23 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class MainMenuController extends AbstractController
 {
-    // Display the homepage.
     #[Route('/', name: 'app_mainMenu', methods: ['GET'])]
-    public function mainMenu(WebsiteFeatureRepository $websiteFeaturesRepository): Response
-    {
-        // Initialize arrays for features grouped by their status.
-        $newFeatures = [];
-        $updateFeatures = [];
-        $completedFeatures = [];
-
-        // Retrieve all website features ordered by priority.
-        $websiteFeatures = $websiteFeaturesRepository->findAll();
-
-        // Sort features into separate arrays based on their status.
-        foreach ($websiteFeatures as $websiteFeature) {
-            $status = $websiteFeature->getStatus();
-
-            if ($status === FeaturesStatusEnum::NEW_FEATURE) {
-                $newFeatures[] = $websiteFeature;
-            } elseif ($status === FeaturesStatusEnum::UPDATE_FEATURE) {
-                $updateFeatures[] = $websiteFeature;
-            } elseif ($status === FeaturesStatusEnum::COMPLETED_FEATURE) {
-                $completedFeatures[] = $websiteFeature;
-            }
-        }
-
-        // Render the homepage and pass the grouped features to Twig.
+    public function mainMenu(
+        WebsiteFeatureRepository $websiteFeaturesRepository
+    ): Response {
         return $this->render('main/mainMenu.html.twig', [
-            'newFeatures' => $newFeatures,
-            'updateFeatures' => $updateFeatures,
-            'completedFeatures' => $completedFeatures,
+            'newFeatures' => $websiteFeaturesRepository
+                ->findByStatusOrderedByPriority(
+                    FeaturesStatusEnum::NEW_FEATURE
+                ),
+            'updateFeatures' => $websiteFeaturesRepository
+                ->findByStatusOrderedByPriority(
+                    FeaturesStatusEnum::UPDATE_FEATURE
+                ),
+            'completedFeatures' => $websiteFeaturesRepository
+                ->findByStatusOrderedByPriority(
+                    FeaturesStatusEnum::COMPLETED_FEATURE
+                ),
         ]);
     }
 }
