@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Model\PersonalSkillLevelEnum;
 use App\Repository\PersonalSkillRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PersonalSkillRepository::class)]
 class PersonalSkill
@@ -16,12 +19,17 @@ class PersonalSkill
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private ?string $skillName = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 2000)]
     private ?string $skillDescription = null;
 
     #[ORM\Column(enumType: PersonalSkillLevelEnum::class)]
+    #[Assert\NotNull]
     private ?PersonalSkillLevelEnum $levelOfSkill = null;
 
     public function getId(): ?int
@@ -36,7 +44,7 @@ class PersonalSkill
 
     public function setSkillName(string $skillName): static
     {
-        $this->skillName = $skillName;
+        $this->skillName = trim($skillName);
 
         return $this;
     }
@@ -48,7 +56,7 @@ class PersonalSkill
 
     public function setSkillDescription(string $skillDescription): static
     {
-        $this->skillDescription = $skillDescription;
+        $this->skillDescription = trim($skillDescription);
 
         return $this;
     }
