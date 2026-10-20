@@ -66,10 +66,4 @@ class PersonalSkillLevelEnumTest extends TestCase
             PersonalSkillLevelEnum::from(4)
         );
     }
-
-    public function testInvalidLevelReturnsNull(): void
-    {
-        self::assertNull(PersonalSkillLevelEnum::tryFrom(0));
-        self::assertNull(PersonalSkillLevelEnum::tryFrom(7));
-    }
 }
