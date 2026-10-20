@@ -82,9 +82,9 @@ class WebsiteFeature
         return $this;
     }
 
-    public function getStatusString(): string
+    public function getStatusString(): ?string
     {
-        return $this->status->value;
+        return $this->status?->value;
     }
 
     public function getPriority(): ?FeaturePriorityEnum
