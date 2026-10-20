@@ -72,6 +72,7 @@ class PersonalSkillControllerTest extends WebTestCase
             EntityManagerInterface::class
         );
 
+        // Create skills in an intentionally unordered sequence.
         $this->createSkill(
             $entityManager,
             'Test Beginner Skill',
@@ -93,36 +94,37 @@ class PersonalSkillControllerTest extends WebTestCase
             PersonalSkillLevelEnum::ADVANCED
         );
 
-        $client->request('GET', '/skills');
+        $crawler = $client->request('GET', '/skills');
 
         self::assertResponseIsSuccessful();
 
-        $names = $client->getCrawler()
-            ->filter('.skill-name')
+        // Collect the displayed skill names in their actual order.
+        $names = $crawler->filter('.skill-name')
             ->each(static fn ($node): string => trim($node->text()));
 
-        $positions = [];
-
-        foreach ([
-                     'Test Master Skill',
-                     'Test Advanced Skill',
-                     'Test Beginner Skill',
-                 ] as $name) {
-            $position = array_search($name, $names, true);
-
-            self::assertNotFalse($position);
-            $positions[] = $position;
-        }
-
-        self::assertSame($positions, array_values(
-            array_filter(
-                $positions,
-                static fn (int $position): bool => $position >= 0
+        // Keep only the skills created by this test.
+        $testNames = array_values(array_filter(
+            $names,
+            static fn (string $name): bool => in_array(
+                $name,
+                [
+                    'Test Master Skill',
+                    'Test Advanced Skill',
+                    'Test Beginner Skill',
+                ],
+                true
             )
         ));
 
-        self::assertLessThan($positions[1], $positions[0]);
-        self::assertLessThan($positions[2], $positions[1]);
+        // Verify that skills are sorted from highest to lowest level.
+        self::assertSame(
+            [
+                'Test Master Skill',
+                'Test Advanced Skill',
+                'Test Beginner Skill',
+            ],
+            $testNames
+        );
     }
 
     public function testEmptySkillsListDisplaysMessage(): void
