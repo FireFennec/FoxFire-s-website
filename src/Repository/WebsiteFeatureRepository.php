@@ -20,10 +20,16 @@ class WebsiteFeatureRepository extends ServiceEntityRepository
     }
 
     // Retrieve all website features ordered by priority.
-    public function findAll(): array
+    /**
+     * Retrieve all website features ordered by priority.
+     *
+     * @return list<WebsiteFeature>
+     */
+    public function findAllOrderedByPriority(): array
     {
         return $this->createQueryBuilder('f')
             ->orderBy('f.priority', 'DESC')
+            ->addOrderBy('f.id', 'DESC')
             ->getQuery()
             ->getResult();
     }
