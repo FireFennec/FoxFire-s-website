@@ -27,3 +27,6 @@
 ###> phpstan/phpstan ###
 phpstan.neon
 ###< phpstan/phpstan ###
+
+# Local backup of Composer dependencies
+/vendor_backup/
