@@ -70,6 +70,7 @@
     font-size: 15px;
     line-height: 1.8;
     overflow-wrap: anywhere;
+    white-space: pre-line;
 }
 
 
@@ -91,4 +92,11 @@
         flex-direction: column;
         gap: 12px;
     }
+}
+
+/* Empty skills list. */
+.skills-empty p {
+    margin: 0;
+    text-align: center;
+    color: var(--text-main);
 }
