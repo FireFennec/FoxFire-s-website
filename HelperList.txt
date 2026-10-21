@@ -9,3 +9,6 @@ Just my own path for powershell
 
 For tests
 - php bin/phpunit
+
+PHP stan analyse
+- vendor/bin/phpstan analyse

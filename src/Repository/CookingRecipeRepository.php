@@ -19,7 +19,9 @@ class CookingRecipeRepository extends ServiceEntityRepository
         parent::__construct($registry, CookingRecipe::class);
     }
 
-    // Build a query for recipes ordered from newest to oldest.
+    /**
+     * Builds a query for recipes ordered by ID in descending order.
+     */
     public function createOrderedQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('recipe')

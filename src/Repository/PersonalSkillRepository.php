@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\PersonalSkill;
@@ -17,6 +19,8 @@ class PersonalSkillRepository extends ServiceEntityRepository
     }
 
     /**
+     * Retrieves personal skills ordered by proficiency level, highest first.
+     *
      * @return list<PersonalSkill>
      */
     public function findAllOrderedByLevel(): array

@@ -19,9 +19,8 @@ class WebsiteFeatureRepository extends ServiceEntityRepository
         parent::__construct($registry, WebsiteFeature::class);
     }
 
-    // Retrieve all website features ordered by priority.
     /**
-     * Retrieve all website features ordered by priority.
+     * Retrieves all features ordered by priority and ID, highest first.
      *
      * @return list<WebsiteFeature>
      */
@@ -34,8 +33,9 @@ class WebsiteFeatureRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    // Retrieve completed features ordered by priority.
     /**
+     * Retrieves completed features ordered by priority, highest first.
+     *
      * @return list<WebsiteFeature>
      */
     public function findCompleted(): array
@@ -48,8 +48,9 @@ class WebsiteFeatureRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    // Retrieve unfinished features ordered by priority.
     /**
+     * Retrieves unfinished features ordered by priority, highest first.
+     *
      * @return list<WebsiteFeature>
      */
     public function findToDo(): array
@@ -62,13 +63,18 @@ class WebsiteFeatureRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    // Find a single website feature by its ID.
+    /**
+     * Finds a single website feature by its ID.
+     */
     public function findOne(int $id): ?WebsiteFeature
     {
         return $this->find($id);
     }
 
     /**
+     * Retrieves features matching the given status, ordered by priority
+     * and ID in descending order.
+     *
      * @return list<WebsiteFeature>
      */
     public function findByStatusOrderedByPriority(
