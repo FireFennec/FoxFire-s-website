@@ -10,6 +10,9 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Represents a personal skill with its description and proficiency level.
+ */
 #[ORM\Entity(repositoryClass: PersonalSkillRepository::class)]
 class PersonalSkill
 {

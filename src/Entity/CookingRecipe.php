@@ -9,6 +9,9 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Represents a cooking recipe with ingredients and preparation instructions.
+ */
 #[ORM\Entity(repositoryClass: CookingRecipeRepository::class)]
 class CookingRecipe
 {
@@ -17,7 +20,6 @@ class CookingRecipe
     #[ORM\Column]
     private ?int $id = null;
 
-    // Recipe name must not be empty.
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(
         message: 'Recipe name cannot be empty.',
@@ -29,8 +31,9 @@ class CookingRecipe
     )]
     private ?string $recipeName = null;
 
-    // A recipe must contain at least one valid ingredient.
-    /** @var list<string> */
+    /**
+     * @var list<string>
+     */
     #[ORM\Column(type: Types::JSON)]
     #[Assert\Count(
         min: 1,
@@ -48,7 +51,6 @@ class CookingRecipe
     ])]
     private array $ingredients = [];
 
-    // Cooking instructions must not be empty.
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank(
         message: 'Cooking process cannot be empty.',

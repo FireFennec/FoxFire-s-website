@@ -10,6 +10,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
+/**
+ * Stores contact details and social platform profiles.
+ */
 #[ORM\Entity(repositoryClass: ContactInformationRepository::class)]
 #[UniqueEntity(
     fields: ['email'],
@@ -22,7 +25,6 @@ class ContactInformation
     #[ORM\Column]
     private ?int $id = null;
 
-    // Optional phone number.
     #[ORM\Column(length: 30, nullable: true)]
     #[Assert\Length(max: 30)]
     #[Assert\Regex(
@@ -31,19 +33,16 @@ class ContactInformation
     )]
     private ?string $phoneNumber = null;
 
-    // Required and unique email address.
     #[ORM\Column(length: 255, unique: true)]
     #[Assert\NotBlank(message: 'Email cannot be empty.')]
     #[Assert\Email(message: 'Please enter a valid email address.')]
     #[Assert\Length(max: 255)]
     private ?string $email = null;
 
-    // Optional Discord username.
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
     private ?string $discord = null;
 
-    // Optional Telegram username.
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Regex(
         pattern: '/^[a-zA-Z][a-zA-Z0-9_]{4,31}$/',
@@ -51,12 +50,10 @@ class ContactInformation
     )]
     private ?string $telegram = null;
 
-    // X profile display name.
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
     private ?string $x = null;
 
-    // X profile URL.
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
     #[Assert\Url(
@@ -66,12 +63,10 @@ class ContactInformation
     )]
     private ?string $xLink = null;
 
-    // Barq profile display name.
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
     private ?string $barq = null;
 
-    // Barq profile URL.
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
     #[Assert\Url(
@@ -81,7 +76,6 @@ class ContactInformation
     )]
     private ?string $barqLink = null;
 
-    // Steam profile URL.
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
     #[Assert\Url(
@@ -91,12 +85,10 @@ class ContactInformation
     )]
     private ?string $steamLink = null;
 
-    // Steam profile display name.
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
     private ?string $steam = null;
 
-    // Optional Battle.net BattleTag.
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
     private ?string $battleNet = null;
@@ -238,7 +230,11 @@ class ContactInformation
         return $this;
     }
 
-    // Validate that profile URLs belong to the expected platforms.
+    /**
+     * Validates that social profile URLs belong to their expected platforms.
+     *
+     * Adds a violation to the corresponding property when the host is invalid.
+     */
     #[Assert\Callback]
     public function validatePlatformLinks(
         ExecutionContextInterface $context
@@ -248,23 +244,23 @@ class ContactInformation
                 'url' => $this->xLink,
                 'hosts' => [
                     'x.com',
-                    'www.x.com',
+                    'www\.x.com',
                     'twitter.com',
-                    'www.twitter.com',
+                    'www\.twitter.com',
                 ],
             ],
             'barqLink' => [
                 'url' => $this->barqLink,
                 'hosts' => [
                     'barq.app',
-                    'www.barq.app',
+                    'www\.barq.app',
                 ],
             ],
             'steamLink' => [
                 'url' => $this->steamLink,
                 'hosts' => [
                     'steamcommunity.com',
-                    'www.steamcommunity.com',
+                    'www\.steamcommunity.com',
                 ],
             ],
         ];
@@ -290,3 +286,4 @@ class ContactInformation
         }
     }
 }
+
