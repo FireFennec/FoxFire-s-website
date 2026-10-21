@@ -8,17 +8,22 @@ use App\Entity\CookingRecipe;
 use App\Form\CookingRecipes\CookingRecipeType;
 use App\Repository\CookingRecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Pagerfanta\Doctrine\ORM\QueryAdapter;
-use Pagerfanta\Pagerfanta;
 
+/**
+ * Handles the listing, viewing, creation, and editing of cooking recipes.
+ */
 #[Route('/cooking-recipes')]
 class CookingRecipeController extends AbstractController
 {
-    // Display all cooking recipes.
+    /**
+     * Displays a paginated list of cooking recipes.
+     */
     #[Route('/', name: 'app_cooking_recipe', methods: ['GET'])]
     public function listOfRecipes(
         Request $request,
@@ -29,11 +34,9 @@ class CookingRecipeController extends AbstractController
         $pager = new Pagerfanta(new QueryAdapter($queryBuilder));
         $pager->setMaxPerPage(10);
 
-        // Normalize invalid page numbers to the first page.
+        // Keep the requested page within the available range.
         $page = $request->query->getInt('page', 1);
         $page = max(1, $page);
-
-        // Prevent requesting a page beyond the available results.
         $page = min($page, max(1, $pager->getNbPages()));
 
         $pager->setCurrentPage($page);
@@ -43,7 +46,9 @@ class CookingRecipeController extends AbstractController
         ]);
     }
 
-    // Display and process the recipe creation form.
+    /**
+     * Displays and processes the form for creating a new cooking recipe.
+     */
     #[Route('/create', name: 'app_cooking_recipe_create', methods: ['GET', 'POST'])]
     public function createRecipe(
         Request $request,
@@ -69,7 +74,9 @@ class CookingRecipeController extends AbstractController
         ]);
     }
 
-    // Display and process the recipe editing form.
+    /**
+     * Displays and processes the form for editing an existing cooking recipe.
+     */
     #[Route('/{id<\d+>}/edit', name: 'app_cookingRecipe_editCookingRecipe', methods: ['GET', 'POST'])]
     public function editCookingRecipe(
         int $id,
@@ -90,7 +97,7 @@ class CookingRecipeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Doctrine already manages the existing entity.
+            // The existing entity is already managed by Doctrine.
             $entityManager->flush();
 
             return $this->redirectToRoute(
@@ -104,7 +111,9 @@ class CookingRecipeController extends AbstractController
         ]);
     }
 
-    // Display the details of a single cooking recipe.
+    /**
+     * Displays the details of a cooking recipe.
+     */
     #[Route('/{id<\d+>}', name: 'app_cooking_recipe_showRecipeInfo', methods: ['GET'])]
     public function showRecipeInfo(
         int $id,

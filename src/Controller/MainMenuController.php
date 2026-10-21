@@ -10,8 +10,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * Handles the homepage and displays an overview of website features.
+ */
 class MainMenuController extends AbstractController
 {
+    /**
+     * Displays website features grouped by status and ordered by priority.
+     */
     #[Route('/', name: 'app_mainMenu', methods: ['GET'])]
     public function mainMenu(
         WebsiteFeatureRepository $websiteFeaturesRepository

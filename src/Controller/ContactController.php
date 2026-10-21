@@ -10,6 +10,9 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * Handles the About Me page and retrieves the configured contact information.
+ */
 class ContactController extends AbstractController
 {
     public function __construct(
@@ -17,11 +20,13 @@ class ContactController extends AbstractController
         private readonly string $contactEmail
     ) {
     }
-    // Display the About Me page.
+
+    /**
+     * Displays the About Me page with contact information from the database.
+     */
     #[Route('/aboutMe', name: 'app_contact_aboutMe', methods: ['GET'])]
     public function aboutMe(ContactInformationRepository $repository): Response
     {
-        // Retrieve the configured contact profile.
         $myContactInformation = $repository->findOneBy([
             'email' => $this->contactEmail,
         ]);

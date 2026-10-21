@@ -33,5 +33,3 @@ phpstan.neon
 
 # Local database backups
 /backups/
-
-/migration_archive/
