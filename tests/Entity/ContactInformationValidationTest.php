@@ -16,7 +16,6 @@ class ContactInformationValidationTest extends KernelTestCase
     {
         parent::setUp();
 
-        // Initialize the Symfony validator before each test.
         self::bootKernel();
 
         $this->validator = static::getContainer()->get(ValidatorInterface::class);
@@ -29,7 +28,6 @@ class ContactInformationValidationTest extends KernelTestCase
 
         $violations = $this->validator->validate($contact);
 
-        // Verify that the email field contains a validation error.
         $invalidFields = [];
 
         foreach ($violations as $violation) {
@@ -66,7 +64,6 @@ class ContactInformationValidationTest extends KernelTestCase
 
         $violations = $this->validator->validate($contact);
 
-        // Valid contact information must not produce any violations.
         self::assertCount(0, $violations, (string) $violations);
     }
 }

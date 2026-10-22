@@ -27,7 +27,6 @@ class MainMenuControllerTest extends WebTestCase
 
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
 
-        // Create a new feature for testing.
         $feature = new WebsiteFeature();
 
         $feature->setName('Test New Feature');
@@ -35,7 +34,6 @@ class MainMenuControllerTest extends WebTestCase
         $feature->setStatus(FeaturesStatusEnum::NEW_FEATURE);
         $feature->setPriority(FeaturePriorityEnum::SOON);
 
-        // Create a feature with UPDATE status.
         $updateFeature = new WebsiteFeature();
 
         $updateFeature->setName('Test Update Feature');
@@ -43,7 +41,6 @@ class MainMenuControllerTest extends WebTestCase
         $updateFeature->setStatus(FeaturesStatusEnum::UPDATE_FEATURE);
         $updateFeature->setPriority(FeaturePriorityEnum::ANYTIME);
 
-        // Create a feature with COMPLETED status.
         $completedFeature = new WebsiteFeature();
 
         $completedFeature->setName('Test Completed Feature');
@@ -51,23 +48,19 @@ class MainMenuControllerTest extends WebTestCase
         $completedFeature->setStatus(FeaturesStatusEnum::COMPLETED_FEATURE);
         $completedFeature->setPriority(FeaturePriorityEnum::ASAP);
 
-        // Save all three features to the test database.
         $entityManager->persist($feature);
         $entityManager->persist($updateFeature);
         $entityManager->persist($completedFeature);
         $entityManager->flush();
 
-        // Request the homepage.
         $crawler = $client->request('GET', '/');
 
         self::assertResponseIsSuccessful();
 
-        // Find the three feature sections.
         $sections = $crawler->filter('section.homepage-feature-section');
 
         self::assertCount(3, $sections);
 
-        // Verify that each section has the correct heading.
         self::assertSame(
             'The plan of things I want to add',
             $sections->eq(0)->filter('h2')->text()
@@ -83,7 +76,6 @@ class MainMenuControllerTest extends WebTestCase
             $sections->eq(2)->filter('h2')->text()
         );
 
-        // Verify that each feature appears in the correct section.
         self::assertStringContainsString(
             'Test New Feature',
             $sections->eq(0)->text()
@@ -99,7 +91,6 @@ class MainMenuControllerTest extends WebTestCase
             $sections->eq(2)->text()
         );
 
-        // Verify that features do not appear in incorrect sections.
         self::assertStringNotContainsString(
             'Test Update Feature',
             $sections->eq(0)->text()

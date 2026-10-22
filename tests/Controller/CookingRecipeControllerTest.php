@@ -105,7 +105,6 @@ class CookingRecipeControllerTest extends WebTestCase
             $crawler->filter('textarea[name="cooking_recipe[cookingProcess]"]')
         );
 
-        // Verify that CSRF protection is rendered.
         self::assertCount(
             1,
             $crawler->filter('input[name="cooking_recipe[_token]"]')
@@ -174,7 +173,6 @@ class CookingRecipeControllerTest extends WebTestCase
             ],
         ]);
 
-        // Invalid form should be rendered again, not redirected.
         self::assertResponseIsSuccessful();
 
         $repository = static::getContainer()->get(
@@ -233,7 +231,7 @@ class CookingRecipeControllerTest extends WebTestCase
             EntityManagerInterface::class
         );
 
-        // Reload the entity to verify persisted database values.
+        // Clear the identity map to verify values persisted in the database.
         $entityManager->clear();
 
         $repository = static::getContainer()->get(
@@ -313,7 +311,6 @@ class CookingRecipeControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        // Initialize the form and its CSRF protection.
         $client->request('GET', '/cooking-recipes/create');
 
         $client->request('POST', '/cooking-recipes/create', [
@@ -387,7 +384,6 @@ class CookingRecipeControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
 
-        // Display validation errors for debugging.
         $crawler = $client->getCrawler();
 
         dump($crawler->filter('.form-error-message')->each(
@@ -398,7 +394,6 @@ class CookingRecipeControllerTest extends WebTestCase
             CookingRecipeRepository::class
         );
 
-        // Verify that the invalid recipe was not saved.
         self::assertNull($repository->findOneBy([
             'recipeName' => 'Recipe Without Ingredients',
         ]));
@@ -475,7 +470,6 @@ class CookingRecipeControllerTest extends WebTestCase
             EntityManagerInterface::class
         );
 
-        // Create 12 recipes to test pagination.
         for ($i = 1; $i <= 12; $i++) {
             $recipe = new CookingRecipe();
             $recipe->setRecipeName('Pagination Recipe ' . $i);
@@ -487,7 +481,6 @@ class CookingRecipeControllerTest extends WebTestCase
 
         $entityManager->flush();
 
-        // Verify the first page.
         $crawler = $client->request('GET', '/cooking-recipes/');
 
         self::assertResponseIsSuccessful();
@@ -497,13 +490,11 @@ class CookingRecipeControllerTest extends WebTestCase
             'Page 1 of 2'
         );
 
-        // Verify that the newest recipes appear first.
         self::assertSelectorTextContains(
             '.recipe-row:first-child',
             'Pagination Recipe 12'
         );
 
-        // Verify the second page.
         $crawler = $client->request('GET', '/cooking-recipes/?page=2');
 
         self::assertResponseIsSuccessful();

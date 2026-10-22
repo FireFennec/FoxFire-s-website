@@ -98,11 +98,9 @@ class PersonalSkillControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
 
-        // Collect the displayed skill names in their actual order.
         $names = $crawler->filter('.skill-name')
             ->each(static fn ($node): string => trim($node->text()));
 
-        // Keep only the skills created by this test.
         $testNames = array_values(array_filter(
             $names,
             static fn (string $name): bool => in_array(
@@ -116,7 +114,6 @@ class PersonalSkillControllerTest extends WebTestCase
             )
         ));
 
-        // Verify that skills are sorted from highest to lowest level.
         self::assertSame(
             [
                 'Test Master Skill',
@@ -182,4 +179,3 @@ class PersonalSkillControllerTest extends WebTestCase
         return $skill;
     }
 }
-

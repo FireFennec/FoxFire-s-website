@@ -36,7 +36,6 @@ class FeaturesListControllerTest extends WebTestCase
         $client = static::createClient();
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
 
-        // Create features with three different statuses.
         $this->createFeature(
             $entityManager,
             'Test New Feature',
@@ -71,12 +70,10 @@ class FeaturesListControllerTest extends WebTestCase
         self::assertSame('To Do Features', $toDoSection->filter('h2')->text());
         self::assertSame('Completed Features', $completedSection->filter('h2')->text());
 
-        // Unfinished features belong in the To Do section.
         self::assertStringContainsString('Test New Feature', $toDoSection->text());
         self::assertStringContainsString('Test Update Feature', $toDoSection->text());
         self::assertStringNotContainsString('Test Completed Feature', $toDoSection->text());
 
-        // Completed features must not appear in the To Do section.
         self::assertStringContainsString('Test Completed Feature', $completedSection->text());
         self::assertStringNotContainsString('Test New Feature', $completedSection->text());
         self::assertStringNotContainsString('Test Update Feature', $completedSection->text());
@@ -121,7 +118,6 @@ class FeaturesListControllerTest extends WebTestCase
         $client->request('GET', '/feature/createFeature');
         self::assertResponseIsSuccessful();
 
-        // Submit the creation form with valid values.
         $client->submitForm('Create Feature', [
             'create_feature_form[name]' => 'Test Created Feature',
             'create_feature_form[description]' => 'Feature created through a functional test.',
@@ -136,11 +132,10 @@ class FeaturesListControllerTest extends WebTestCase
         self::assertSelectorTextContains('body', 'Test Created Feature');
         self::assertSelectorTextContains('body', 'Feature created through a functional test.');
 
-        // The redirect points to /feature/{id}.
         $featureId = (int) basename($client->getRequest()->getPathInfo());
         self::assertGreaterThan(0, $featureId);
 
-        // Detach managed entities before verifying the stored values.
+        // Clear the identity map to verify values persisted in the database.
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $entityManager->clear();
 
@@ -167,7 +162,6 @@ class FeaturesListControllerTest extends WebTestCase
             FeaturePriorityEnum::ANYTIME
         );
 
-        // Start with an existing deadline.
         $feature->setDeadlineAt(new DateTimeImmutable('2027-01-15'));
         $entityManager->flush();
 
@@ -177,7 +171,6 @@ class FeaturesListControllerTest extends WebTestCase
         $client->request('GET', '/feature/editFeature/' . $featureId);
         self::assertResponseIsSuccessful();
 
-        // Update the feature fields and its deadline through the form.
         $client->submitForm('Save Changes', [
             'create_feature_form[name]' => 'Updated Feature',
             'create_feature_form[description]' => 'Updated description.',
@@ -191,7 +184,7 @@ class FeaturesListControllerTest extends WebTestCase
         self::assertResponseIsSuccessful();
         self::assertSelectorTextContains('body', 'Updated Feature');
 
-        // Reload the updated values from the database.
+        // Clear managed entities before checking the persisted changes.
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $entityManager->clear();
         $repository = static::getContainer()->get(WebsiteFeatureRepository::class);
@@ -204,7 +197,6 @@ class FeaturesListControllerTest extends WebTestCase
         self::assertSame(FeaturePriorityEnum::ASAP, $updatedFeature->getPriority());
         self::assertSame('2027-06-15', $updatedFeature->getDeadlineAt()?->format('Y-m-d'));
 
-        // Edit the same feature again and remove its deadline.
         $client->request('GET', '/feature/editFeature/' . $featureId);
         self::assertResponseIsSuccessful();
 
@@ -218,7 +210,6 @@ class FeaturesListControllerTest extends WebTestCase
 
         self::assertResponseRedirects('/feature/' . $featureId);
 
-        // Verify that removing the deadline was persisted.
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $entityManager->clear();
         $repository = static::getContainer()->get(WebsiteFeatureRepository::class);
@@ -247,7 +238,6 @@ class FeaturesListControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/feature/' . $featureId);
         self::assertResponseIsSuccessful();
 
-        // Submit the actual delete form, including its CSRF token.
         $deleteForm = $crawler->filter(
             'form[action="/feature/deleteFeature/' . $featureId . '"]'
         )->form();
@@ -276,7 +266,6 @@ class FeaturesListControllerTest extends WebTestCase
         $featureId = $feature->getId();
         self::assertNotNull($featureId);
 
-        // Invalid CSRF tokens must never delete records.
         $client->request(
             'POST',
             '/feature/deleteFeature/' . $featureId,
@@ -303,7 +292,7 @@ class FeaturesListControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        // The controller checks whether the feature exists before checking CSRF.
+        // Missing features return 404 before CSRF validation.
         $client->request('POST', '/feature/deleteFeature/999999999');
 
         self::assertResponseStatusCodeSame(404);
@@ -346,12 +335,10 @@ class FeaturesListControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        // Open the feature creation form.
         $client->request('GET', '/feature/createFeature');
 
         self::assertResponseIsSuccessful();
 
-        // Submit fields containing only whitespace.
         $client->submitForm('Create Feature', [
             'create_feature_form[name]' => '   ',
             'create_feature_form[description]' => '   ',
@@ -359,10 +346,8 @@ class FeaturesListControllerTest extends WebTestCase
             'create_feature_form[priority]' => (string) FeaturePriorityEnum::SOON->value,
         ]);
 
-        // Invalid form data must not cause a redirect.
         self::assertResponseStatusCodeSame(200);
 
-        // Verify that both validation errors are displayed.
         self::assertSelectorTextContains(
             'body',
             'Feature name cannot be empty.'
@@ -373,7 +358,6 @@ class FeaturesListControllerTest extends WebTestCase
             'Feature description cannot be empty.'
         );
 
-        // Verify that no invalid feature was saved.
         $repository = static::getContainer()->get(WebsiteFeatureRepository::class);
 
         self::assertSame([], array_filter(
@@ -390,7 +374,6 @@ class FeaturesListControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
 
-        // Generate a feature name exceeding the database limit.
         $longName = str_repeat('A', 256);
 
         $client->submitForm('Create Feature', [
@@ -400,16 +383,13 @@ class FeaturesListControllerTest extends WebTestCase
             'create_feature_form[priority]' => (string) FeaturePriorityEnum::SOON->value,
         ]);
 
-        // The invalid form should be displayed again.
         self::assertResponseStatusCodeSame(200);
 
-        // Verify that Symfony displays the validation error.
         self::assertSelectorTextContains(
             'body',
             'Feature name cannot exceed 255 characters.'
         );
 
-        // Verify that the invalid feature was not saved.
         $repository = static::getContainer()->get(WebsiteFeatureRepository::class);
 
         foreach ($repository->findAll() as $feature) {
@@ -423,7 +403,7 @@ class FeaturesListControllerTest extends WebTestCase
 
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
 
-        // Create features in a deliberately incorrect priority order.
+        // Insert features out of priority order to verify sorting.
         $this->createFeature(
             $entityManager,
             'Low Priority Feature',
@@ -448,20 +428,16 @@ class FeaturesListControllerTest extends WebTestCase
             FeaturePriorityEnum::SOON
         );
 
-        // Request the feature list page.
         $crawler = $client->request('GET', '/feature/list');
 
         self::assertResponseIsSuccessful();
 
-        // Select the unfinished features section.
         $toDoSection = $crawler->filter('section.features-section')->eq(0);
 
-        // Retrieve the feature names in their displayed order.
         $featureNames = $toDoSection
             ->filter('.feature-row .feature-name')
             ->each(fn ($node) => trim($node->text()));
 
-        // Verify that features are sorted from highest to lowest priority.
         self::assertSame([
             'High Priority Feature',
             'Medium Priority Feature',
@@ -477,7 +453,6 @@ class FeaturesListControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
 
-        // Submit a feature with a deadline.
         $client->submitForm('Create Feature', [
             'create_feature_form[name]' => 'Feature With Deadline',
             'create_feature_form[description]' => 'Testing deadline persistence.',
@@ -490,7 +465,6 @@ class FeaturesListControllerTest extends WebTestCase
 
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
 
-        // Reload the feature from the database.
         $entityManager->clear();
 
         $feature = $entityManager
@@ -499,7 +473,6 @@ class FeaturesListControllerTest extends WebTestCase
 
         self::assertNotNull($feature);
 
-        // Verify that the deadline is stored as an immutable date.
         self::assertInstanceOf(
             DateTimeImmutable::class,
             $feature->getDeadlineAt()

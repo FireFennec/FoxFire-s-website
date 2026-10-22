@@ -37,7 +37,6 @@ class ContactControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
 
-        // Verify that each contact value belongs to the correct row.
         $this->assertContactRow($crawler, 'Email', self::PROFILE_EMAIL);
         $this->assertContactRow($crawler, 'Telegram', 'TestTelegram');
         $this->assertContactRow($crawler, 'Discord', 'test_discord');
@@ -58,7 +57,6 @@ class ContactControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
 
-        // Verify URLs, accessible names and security attributes.
         $this->assertExternalLink(
             $crawler,
             'https://t.me/TestTelegram',
@@ -103,7 +101,6 @@ class ContactControllerTest extends WebTestCase
 
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
 
-        // Remove selected optional contact information.
         $contact->setTelegram(null);
         $contact->setDiscord(null);
         $contact->setX(null);
@@ -119,19 +116,16 @@ class ContactControllerTest extends WebTestCase
 
         $visibleLabels = $this->getVisibleLabels($crawler);
 
-        // Verify that empty contact rows are hidden.
         self::assertNotContains('Telegram', $visibleLabels);
         self::assertNotContains('Discord', $visibleLabels);
         self::assertNotContains('X', $visibleLabels);
         self::assertNotContains('Steam', $visibleLabels);
 
-        // Verify that populated contact rows remain visible.
         self::assertContains('Email', $visibleLabels);
         self::assertContains('Phone', $visibleLabels);
         self::assertContains('Barq', $visibleLabels);
         self::assertContains('Battle.net', $visibleLabels);
 
-        // Verify that links for missing profiles are not rendered.
         self::assertCount(
             0,
             $crawler->filter('a[href^="https://t.me/"]')
@@ -156,7 +150,6 @@ class ContactControllerTest extends WebTestCase
 
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
 
-        // Remove all optional contact information.
         $contact->setPhoneNumber(null);
         $contact->setDiscord(null);
         $contact->setTelegram(null);
@@ -174,7 +167,6 @@ class ContactControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
 
-        // Only the required email row should be displayed.
         self::assertSame(
             ['Email'],
             $this->getVisibleLabels($crawler)
@@ -186,14 +178,12 @@ class ContactControllerTest extends WebTestCase
             self::PROFILE_EMAIL
         );
 
-        // Empty sections must not be rendered.
         $sectionHeadings = $crawler
             ->filter('section.about-section h2')
             ->each(static fn (Crawler $node): string => trim($node->text()));
 
         self::assertSame(['Contact me'], $sectionHeadings);
 
-        // No external profile links should exist.
         self::assertCount(
             0,
             $crawler->filter('a.about-link')
@@ -209,7 +199,6 @@ class ContactControllerTest extends WebTestCase
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $repository = static::getContainer()->get(ContactInformationRepository::class);
 
-        // Ensure that the unrelated test profile does not already exist.
         foreach ($repository->findBy([
             'email' => 'another-user@example.com',
         ]) as $existingContact) {
@@ -218,7 +207,6 @@ class ContactControllerTest extends WebTestCase
 
         $entityManager->flush();
 
-        // Create another profile that must not be displayed.
         $otherContact = new ContactInformation();
         $otherContact->setEmail('another-user@example.com');
         $otherContact->setDiscord('other_user_discord');
@@ -230,14 +218,12 @@ class ContactControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
 
-        // The configured profile must be displayed.
         $this->assertContactRow(
             $crawler,
             'Email',
             self::PROFILE_EMAIL
         );
 
-        // Information belonging to another profile must remain hidden.
         $pageText = $crawler->filter('body')->text();
 
         self::assertStringNotContainsString(
@@ -257,7 +243,6 @@ class ContactControllerTest extends WebTestCase
 
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
 
-        // Create predictable contact information for testing.
         $contact = new ContactInformation();
 
         $contact->setEmail(self::PROFILE_EMAIL);
@@ -283,7 +268,6 @@ class ContactControllerTest extends WebTestCase
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $repository = static::getContainer()->get(ContactInformationRepository::class);
 
-        // Remove the configured test profile if it already exists.
         foreach ($repository->findBy([
             'email' => self::PROFILE_EMAIL,
         ]) as $contact) {
@@ -298,7 +282,6 @@ class ContactControllerTest extends WebTestCase
      */
     private function getVisibleLabels(Crawler $crawler): array
     {
-        // Return the exact labels of all visible contact rows.
         return $crawler
             ->filter('.about-label')
             ->each(static fn (Crawler $node): string => trim($node->text()));
@@ -309,7 +292,6 @@ class ContactControllerTest extends WebTestCase
         string $label,
         string $value
     ): void {
-        // Find the row with the exact expected label.
         $rows = $crawler->filter('.about-row')->reduce(
             static function (Crawler $row) use ($label): bool {
                 return trim($row->filter('.about-label')->text()) === $label;
@@ -322,7 +304,6 @@ class ContactControllerTest extends WebTestCase
             sprintf('Expected exactly one row for "%s".', $label)
         );
 
-        // Verify that the row contains the expected value.
         self::assertSame(
             $value,
             trim($rows->filter('.about-value')->text())
@@ -334,7 +315,6 @@ class ContactControllerTest extends WebTestCase
         string $url,
         string $accessibleName
     ): void {
-        // Find the link by its accessible name.
         $links = $crawler->filter('a.about-link')->reduce(
             static fn (Crawler $link): bool =>
                 $link->attr('aria-label') === $accessibleName
@@ -346,11 +326,9 @@ class ContactControllerTest extends WebTestCase
             sprintf('Expected one link named "%s".', $accessibleName)
         );
 
-        // Verify the destination and new-tab behavior.
         self::assertSame($url, $links->attr('href'));
         self::assertSame('_blank', $links->attr('target'));
 
-        // Verify that both security attributes are present.
         $rel = preg_split('/\s+/', trim((string) $links->attr('rel')));
 
         self::assertContains('noopener', $rel);
