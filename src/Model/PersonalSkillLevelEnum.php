@@ -1,7 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Model;
 
+/**
+ * Defines personal skill proficiency levels on a six-point scale.
+ */
 enum PersonalSkillLevelEnum: int
 {
     case AMATEUR = 1;
@@ -23,6 +28,9 @@ enum PersonalSkillLevelEnum: int
         };
     }
 
+    /**
+     * Returns the proficiency label with its rating on a six-point scale.
+     */
     public function displayLabel(): string
     {
         return sprintf('%s (%d/6)', $this->label(), $this->value);
