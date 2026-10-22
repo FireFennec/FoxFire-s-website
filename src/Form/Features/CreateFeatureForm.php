@@ -17,6 +17,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
+ * Defines the form for creating and editing website features.
+ *
  * @extends AbstractType<WebsiteFeature>
  */
 class CreateFeatureForm extends AbstractType
@@ -25,7 +27,7 @@ class CreateFeatureForm extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('description', TextAreaType::class)
+            ->add('description', TextareaType::class)
             ->add('status', EnumType::class, [
                 'class' => FeaturesStatusEnum::class,
                 'choice_label' => fn (FeaturesStatusEnum $choice) => $choice->value,

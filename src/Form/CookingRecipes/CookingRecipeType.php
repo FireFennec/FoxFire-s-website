@@ -14,6 +14,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
+ * Defines the form for creating and editing cooking recipes.
+ *
  * @extends AbstractType<CookingRecipe>
  */
 class CookingRecipeType extends AbstractType
