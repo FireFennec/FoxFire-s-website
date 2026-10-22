@@ -1,8 +1,7 @@
-/* ==================================================
-   BODY TYPOGRAPHY AND LAYOUT
-   ================================================== */
+/* ==========================================================================
+   Body Typography and Layout
+   ========================================================================== */
 
-/* Default body typography and page layout. */
 body {
     min-height: 100vh;
 
@@ -14,17 +13,16 @@ body {
     font-family: "Share Tech Mono", monospace;
 }
 
-/* Allow the main content to fill the available vertical space. */
+/* Expand the main content to keep the footer at the bottom of short pages. */
 body > main {
     flex: 1;
 }
 
 
-/* ==================================================
-   HEADINGS
-   ================================================== */
+/* ==========================================================================
+   Headings
+   ========================================================================== */
 
-/* Main heading typography and glow effect. */
 h1 {
     color: #ffffff;
     font-size: 35px;
@@ -40,7 +38,6 @@ h1 {
         0 0 22px rgba(255, 0, 0, 0.6);
 }
 
-/* Section heading typography and spacing. */
 h2 {
     position: relative;
 
@@ -53,7 +50,7 @@ h2 {
     padding-left: 15px;
 }
 
-/* Decorative red accent for section headings. */
+/* Render the heading accent without additional markup. */
 h2::before {
     content: "";
 
@@ -72,29 +69,26 @@ h2::before {
 }
 
 
-/* ==================================================
-   TEXT ELEMENTS
-   ================================================== */
+/* ==========================================================================
+   Text Elements
+   ========================================================================== */
 
-/* Default paragraph typography. */
 p {
     color: #c5bebe;
     font-size: 17px;
     line-height: 1.7;
 }
 
-/* Emphasized text appearance. */
 strong {
     color: var(--text-main);
     font-size: 18px;
 }
 
 
-/* ==================================================
-   INTERACTIVE ITEM NAMES
-   ================================================== */
+/* ==========================================================================
+   Interactive Item Names
+   ========================================================================== */
 
-/* Shared appearance for feature and recipe name links. */
 .feature-name,
 .recipe-name {
     display: inline-block;
@@ -108,7 +102,6 @@ strong {
         transform 0.2s ease;
 }
 
-/* Scale and glow effect when hovering over item names. */
 .feature-name:hover,
 .recipe-name:hover {
     color: #ffffff;

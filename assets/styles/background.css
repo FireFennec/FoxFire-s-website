@@ -1,40 +1,34 @@
-/* ==================================================
-   MAIN BACKGROUND
-   ================================================== */
+/* ==========================================================================
+   Main Background
+   ========================================================================== */
 
-/* Main background for the entire website. */
 .background-main {
     min-height: 100vh;
 
+    /*
+     * Background layers are ordered from front to back:
+     * grid lines, red ambient glows, and the base gradient.
+     */
     background-image:
-        /* Horizontal grid lines. */
         linear-gradient(
             rgba(255, 255, 255, 0.05) 1px,
             transparent 1px
         ),
-
-            /* Vertical grid lines. */
         linear-gradient(
             90deg,
             rgba(255, 255, 255, 0.05) 1px,
             transparent 1px
         ),
-
-            /* Top-left red glow. */
         radial-gradient(
             circle at 15% 25%,
             rgba(180, 0, 0, 0.18),
             transparent 28%
         ),
-
-            /* Bottom-right red glow. */
         radial-gradient(
             circle at 85% 75%,
             rgba(150, 0, 0, 0.14),
             transparent 28%
         ),
-
-            /* Base background gradient. */
         linear-gradient(
             100deg,
             #050000,
@@ -42,7 +36,6 @@
             #090000
         );
 
-    /* Grid size followed by the sizes of the remaining background layers. */
     background-size:
         50px 50px,
         50px 50px,
@@ -50,21 +43,23 @@
         auto,
         auto;
 
-    /* Keep the background fixed while scrolling. */
     background-attachment: fixed;
 }
 
 
-/* ==================================================
-   EDGE GLOW ANIMATION
-   ================================================== */
+/* ==========================================================================
+   Edge Glow Animation
+   ========================================================================== */
 
-/* Animated red glow moving around the edges of the viewport. */
+/*
+ * Creates a decorative red glow that travels along the viewport edges.
+ * The animation delay can be provided externally to preserve its timing
+ * across page navigation.
+ */
 .background-main::before {
     content: "";
     position: fixed;
 
-    /* Glow appearance. */
     background:
         radial-gradient(
             circle,
@@ -73,20 +68,17 @@
             transparent 60%
         );
 
-    /* Center the glow on its current animation position. */
     transform: translate(-50%, -50%);
-
-    /* Prevent the glow from blocking clickable elements. */
     pointer-events: none;
 
-    /* Run the edge glow animation continuously. */
     animation: edge-glow 11.5s linear infinite;
-
-    /* Synchronize the animation position between page loads. */
     animation-delay: var(--edge-glow-delay, 0s);
 }
 
-/* Move the glow clockwise around the viewport edges, then keep it hidden until the next cycle. */
+/*
+ * Completes one clockwise circuit during the first 13% of the cycle.
+ * The glow then remains invisible until the animation restarts.
+ */
 @keyframes edge-glow {
     0% {
         left: 0;

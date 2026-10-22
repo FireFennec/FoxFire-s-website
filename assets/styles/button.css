@@ -1,8 +1,7 @@
-/* ==================================================
-   MAIN BUTTON
-   ================================================== */
+/* ==========================================================================
+   Main Button
+   ========================================================================== */
 
-/* Main button appearance and layout. */
 .button {
     display: block;
     position: relative;
@@ -36,7 +35,10 @@
         filter 0.2s ease;
 }
 
-/* Inner layer of the main button. */
+/*
+ * Creates an inset background layer that preserves the button's
+ * clipped corner while exposing a thin outer border.
+ */
 .button::before {
     content: "";
     position: absolute;
@@ -55,7 +57,6 @@
     );
 }
 
-/* Main button hover effect. */
 .button:hover {
     color: #ffffff;
 
@@ -76,11 +77,10 @@
 }
 
 
-/* ==================================================
-   ACTION BUTTONS
-   ================================================== */
+/* ==========================================================================
+   Action Buttons
+   ========================================================================== */
 
-/* Shared layout and appearance for edit and delete buttons. */
 .button-edit,
 .button-delete {
     box-sizing: border-box;
@@ -104,13 +104,11 @@
         text-shadow 0.2s ease;
 }
 
-/* Edit button appearance. */
 .button-edit {
     color: #ffd84a;
     border: 1px solid rgba(255, 216, 74, 0.45);
 }
 
-/* Edit button hover effect. */
 .button-edit:hover {
     color: #fff4b0;
     border-color: #ffd84a;
@@ -124,13 +122,11 @@
     text-shadow: 0 0 7px rgba(255, 220, 80, 0.8);
 }
 
-/* Delete button appearance. */
 .button-delete {
     color: #ff5555;
     border: 1px solid var(--button-border);
 }
 
-/* Delete button hover effect. */
 .button-delete:hover {
     color: #ffffff;
     border-color: #ff3030;
@@ -145,11 +141,10 @@
 }
 
 
-/* ==================================================
-   KEYBOARD ACCESSIBILITY
-   ================================================== */
+/* ==========================================================================
+   Keyboard Accessibility
+   ========================================================================== */
 
-/* Highlight the main button during keyboard navigation. */
 .button:focus-visible {
     color: #ffffff;
 
@@ -160,7 +155,6 @@
         drop-shadow(0 0 8px rgba(255, 0, 0, 0.6));
 }
 
-/* Highlight edit and delete buttons during keyboard navigation. */
 .button-edit:focus-visible,
 .button-delete:focus-visible {
     outline: 2px solid currentColor;

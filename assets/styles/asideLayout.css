@@ -1,14 +1,12 @@
-/* ==================================================
-   HOMEPAGE LAYOUT
-   ================================================== */
+/* ==========================================================================
+   Homepage Layout
+   ========================================================================== */
 
-/* Homepage layout with sidebar. */
 .homepage-layout {
     display: flex;
     align-items: stretch;
 }
 
-/* Sidebar dimensions and appearance. */
 .homepage-layout aside {
     width: 320px;
     flex-shrink: 0;
@@ -20,18 +18,16 @@
 }
 
 
-/* ==================================================
-   SIDEBAR SECTIONS
-   ================================================== */
+/* ==========================================================================
+   Sidebar Sections
+   ========================================================================== */
 
-/* Sidebar section spacing and border. */
 .feature-aside-section {
     padding: 15px 0;
 
     border-top: 1px solid var(--border-red);
 }
 
-/* Feature status heading typography and spacing. */
 .feature-aside-heading {
     display: block;
 
@@ -42,11 +38,10 @@
 }
 
 
-/* ==================================================
-   FEATURE STATUS COLORS
-   ================================================== */
+/* ==========================================================================
+   Feature Status Colors
+   ========================================================================== */
 
-/* Red text and glow for planned features. */
 .feature-aside-heading.planned {
     color: #ff4545;
 
@@ -55,7 +50,6 @@
         0 0 10px rgba(255, 40, 40, 0.35);
 }
 
-/* Yellow text and glow for features in progress. */
 .feature-aside-heading.progress {
     color: #ffd84a;
 
@@ -64,7 +58,6 @@
         0 0 10px rgba(255, 190, 40, 0.35);
 }
 
-/* Green text and glow for completed features. */
 .feature-aside-heading.completed {
     color: #55e879;
 
@@ -74,11 +67,10 @@
 }
 
 
-/* ==================================================
-   SIDEBAR LINKS
-   ================================================== */
+/* ==========================================================================
+   Sidebar Links
+   ========================================================================== */
 
-/* Sidebar feature link appearance. */
 .feature-aside-section a {
     display: block;
 
@@ -92,7 +84,6 @@
         text-shadow 0.15s ease;
 }
 
-/* Sidebar feature link hover effect. */
 .feature-aside-section a:hover {
     color: #ffffff;
     padding-left: 5px;
@@ -101,11 +92,10 @@
 }
 
 
-/* ==================================================
-   HOMEPAGE CONTENT
-   ================================================== */
+/* ==========================================================================
+   Homepage Content
+   ========================================================================== */
 
-/* Main homepage content layout. */
 .homepage-content {
     flex: 1;
     min-width: 0;
@@ -113,18 +103,17 @@
     padding: 30px 40px;
 }
 
-/* Homepage paragraph spacing. */
 .homepage-content p {
     margin-top: 20px;
     margin-bottom: 30px;
 }
 
 
-/* ==================================================
-   RESPONSIVE LAYOUT
-   ================================================== */
+/* ==========================================================================
+   Responsive Layout
+   ========================================================================== */
 
-/* Reduce sidebar width and content spacing on tablets. */
+/* Reduce sidebar width and content spacing on smaller screens. */
 @media (max-width: 1024px) {
     .homepage-layout aside {
         width: 260px;
@@ -136,7 +125,7 @@
     }
 }
 
-/* Stack the sidebar above the content on mobile devices. */
+/* Stack the sidebar above the main content on narrow screens. */
 @media (max-width: 650px) {
     .homepage-layout {
         flex-direction: column;
@@ -162,4 +151,3 @@
         font-size: 16px;
     }
 }
-

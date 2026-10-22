@@ -1,26 +1,23 @@
-/* ==================================================
-   PERSONAL SKILLS PAGE
-   ================================================== */
+/* ==========================================================================
+   Personal Skills Page
+   ========================================================================== */
 
-/* Page heading spacing. */
 .skills-page .page-content-simple > h1 {
     margin-top: 0;
     margin-bottom: 35px;
 }
 
 
-/* ==================================================
-   SKILL CARDS
-   ================================================== */
+/* ==========================================================================
+   Skill Cards
+   ========================================================================== */
 
-/* List of personal skill cards. */
 .skills-list {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-/* Skill name and level layout. */
 .skill-header {
     display: flex;
     align-items: flex-start;
@@ -30,14 +27,12 @@
     margin-bottom: 15px;
 }
 
-/* Skill name spacing and text wrapping. */
 .skill-name {
     margin: 0;
     min-width: 0;
     overflow-wrap: anywhere;
 }
 
-/* Skill level badge. */
 .skill-level {
     flex-shrink: 0;
     max-width: 100%;
@@ -65,7 +60,6 @@
     );
 }
 
-/* Skill description text. */
 .skill-description {
     margin: 0;
 
@@ -77,11 +71,10 @@
 }
 
 
-/* ==================================================
-   EMPTY STATE
-   ================================================== */
+/* ==========================================================================
+   Empty State
+   ========================================================================== */
 
-/* Message displayed when no skills are available. */
 .skills-empty p {
     margin: 0;
     color: var(--text-main);
@@ -89,11 +82,11 @@
 }
 
 
-/* ==================================================
-   RESPONSIVE LAYOUT
-   ================================================== */
+/* ==========================================================================
+   Responsive Layout
+   ========================================================================== */
 
-/* Adjust skill cards on smaller screens. */
+/* Stack skill names and level badges vertically on narrow screens. */
 @media (max-width: 650px) {
     .skills-page {
         padding: 30px 20px;
@@ -109,7 +102,7 @@
     }
 }
 
-/* Compact layout for very small screens. */
+/* Reduce card spacing and badge text size on very small screens. */
 @media (max-width: 400px) {
     .skills-page {
         padding: 25px 15px;

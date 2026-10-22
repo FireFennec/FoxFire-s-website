@@ -1,19 +1,16 @@
-/* ==================================================
-   FEATURE LIST
-   ================================================== */
+/* ==========================================================================
+   Feature List
+   ========================================================================== */
 
-/* Spacing between feature list sections. */
 .features-section {
     margin-bottom: 35px;
 }
 
-/* Feature list section heading. */
 .features-section h2 {
     margin-top: 0;
     margin-bottom: 25px;
 }
 
-/* Individual feature row. */
 .feature-row {
     display: flex;
     align-items: center;
@@ -24,7 +21,6 @@
     border-bottom: 1px solid rgba(255, 0, 0, 0.15);
 }
 
-/* Feature row action buttons layout. */
 .feature-actions {
     display: flex;
     align-items: center;
@@ -32,28 +28,25 @@
 }
 
 
-/* ==================================================
-   FEATURE FORM
-   ================================================== */
+/* ==========================================================================
+   Feature Form
+   ========================================================================== */
 
-/* Description textarea size and resizing. */
 .feature-form-panel .form-field textarea {
     min-height: 130px;
     resize: vertical;
 }
 
-/* Layout for form fields displayed side by side. */
 .feature-form-row {
     display: flex;
     gap: 20px;
 }
 
-/* Form fields inside a row share the available space. */
 .feature-form-row .form-field {
     flex: 1;
 }
 
-/* Stack side-by-side form fields on smaller screens. */
+/* Stack form fields vertically on narrow screens. */
 @media (max-width: 650px) {
     .feature-form-row {
         flex-direction: column;
@@ -62,11 +55,10 @@
 }
 
 
-/* ==================================================
-   FEATURE DETAIL
-   ================================================== */
+/* ==========================================================================
+   Feature Detail
+   ========================================================================== */
 
-/* Status and priority layout. */
 .feature-detail-overview {
     display: flex;
     justify-content: space-between;
@@ -76,7 +68,6 @@
     margin-bottom: 25px;
 }
 
-/* Status and priority information groups. */
 .feature-detail-info {
     display: flex;
     flex-direction: column;
@@ -84,14 +75,12 @@
     gap: 7px;
 }
 
-/* Labels above status and priority badges. */
 .feature-detail-label {
     color: var(--text-main);
     font-size: 13px;
     font-weight: bold;
 }
 
-/* Shared status and priority badge style. */
 .feature-badge {
     padding: 6px 12px;
 
@@ -99,6 +88,7 @@
     font-weight: bold;
     text-transform: uppercase;
 
+    /* Creates clipped corners on all four sides of the badge. */
     clip-path: polygon(
         6px 0,
         calc(100% - 6px) 0,
@@ -111,7 +101,6 @@
     );
 }
 
-/* Status badge color style. */
 .feature-status-badge {
     color: #eaf4ff;
 
@@ -123,7 +112,6 @@
         inset 0 0 8px rgba(40, 140, 220, 0.12);
 }
 
-/* Priority badge color style. */
 .feature-priority-badge {
     color: #fff0f0;
 
@@ -135,14 +123,12 @@
         inset 0 0 8px rgba(255, 40, 30, 0.12);
 }
 
-/* Deadline and description sections. */
 .feature-detail-text-section {
     padding: 18px 0;
 
     border-top: 1px solid var(--list-line);
 }
 
-/* Deadline and description labels. */
 .feature-detail-text-label {
     display: block;
 
@@ -155,7 +141,6 @@
     letter-spacing: 1px;
 }
 
-/* Deadline and description values. */
 .feature-detail-deadline-value,
 .feature-detail-description-value {
     margin: 0;
@@ -164,12 +149,10 @@
     font-size: 15px;
 }
 
-/* Description text spacing. */
 .feature-detail-description-value {
     line-height: 1.7;
 }
 
-/* Edit and delete buttons layout. */
 .feature-detail-actions {
     display: flex;
     justify-content: center;

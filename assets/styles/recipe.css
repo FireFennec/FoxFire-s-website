@@ -1,21 +1,18 @@
-/* ==================================================
-   RECIPES LIST
-   ================================================== */
+/* ==========================================================================
+   Recipes List
+   ========================================================================== */
 
-/* Recipes list heading. */
 .recipes-section h1 {
     margin-top: 0;
     margin-bottom: 25px;
 }
 
-/* Individual recipe row. */
 .recipe-row {
     padding: 12px 15px;
 
     border-bottom: 1px solid rgba(255, 0, 0, 0.15);
 }
 
-/* Message displayed when no recipes exist. */
 .recipes-empty {
     margin: 0;
     padding: 15px 0;
@@ -26,11 +23,10 @@
 }
 
 
-/* ==================================================
-   RECIPES PAGINATION
-   ================================================== */
+/* ==========================================================================
+   Recipes Pagination
+   ========================================================================== */
 
-/* Pagination navigation layout. */
 .recipes-pagination {
     display: flex;
     justify-content: center;
@@ -41,7 +37,6 @@
     margin-top: 1.5rem;
 }
 
-/* Current page indicator. */
 .recipes-page-indicator {
     color: #d1d1d1;
     font-size: 0.9rem;
@@ -49,11 +44,10 @@
 }
 
 
-/* ==================================================
-   RECIPE DETAIL
-   ================================================== */
+/* ==========================================================================
+   Recipe Detail
+   ========================================================================== */
 
-/* Recipe title and edit button layout. */
 .recipe-detail-header {
     display: flex;
     align-items: center;
@@ -63,27 +57,23 @@
     margin-bottom: 30px;
 }
 
-/* Recipe title spacing and wrapping. */
 .recipe-detail-header h1 {
     margin: 0;
     min-width: 0;
     flex: 1;
 }
 
-/* Recipe information sections. */
 .recipe-detail-section {
     padding: 20px 0;
 
     border-top: 1px solid var(--list-line);
 }
 
-/* Section heading spacing. */
 .recipe-detail-section h2 {
     margin-top: 0;
     margin-bottom: 20px;
 }
 
-/* Ingredients list layout. */
 .recipe-ingredients {
     margin: 0;
     padding-left: 25px;
@@ -93,12 +83,10 @@
     line-height: 1.9;
 }
 
-/* Ingredients list markers. */
 .recipe-ingredients li::marker {
     color: #ff3030;
 }
 
-/* Cooking instructions text. */
 .recipe-process {
     margin: 0;
 
@@ -109,49 +97,44 @@
 }
 
 
-/* ==================================================
-   RECIPE FORM
-   ================================================== */
+/* ==========================================================================
+   Recipe Form
+   ========================================================================== */
 
-/* Cooking process textarea. */
 .recipe-form-panel .form-field textarea {
     min-height: 180px;
     resize: vertical;
 }
 
 
-/* ==================================================
-   INGREDIENT FIELDS
-   ================================================== */
+/* ==========================================================================
+   Ingredient Fields
+   ========================================================================== */
 
-/* List of dynamically added ingredient fields. */
 .recipe-ingredients-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-/* Keep ingredient fields grouped with their validation errors. */
+/* Keep each ingredient input grouped with its validation messages. */
 .ingredient-entry {
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
 
-/* Individual ingredient input and remove button layout. */
 .ingredient-item {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-/* Allow ingredient inputs to fill the available space. */
 .ingredient-item input {
     flex: 1;
     min-width: 0;
 }
 
-/* Remove ingredient button. */
 .remove-ingredient {
     flex-shrink: 0;
 
@@ -165,7 +148,6 @@
     cursor: pointer;
 }
 
-/* Remove ingredient button hover effect. */
 .remove-ingredient:hover {
     color: #ffffff;
     border-color: #ff3030;
@@ -173,7 +155,6 @@
     background: rgba(255, 0, 0, 0.10);
 }
 
-/* Add ingredient button. */
 .recipe-add-ingredient {
     align-self: flex-start;
 
@@ -188,7 +169,6 @@
     cursor: pointer;
 }
 
-/* Add ingredient button hover effect. */
 .recipe-add-ingredient:hover {
     color: #ffffff;
     border-color: #ff3030;
@@ -196,7 +176,6 @@
     background: rgba(255, 0, 0, 0.10);
 }
 
-/* Visible keyboard focus for ingredient controls. */
 .remove-ingredient:focus-visible,
 .recipe-add-ingredient:focus-visible {
     outline: 2px solid #ff5555;
@@ -204,23 +183,18 @@
 }
 
 
-/* ==================================================
-   RESPONSIVE RECIPES PAGINATION
-   ================================================== */
+/* ==========================================================================
+   Responsive Layout
+   ========================================================================== */
 
-/* Adjust pagination spacing on smaller screens. */
+/* Reduce pagination spacing on narrow screens. */
 @media (max-width: 480px) {
     .recipes-pagination {
         gap: 0.75rem;
     }
 }
 
-
-/* ==================================================
-   RESPONSIVE RECIPE DETAIL
-   ================================================== */
-
-/* Adjust the recipe detail layout on smaller screens. */
+/* Stack the recipe title and actions while reserving space for navigation. */
 @media (max-width: 650px) {
     .recipe-detail-page {
         padding-top: 100px;
@@ -244,12 +218,7 @@
     }
 }
 
-
-/* ==================================================
-   RESPONSIVE RECIPE FORM
-   ================================================== */
-
-/* Adjust recipe forms on smaller screens. */
+/* Reserve space for navigation and reduce form panel spacing. */
 @media (max-width: 650px) {
     .recipe-form-page {
         padding-top: 100px;

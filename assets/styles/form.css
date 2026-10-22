@@ -1,8 +1,7 @@
-/* ==================================================
-   SHARED FORM FIELDS
-   ================================================== */
+/* ==========================================================================
+   Shared Form Fields
+   ========================================================================== */
 
-/* Individual form field layout. */
 .form-field {
     display: flex;
     flex-direction: column;
@@ -11,13 +10,11 @@
     margin-bottom: 22px;
 }
 
-/* Form field labels. */
 .form-field label {
     color: var(--text-main);
     font-weight: bold;
 }
 
-/* Form inputs, textareas and selects. */
 .form-field input,
 .form-field textarea,
 .form-field select {
@@ -38,7 +35,6 @@
         background 0.2s ease;
 }
 
-/* Form field focus effect. */
 .form-field input:focus,
 .form-field textarea:focus,
 .form-field select:focus {
@@ -51,11 +47,10 @@
 }
 
 
-/* ==================================================
-   SHARED FORM ACTIONS
-   ================================================== */
+/* ==========================================================================
+   Shared Form Actions
+   ========================================================================== */
 
-/* Center the form submit button. */
 .form-actions {
     display: flex;
     justify-content: center;
@@ -64,17 +59,15 @@
 }
 
 
-/* ==================================================
-   FORM PAGE SPACING
-   ================================================== */
+/* ==========================================================================
+   Form Page Spacing
+   ========================================================================== */
 
-/* Add spacing below feature and recipe forms. */
 .feature-form-page,
 .recipe-form-page {
     padding-bottom: 50px;
 }
 
-/* Shared form page headings. */
 .feature-form-panel h1,
 .recipe-form-panel h1 {
     margin-top: 0;
@@ -93,6 +86,6 @@
     justify-content: flex-end;
     align-items: center;
     gap: 12px;
+
     margin-top: 24px;
 }
-

@@ -1,8 +1,7 @@
-/* ==================================================
-   HEADER
-   ================================================== */
+/* ==========================================================================
+   Header
+   ========================================================================== */
 
-/* Main header layout, background and bottom border. */
 header {
     display: flex;
     align-items: center;
@@ -13,14 +12,12 @@ header {
     border-bottom: 3px solid var(--border-red);
 }
 
-/* Logo and title layout. */
 header > div {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-/* Header logo size. */
 header img {
     display: block;
     width: 50px;
@@ -28,11 +25,10 @@ header img {
 }
 
 
-/* ==================================================
-   NAVIGATION
-   ================================================== */
+/* ==========================================================================
+   Navigation
+   ========================================================================== */
 
-/* Navigation layout and spacing. */
 nav {
     display: flex;
     align-items: center;
@@ -44,7 +40,6 @@ nav {
     font-size: 20px;
 }
 
-/* Navigation link appearance and layout. */
 nav a {
     position: relative;
 
@@ -70,7 +65,10 @@ nav a {
         filter 0.2s ease;
 }
 
-/* Inner layer of the navigation link. */
+/*
+ * Creates an inset background layer while preserving
+ * the clipped corner of the navigation link.
+ */
 nav a::before {
     content: "";
     position: absolute;
@@ -89,7 +87,6 @@ nav a::before {
     );
 }
 
-/* Navigation link hover effect. */
 nav a:hover {
     color: #ffffff;
 
@@ -102,17 +99,15 @@ nav a:hover {
         drop-shadow(0 0 10px rgba(255, 0, 0, 0.4));
 }
 
-/* Highlight the inner layer when hovering over the navigation link. */
 nav a:hover::before {
     background: #300000;
 }
 
 
-/* ==================================================
-   KEYBOARD ACCESSIBILITY
-   ================================================== */
+/* ==========================================================================
+   Keyboard Accessibility
+   ========================================================================== */
 
-/* Make keyboard navigation clearly visible. */
 nav a:focus-visible {
     color: #ffffff;
 
@@ -123,11 +118,11 @@ nav a:focus-visible {
 }
 
 
-/* ==================================================
-   RESPONSIVE NAVIGATION
-   ================================================== */
+/* ==========================================================================
+   Responsive Navigation
+   ========================================================================== */
 
-/* Stack header content and reduce spacing on tablets. */
+/* Stack header content vertically on tablet-sized screens. */
 @media (max-width: 1024px) {
     header {
         flex-direction: column;
@@ -146,7 +141,7 @@ nav a:focus-visible {
     }
 }
 
-/* Display navigation links in two columns on mobile. */
+/* Switch navigation links to a two-column grid on mobile. */
 @media (max-width: 650px) {
     header {
         gap: 15px;
