@@ -7,7 +7,7 @@
         <strong class="feature-aside-heading planned">
             New features in queue: {{ newFeatures|length }}
         </strong>
-        {# List of new planned features. #}
+
         {% for newFeature in newFeatures %}
             <a href="{{ path('app_FeatureList_featureInfoShow', {id: newFeature.id}) }}">
                 {{ newFeature.name }}
@@ -19,7 +19,7 @@
         <strong class="feature-aside-heading progress">
             Features for update: {{ updateFeatures|length }}
         </strong>
-        {# List of features for the future update. #}
+
         {% for updateFeature in updateFeatures %}
             <a href="{{ path('app_FeatureList_featureInfoShow', {id: updateFeature.id}) }}">
                 {{ updateFeature.name }}
@@ -31,7 +31,7 @@
         <strong class="feature-aside-heading completed">
             Completed changes: {{ completedFeatures|length }}
         </strong>
-        {# List of completed features. #}
+
         {% for completedFeature in completedFeatures %}
             <a href="{{ path('app_FeatureList_featureInfoShow', {id: completedFeature.id}) }}">
                 {{ completedFeature.name }}

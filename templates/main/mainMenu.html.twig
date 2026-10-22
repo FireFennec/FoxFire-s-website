@@ -4,7 +4,6 @@
 
 {% block body %}
     <div class="homepage-layout">
-        {# Aside bar with features list. #}
         {{ include('main/_featuresListAside.html.twig') }}
 
         <div class="homepage-content">
@@ -16,7 +15,7 @@
                 interesting and useful applications.
             </p>
 
-            {# List of new planned features. #}
+            {# Pass only explicitly defined variables to the reusable feature sections. #}
             {{ include('main/_featureSection.html.twig', {
                 heading: 'The plan of things I want to add',
                 description: 'There are currently ' ~ (newFeatures|length) ~ ' features planned in the "add new" section.',
@@ -24,7 +23,6 @@
                 emptyMessage: 'No new features planned.'
             }, with_context = false) }}
 
-            {# List of features planned for updates. #}
             {{ include('main/_featureSection.html.twig', {
                 heading: 'The plan of things I want to update',
                 description: 'There are currently ' ~ (updateFeatures|length) ~ ' features planned for updates.',
@@ -32,7 +30,6 @@
                 emptyMessage: 'No features are currently planned for updates.'
             }, with_context = false) }}
 
-            {# List of completed features. #}
             {{ include('main/_featureSection.html.twig', {
                 heading: 'The list of existing features',
                 description: 'There are currently ' ~ (completedFeatures|length) ~ ' completed features.',

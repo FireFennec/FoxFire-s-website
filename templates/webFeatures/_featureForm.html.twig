@@ -1,25 +1,21 @@
-{# Start the feature form with custom CSS styling. #}
 {{ form_start(form, {
     attr: {
         class: 'feature-form'
     }
 }) }}
 
-{# Feature name field. #}
 <div class="form-field">
     {{ form_label(form.name) }}
     {{ form_widget(form.name) }}
     {{ form_errors(form.name) }}
 </div>
 
-{# Feature description field. #}
 <div class="form-field">
     {{ form_label(form.description) }}
     {{ form_widget(form.description) }}
     {{ form_errors(form.description) }}
 </div>
 
-{# Feature status and priority fields displayed side by side. #}
 <div class="feature-form-row">
     <div class="form-field">
         {{ form_label(form.status) }}
@@ -34,14 +30,12 @@
     </div>
 </div>
 
-{# Optional deadline for the feature. #}
 <div class="form-field">
     {{ form_label(form.deadlineAt) }}
     {{ form_widget(form.deadlineAt) }}
     {{ form_errors(form.deadlineAt) }}
 </div>
 
-{# Submit button with a customizable label. #}
 <div class="form-actions">
     {{ form_widget(form.submit, {
         label: submitLabel,
@@ -51,5 +45,4 @@
     }) }}
 </div>
 
-{# Close the form and render any remaining hidden fields. #}
 {{ form_end(form) }}

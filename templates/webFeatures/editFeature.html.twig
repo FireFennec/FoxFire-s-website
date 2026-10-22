@@ -3,26 +3,21 @@
 {% block title %}Edit Feature{% endblock %}
 
 {% block body %}
-    {# Main layout for the feature editing page. #}
     <div class="page-layout feature-form-page">
-
-        {# Navigation button to return to the feature list. #}
-        <a class="button page-action"
-           href="{{ path('app_FeaturesList_featureListMenu') }}">
+        <a
+            class="button page-action"
+            href="{{ path('app_FeaturesList_featureListMenu') }}"
+        >
             Back
         </a>
 
-        {# Main content container for the editing form. #}
         <div class="page-content page-width-900">
             <section class="page-panel page-panel-standard feature-form-panel">
-
                 <h1>Edit Feature</h1>
 
-                {# Include the reusable feature form with a save button label. #}
                 {% include 'webFeatures/_featureForm.html.twig' with {
                     submitLabel: 'Save Changes'
                 } %}
-
             </section>
         </div>
     </div>

@@ -6,7 +6,6 @@
         <strong>{{ feature.name }}</strong>
     </a>
 
-    {# Include the edit and delete actions. #}
     {{ include('webFeatures/_featureActions.html.twig', {
         feature: feature
     }, with_context = false) }}

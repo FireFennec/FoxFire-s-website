@@ -3,7 +3,6 @@
 {% block title %}{{ parent() }}About me{% endblock %}
 
 {% block body %}
-    {# Main layout for the About Me page. #}
     <div class="page-layout-simple about-page">
 
         <div class="page-content-simple page-width-900">
@@ -11,8 +10,6 @@
 
             <div class="page-panel page-panel-standard">
 
-                {# CONTACT INFORMATION #}
-                {# Display this section only when contact details are available. #}
                 {% if myContactInformation.email
                     or myContactInformation.telegram
                     or myContactInformation.discord
@@ -21,7 +18,6 @@
                     <section class="about-section">
                         <h2>Contact me</h2>
 
-                        {# Email address. #}
                         {% if myContactInformation.email %}
                             <div class="about-row">
                                 <span class="about-label">Email</span>
@@ -32,7 +28,6 @@
                             </div>
                         {% endif %}
 
-                        {# Telegram username and profile link. #}
                         {% if myContactInformation.telegram %}
                             <div class="about-row">
                                 <span class="about-label">Telegram</span>
@@ -53,7 +48,6 @@
                             </div>
                         {% endif %}
 
-                        {# Discord username. #}
                         {% if myContactInformation.discord %}
                             <div class="about-row">
                                 <span class="about-label">Discord</span>
@@ -64,7 +58,6 @@
                             </div>
                         {% endif %}
 
-                        {# Phone number. #}
                         {% if myContactInformation.phoneNumber %}
                             <div class="about-row">
                                 <span class="about-label">Phone</span>
@@ -77,13 +70,10 @@
                     </section>
                 {% endif %}
 
-                {# SOCIAL MEDIA #}
-                {# Display this section only when social profiles are available. #}
                 {% if myContactInformation.x or myContactInformation.barq %}
                     <section class="about-section">
                         <h2>Follow me</h2>
 
-                        {# X (formerly Twitter) profile. #}
                         {% if myContactInformation.x %}
                             <div class="about-row">
                                 <span class="about-label">X</span>
@@ -106,7 +96,6 @@
                             </div>
                         {% endif %}
 
-                        {# Barq profile. #}
                         {% if myContactInformation.barq %}
                             <div class="about-row">
                                 <span class="about-label">Barq</span>
@@ -131,13 +120,10 @@
                     </section>
                 {% endif %}
 
-                {# OTHER PLATFORMS #}
-                {# Display this section only when platform details are available. #}
                 {% if myContactInformation.steam or myContactInformation.battleNet %}
                     <section class="about-section">
                         <h2>Other platforms</h2>
 
-                        {# Steam profile with an optional external link. #}
                         {% if myContactInformation.steam %}
                             <div class="about-row">
                                 <span class="about-label">Steam</span>
@@ -160,7 +146,6 @@
                             </div>
                         {% endif %}
 
-                        {# Battle.net BattleTag. #}
                         {% if myContactInformation.battleNet %}
                             <div class="about-row">
                                 <span class="about-label">Battle.net</span>

@@ -1,62 +1,56 @@
 <!DOCTYPE html>
 
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>{% block title %}FoxFire: {% endblock %}</title>
+    <title>{% block title %}FoxFire: {% endblock %}</title>
 
-        <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.svg') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.svg') }}">
 
-        {# app.js load from assets. #}
-        {% block javascripts %}
-            {% block importmap %}
-                {{ importmap('app') }}
-            {% endblock %}
+    {% block javascripts %}
+        {% block importmap %}
+            {{ importmap('app') }}
         {% endblock %}
-    </head>
+    {% endblock %}
+</head>
 
-    <body class="background-main">
-        {# Header with logo + nav-menu. #}
-        <header>
-            {# Logo - img + text. #}
-            <div>
-                <a href="{{ path('app_mainMenu') }}">
-                    <img src="{{ asset('images/logo_fox.png') }}" alt="Fox_Logo">
-                </a>
+<body class="background-main">
+<header>
+    <div>
+        <a href="{{ path('app_mainMenu') }}">
+            <img src="{{ asset('images/logo_fox.png') }}" alt="Fox_Logo">
+        </a>
 
-                <p>FoxFire's website</p>
-            </div>
+        <p>FoxFire's website</p>
+    </div>
 
-            {# Nav-menu #}
-            <nav>
-                <a href="{{ path('app_mainMenu') }}">
-                    Main menu
-                </a>
+    <nav>
+        <a href="{{ path('app_mainMenu') }}">
+            Main menu
+        </a>
 
-                <a href="{{ path('app_contact_aboutMe') }}">
-                    About me
-                </a>
+        <a href="{{ path('app_contact_aboutMe') }}">
+            About me
+        </a>
 
-                <a href="{{ path('app_cooking_recipe') }}">
-                    Cooking Recipes
-                </a>
+        <a href="{{ path('app_cooking_recipe') }}">
+            Cooking Recipes
+        </a>
 
-                <a href="{{ path('app_personal_skill_index') }}">
-                    Personal skills
-                </a>
-            </nav>
-        </header>
+        <a href="{{ path('app_personal_skill_index') }}">
+            Personal skills
+        </a>
+    </nav>
+</header>
 
-        {# Body - page content. #}
-        <main>
-            {% block body %}{% endblock %}
-        </main>
+<main>
+    {% block body %}{% endblock %}
+</main>
 
-        {# Footer - lower part of website. #}
-        <footer>
-            Made with fluffy paws by FoxFire
-        </footer>
-    </body>
+<footer>
+    Made with fluffy paws by FoxFire
+</footer>
+</body>
 </html>
