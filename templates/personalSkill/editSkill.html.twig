@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Personal Skill{% endblock %}
+
+{% block body %}
+    <div class="page-layout skill-form-page">
+        <a
+            class="button page-action"
+            href="{{ path('app_personal_skill_index') }}"
+        >
+            Back
+        </a>
+
+        <div class="page-content page-width-900">
+            <h1>Edit Personal Skill</h1>
+
+            <section class="page-panel page-panel-standard skill-form-panel">
+                {% include 'personalSkill/_skillForm.html.twig' %}
+            </section>
+        </div>
+    </div>
+{% endblock %}

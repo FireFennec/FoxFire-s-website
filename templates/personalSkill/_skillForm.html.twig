@@ -1,0 +1,33 @@
+{{ form_start(form, {
+    attr: {
+        class: 'skill-form'
+    }
+}) }}
+
+<div class="form-field">
+    {{ form_label(form.skillName) }}
+    {{ form_widget(form.skillName) }}
+    {{ form_errors(form.skillName) }}
+</div>
+
+<div class="form-field">
+    {{ form_label(form.skillDescription) }}
+    {{ form_widget(form.skillDescription) }}
+    {{ form_errors(form.skillDescription) }}
+</div>
+
+<div class="form-field">
+    {{ form_label(form.levelOfSkill) }}
+    {{ form_widget(form.levelOfSkill) }}
+    {{ form_errors(form.levelOfSkill) }}
+</div>
+
+<div class="form-actions">
+    {{ form_widget(form.submit, {
+        attr: {
+            class: 'button'
+        }
+    }) }}
+</div>
+
+{{ form_end(form) }}
