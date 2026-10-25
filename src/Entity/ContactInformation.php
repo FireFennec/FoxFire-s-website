@@ -78,6 +78,10 @@ class ContactInformation
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
+    private ?string $steam = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     #[Assert\Url(
         message: 'Please enter a valid HTTPS URL.',
         protocols: ['https'],
@@ -87,11 +91,33 @@ class ContactInformation
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
-    private ?string $steam = null;
+    private ?string $battleNet = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
-    private ?string $battleNet = null;
+    private ?string $github = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    #[Assert\Url(
+        message: 'Please enter a valid HTTPS URL.',
+        protocols: ['https'],
+        requireTld: true
+    )]
+    private ?string $githubLink = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    private ?string $spotify = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    #[Assert\Url(
+        message: 'Please enter a valid HTTPS URL.',
+        protocols: ['https'],
+        requireTld: true
+    )]
+    private ?string $spotifyLink = null;
 
     public function getId(): ?int
     {
@@ -230,6 +256,54 @@ class ContactInformation
         return $this;
     }
 
+    public function getGithub(): ?string
+    {
+        return $this->github;
+    }
+
+    public function setGithub(?string $github): static
+    {
+        $this->github = $github;
+
+        return $this;
+    }
+
+    public function getGithubLink(): ?string
+    {
+        return $this->githubLink;
+    }
+
+    public function setGithubLink(?string $githubLink): static
+    {
+        $this->githubLink = $githubLink;
+
+        return $this;
+    }
+
+    public function getSpotify(): ?string
+    {
+        return $this->spotify;
+    }
+
+    public function setSpotify(?string $spotify): static
+    {
+        $this->spotify = $spotify;
+
+        return $this;
+    }
+
+    public function getSpotifyLink(): ?string
+    {
+        return $this->spotifyLink;
+    }
+
+    public function setSpotifyLink(?string $spotifyLink): static
+    {
+        $this->spotifyLink = $spotifyLink;
+
+        return $this;
+    }
+
     /**
      * Validates that social profile URLs belong to their expected platforms.
      *
@@ -244,23 +318,36 @@ class ContactInformation
                 'url' => $this->xLink,
                 'hosts' => [
                     'x.com',
-                    'www\.x.com',
+                    'www.x.com',
                     'twitter.com',
-                    'www\.twitter.com',
+                    'www.twitter.com',
                 ],
             ],
             'barqLink' => [
                 'url' => $this->barqLink,
                 'hosts' => [
                     'barq.app',
-                    'www\.barq.app',
+                    'www.barq.app',
                 ],
             ],
             'steamLink' => [
                 'url' => $this->steamLink,
                 'hosts' => [
                     'steamcommunity.com',
-                    'www\.steamcommunity.com',
+                    'www.steamcommunity.com',
+                ],
+            ],
+            'githubLink' => [
+                'url' => $this->githubLink,
+                'hosts' => [
+                    'github.com',
+                    'www.github.com',
+                ],
+            ],
+            'spotifyLink' => [
+                'url' => $this->spotifyLink,
+                'hosts' => [
+                    'open.spotify.com',
                 ],
             ],
         ];
@@ -286,4 +373,3 @@ class ContactInformation
         }
     }
 }
-

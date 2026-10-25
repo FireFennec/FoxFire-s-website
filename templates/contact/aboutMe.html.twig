@@ -70,7 +70,11 @@
                     </section>
                 {% endif %}
 
-                {% if myContactInformation.x or myContactInformation.barq %}
+                {% if myContactInformation.x
+                    or myContactInformation.barq
+                    or myContactInformation.github
+                    or myContactInformation.spotify
+                %}
                     <section class="about-section">
                         <h2>Follow me</h2>
 
@@ -111,6 +115,50 @@
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         aria-label="Open Barq profile (new tab)"
+                                    >
+                                        Open ↗
+                                    </a>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+
+                        {% if myContactInformation.github %}
+                            <div class="about-row">
+                                <span class="about-label">GitHub</span>
+
+                                <span class="about-value">
+                                    {{ myContactInformation.github }}
+                                </span>
+
+                                {% if myContactInformation.githubLink %}
+                                    <a
+                                        class="about-link"
+                                        href="{{ myContactInformation.githubLink }}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label="Open GitHub profile (new tab)"
+                                    >
+                                        Open ↗
+                                    </a>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+
+                        {% if myContactInformation.spotify %}
+                            <div class="about-row">
+                                <span class="about-label">Spotify</span>
+
+                                <span class="about-value">
+                                    {{ myContactInformation.spotify }}
+                                </span>
+
+                                {% if myContactInformation.spotifyLink %}
+                                    <a
+                                        class="about-link"
+                                        href="{{ myContactInformation.spotifyLink }}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label="Open Spotify profile (new tab)"
                                     >
                                         Open ↗
                                     </a>
