@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create Account{% endblock %}
+
+{% block body %}
+    <div class="page-layout registration-page">
+        <div class="page-content registration-content">
+            <h1>Create Account</h1>
+
+            <section class="page-panel page-panel-standard registration-panel">
+
+                {% for flash_error in app.flashes('verify_email_error') %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ flash_error }}
+                    </div>
+                {% endfor %}
+
+                {{ form_start(registrationForm, {
+                    attr: {
+                        class: 'registration-form'
+                    }
+                }) }}
+
+                {{ form_errors(registrationForm) }}
+
+                <div class="form-field">
+                    {{ form_label(registrationForm.username) }}
+                    {{ form_widget(registrationForm.username) }}
+                    {{ form_errors(registrationForm.username) }}
+                </div>
+
+                <div class="form-field">
+                    {{ form_label(registrationForm.email) }}
+                    {{ form_widget(registrationForm.email) }}
+                    {{ form_errors(registrationForm.email) }}
+                </div>
+
+                <div class="form-field">
+                    {{ form_label(registrationForm.plainPassword.first) }}
+                    {{ form_widget(registrationForm.plainPassword.first) }}
+                    {{ form_errors(registrationForm.plainPassword.first) }}
+                </div>
+
+                <div class="form-field">
+                    {{ form_label(registrationForm.plainPassword.second) }}
+                    {{ form_widget(registrationForm.plainPassword.second) }}
+                    {{ form_errors(registrationForm.plainPassword.second) }}
+                    {{ form_errors(registrationForm.plainPassword) }}
+                </div>
+
+                <div class="registration-terms">
+                    {{ form_widget(registrationForm.agreeTerms) }}
+                    {{ form_label(registrationForm.agreeTerms) }}
+                    {{ form_errors(registrationForm.agreeTerms) }}
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="button">
+                        Create Account
+                    </button>
+                </div>
+
+                {{ form_end(registrationForm) }}
+
+            </section>
+        </div>
+    </div>
+{% endblock %}

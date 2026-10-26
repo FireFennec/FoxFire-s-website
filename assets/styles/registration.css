@@ -1,0 +1,59 @@
+/* ==========================================================================
+   Registration Layout
+   ========================================================================== */
+
+.registration-page {
+    padding-bottom: 60px;
+}
+
+.registration-content {
+    max-width: 600px;
+}
+
+.registration-page h1 {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+/* ==========================================================================
+   Registration Panel
+   ========================================================================== */
+
+.registration-panel {
+    padding: 30px;
+}
+
+/* ==========================================================================
+   Terms Checkbox
+   ========================================================================== */
+
+.registration-terms {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.registration-terms input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    padding: 0;
+    accent-color: #dc2626;
+    cursor: pointer;
+}
+
+.registration-terms label {
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   Responsive Layout
+   ========================================================================== */
+
+@media (max-width: 600px) {
+    .registration-panel {
+        padding: 22px 18px;
+    }
+}
