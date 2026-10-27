@@ -1,0 +1,35 @@
+.account-page {
+    padding-bottom: 60px;
+}
+
+.account-page h1 {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.account-details {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.account-field {
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(220, 38, 38, 0.25);
+}
+
+.account-field:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.account-field strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #ff7777;
+}
+
+.account-field p {
+    margin: 0;
+    line-height: 1.6;
+}

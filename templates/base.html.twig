@@ -26,22 +26,44 @@
         <p>FoxFire's website</p>
     </div>
 
-    <nav>
-        <a href="{{ path('app_mainMenu') }}">
-            Main menu
-        </a>
+    <nav class="header-navigation">
+        <div class="nav-main">
+            <a href="{{ path('app_mainMenu') }}">
+                Main menu
+            </a>
 
-        <a href="{{ path('app_contact_aboutMe') }}">
-            About me
-        </a>
+            <a href="{{ path('app_contact_aboutMe') }}">
+                About me
+            </a>
 
-        <a href="{{ path('app_cooking_recipe') }}">
-            Cooking Recipes
-        </a>
+            <a href="{{ path('app_cooking_recipe') }}">
+                Cooking Recipes
+            </a>
 
-        <a href="{{ path('app_personal_skill_index') }}">
-            Personal skills
-        </a>
+            <a href="{{ path('app_personal_skill_index') }}">
+                Personal skills
+            </a>
+        </div>
+
+        <div class="nav-account">
+            {% if app.user %}
+                <a href="{{ path('app_account') }}">
+                    My Account
+                </a>
+
+                <a href="{{ path('app_logout') }}">
+                    Logout
+                </a>
+            {% else %}
+                <a href="{{ path('app_login') }}">
+                    Login
+                </a>
+
+                <a href="{{ path('app_register') }}">
+                    Register
+                </a>
+            {% endif %}
+        </div>
     </nav>
 </header>
 

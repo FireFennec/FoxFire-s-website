@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Account{% endblock %}
+
+{% block body %}
+    <div class="page-layout account-page">
+        <div class="page-content page-width-800">
+            <h1>My Account</h1>
+
+            <section class="page-panel page-panel-standard">
+                <div class="account-details">
+                    <div class="account-field">
+                        <strong>Username</strong>
+                        <p>{{ app.user.username }}</p>
+                    </div>
+
+                    <div class="account-field">
+                        <strong>Email</strong>
+                        <p>{{ app.user.email }}</p>
+                    </div>
+
+                    <div class="account-field">
+                        <strong>Account verification</strong>
+                        <p>
+                            {% if app.user.verified %}
+                                Verified
+                            {% else %}
+                                Not verified
+                            {% endif %}
+                        </p>
+                    </div>
+
+                    <div class="account-field">
+                        <strong>Account role</strong>
+                        <p>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                Administrator
+                            {% else %}
+                                User
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

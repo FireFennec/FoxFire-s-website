@@ -177,3 +177,32 @@ nav a:focus-visible {
         grid-template-columns: 1fr;
     }
 }
+
+
+/* Main navigation layout */
+header .header-navigation {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+/* Main website links */
+header .nav-main {
+    display: flex;
+    margin-left: 30px;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* Authentication and account links */
+header .nav-account {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: auto;
+    flex-shrink: 0;
+}
