@@ -4,12 +4,14 @@
 
 {% block body %}
     <div class="page-layout recipes-page">
-        <a
-            class="button page-action"
-            href="{{ path('app_cooking_recipe_create') }}"
-        >
-            + Create Recipe
-        </a>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a
+                class="button page-action"
+                href="{{ path('app_cooking_recipe_create') }}"
+            >
+                + Create Recipe
+            </a>
+        {% endif %}
 
         <div class="page-content page-width-800">
             <h1>Cooking recipes</h1>

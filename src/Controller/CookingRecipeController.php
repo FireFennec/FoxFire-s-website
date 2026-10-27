@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
  * Handles the listing, viewing, creation, and editing of cooking recipes.
@@ -50,6 +51,7 @@ class CookingRecipeController extends AbstractController
      * Displays and processes the form for creating a new cooking recipe.
      */
     #[Route('/create', name: 'app_cooking_recipe_create', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function createRecipe(
         Request $request,
         EntityManagerInterface $entityManager
@@ -78,6 +80,7 @@ class CookingRecipeController extends AbstractController
      * Displays and processes the form for editing an existing cooking recipe.
      */
     #[Route('/{id<\d+>}/edit', name: 'app_cookingRecipe_editCookingRecipe', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function editCookingRecipe(
         int $id,
         Request $request,

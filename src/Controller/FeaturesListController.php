@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
  * Manages website features, including their listing, creation,
@@ -35,7 +36,7 @@ class FeaturesListController extends AbstractController
     /**
      * Displays detailed information about a specific website feature.
      */
-    #[Route('/{id<\d+>}', name: 'app_FeatureList_featureInfoShow')]
+    #[Route('/{id<\d+>}', name: 'app_FeatureList_featureInfoShow', methods: ['GET'])]
     public function featureInfoShow(int $id, WebsiteFeatureRepository $repository): Response
     {
         $feature = $repository->findOne($id);
@@ -53,6 +54,7 @@ class FeaturesListController extends AbstractController
      * Displays and processes the form for creating a new website feature.
      */
     #[Route('/createFeature', name: 'app_featureList_createFeature')]
+    #[IsGranted('ROLE_ADMIN')]
     public function createFeature(Request $request, EntityManagerInterface $entityManager): Response
     {
         $feature = new WebsiteFeature();
@@ -79,6 +81,7 @@ class FeaturesListController extends AbstractController
      * Displays and processes the form for editing an existing website feature.
      */
     #[Route('/editFeature/{id<\d+>}', name: 'app_featureList_editFeature')]
+    #[IsGranted('ROLE_ADMIN')]
     public function editFeature(
         int $id,
         Request $request,
@@ -113,6 +116,7 @@ class FeaturesListController extends AbstractController
      * Deletes an existing website feature after validating the CSRF token.
      */
     #[Route('/deleteFeature/{id<\d+>}', name: 'app_featureDelete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function deleteFeature(
         int $id,
         Request $request,

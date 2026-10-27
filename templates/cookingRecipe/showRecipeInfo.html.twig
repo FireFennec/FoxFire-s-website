@@ -17,12 +17,14 @@
                 <div class="recipe-detail-header">
                     <h1>{{ cookingRecipe.recipeName }}</h1>
 
-                    <a
-                        class="button-edit"
-                        href="{{ path('app_cookingRecipe_editCookingRecipe', {id: cookingRecipe.id}) }}"
-                    >
-                        Update Recipe
-                    </a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a
+                            class="button-edit"
+                            href="{{ path('app_cookingRecipe_editCookingRecipe', {id: cookingRecipe.id}) }}"
+                        >
+                            Update Recipe
+                        </a>
+                    {% endif %}
                 </div>
 
                 <section class="recipe-detail-section">

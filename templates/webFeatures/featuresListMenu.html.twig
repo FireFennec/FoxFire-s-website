@@ -4,12 +4,14 @@
 
 {% block body %}
     <div class="page-layout features-page">
-        <a
-            class="button page-action"
-            href="{{ path('app_featureList_createFeature') }}"
-        >
-            + Create Feature
-        </a>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a
+                class="button page-action"
+                href="{{ path('app_featureList_createFeature') }}"
+            >
+                + Create Feature
+            </a>
+        {% endif %}
 
         <div class="page-content page-width-1100">
             <section class="page-panel page-panel-compact features-section">

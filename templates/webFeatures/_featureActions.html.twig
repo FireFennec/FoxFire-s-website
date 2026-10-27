@@ -1,24 +1,26 @@
-<div class="feature-actions">
-    <a
-        class="button-edit"
-        href="{{ path('app_featureList_editFeature', {id: feature.id}) }}"
-    >
-        Edit
-    </a>
-
-    <form
-        method="post"
-        action="{{ path('app_featureDelete', {id: feature.id}) }}"
-        onsubmit="return confirm('Are you sure you want to delete this feature?');"
-    >
-        <input
-            type="hidden"
-            name="_token"
-            value="{{ csrf_token('delete_feature_' ~ feature.id) }}"
+{% if is_granted('ROLE_ADMIN') %}
+    <div class="feature-actions">
+        <a
+            class="button-edit"
+            href="{{ path('app_featureList_editFeature', {id: feature.id}) }}"
         >
+            Edit
+        </a>
 
-        <button type="submit" class="button-delete">
-            Delete
-        </button>
-    </form>
-</div>
+        <form
+            method="post"
+            action="{{ path('app_featureDelete', {id: feature.id}) }}"
+            onsubmit="return confirm('Are you sure you want to delete this feature?');"
+        >
+            <input
+                type="hidden"
+                name="_token"
+                value="{{ csrf_token('delete_feature_' ~ feature.id) }}"
+            >
+
+            <button type="submit" class="button-delete">
+                Delete
+            </button>
+        </form>
+    </div>
+{% endif %}

@@ -4,12 +4,14 @@
 
 {% block body %}
     <div class="page-layout skills-page">
-        <a
-            class="button page-action"
-            href="{{ path('app_personal_skill_create') }}"
-        >
-            + Create Skill
-        </a>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a
+                class="button page-action"
+                href="{{ path('app_personal_skill_create') }}"
+            >
+                + Create Skill
+            </a>
+        {% endif %}
 
         <div class="page-content page-width-1000">
             <h1>My personal skills</h1>
@@ -31,16 +33,18 @@
                             {{ skill.skillDescription }}
                         </p>
 
-                        <div class="form-actions">
-                            <a
-                                href="{{ path('app_personal_skill_edit', {
-                                    id: skill.id
-                                }) }}"
-                                class="button"
-                            >
-                                Edit
-                            </a>
-                        </div>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <div class="form-actions">
+                                <a
+                                    href="{{ path('app_personal_skill_edit', {
+                                        id: skill.id
+                                    }) }}"
+                                    class="button"
+                                >
+                                    Edit
+                                </a>
+                            </div>
+                        {% endif %}
                     </article>
                 {% else %}
                     <div class="page-panel page-panel-compact skills-empty">

@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
  * Handles listing, creating, and editing personal skills.
@@ -36,6 +37,7 @@ class PersonalSkillController extends AbstractController
      * Displays and processes the form for creating a personal skill.
      */
     #[Route('/create', name: 'app_personal_skill_create', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function create(
         Request $request,
         EntityManagerInterface $entityManager
@@ -64,6 +66,7 @@ class PersonalSkillController extends AbstractController
      * Displays and processes the form for editing an existing personal skill.
      */
     #[Route('/{id<\d+>}/edit', name: 'app_personal_skill_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(
         int $id,
         Request $request,
