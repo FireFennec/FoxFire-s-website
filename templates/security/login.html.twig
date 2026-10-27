@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+    <div class="page-layout login-page">
+        <div class="page-content login-content">
+
+            <h1>Login</h1>
+
+            <section class="page-panel page-panel-standard login-panel">
+                <form method="post" class="login-form">
+
+                    {% if error %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                        </div>
+                    {% endif %}
+
+                    {% if app.user %}
+                        <p class="login-status">
+                            Logged in as {{ app.user.userIdentifier }}
+                            <a href="{{ logout_path() }}">Logout</a>
+                        </p>
+                    {% endif %}
+
+                    <div class="form-field">
+                        <label for="username">Username</label>
+                        <input
+                            type="text"
+                            name="_username"
+                            id="username"
+                            value="{{ last_username }}"
+                            autocomplete="username"
+                            required
+                            autofocus
+                        >
+                    </div>
+
+                    <div class="form-field">
+                        <label for="password">Password</label>
+                        <input
+                            type="password"
+                            name="_password"
+                            id="password"
+                            autocomplete="current-password"
+                            required
+                        >
+                    </div>
+
+                    <input
+                        type="hidden"
+                        name="_csrf_token"
+                        data-controller="csrf-protection"
+                        value="{{ csrf_token('authenticate') }}"
+                    >
+
+                    <div class="form-actions">
+                        <button type="submit" class="button">
+                            Sign in
+                        </button>
+                    </div>
+
+                </form>
+            </section>
+
+        </div>
+    </div>
+{% endblock %}
