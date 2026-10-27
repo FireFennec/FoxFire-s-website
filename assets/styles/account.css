@@ -1,3 +1,5 @@
+/* Account page */
+
 .account-page {
     padding-bottom: 60px;
 }
@@ -32,4 +34,71 @@
 .account-field p {
     margin: 0;
     line-height: 1.6;
+}
+
+/* Change Password page */
+
+.change-password-page .page-content {
+    max-width: 600px;
+}
+
+.change-password-page .page-panel {
+    padding: 32px;
+}
+
+.change-password-page .form-field {
+    margin-bottom: 24px;
+}
+
+.change-password-page .form-field label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.change-password-page .form-field input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.change-password-page .form-actions {
+    margin-top: 32px;
+    display: flex;
+    justify-content: center;
+}
+
+.change-password-page .form-actions .button {
+    padding: 12px 28px;
+    font-size: 15px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.change-password-page .form-actions .button:hover {
+    background-color: rgba(180, 20, 20, 0.25);
+    transform: translateY(-2px);
+}
+
+.change-password-page .form-error {
+    color: #ff7777;
+    font-size: 14px;
+    margin-top: 8px;
+    line-height: 1.5;
+}
+
+.change-password-page .form-error,
+.change-password-page .form-error ul,
+.change-password-page .form-error li {
+    color: #ff7777;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.change-password-page .form-error ul {
+    margin: 8px 0 0;
+    padding-left: 18px;
+}
+
+@media (max-width: 600px) {
+    .change-password-page .page-panel {
+        padding: 22px 18px;
+    }
 }
