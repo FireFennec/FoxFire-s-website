@@ -23,9 +23,9 @@ class ChangePasswordType extends AbstractType
                     'autocomplete' => 'current-password',
                 ],
                 'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'Please enter your current password.',
-                    ]),
+                    new Assert\NotBlank(
+                        message: 'Please enter your current password.'
+                    ),
                 ],
             ])
             ->add('newPassword', RepeatedType::class, [
@@ -48,21 +48,21 @@ class ChangePasswordType extends AbstractType
                     '.' => 'second',
                 ],
                 'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'Please enter a new password.',
-                    ]),
-                    new Assert\Length([
-                        'min' => 10,
-                        'minMessage' => 'Password must contain at least 10 characters.',
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/[a-z]/',
-                        'message' => 'Password must contain at least one lowercase letter.',
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/[A-Z]/',
-                        'message' => 'Password must contain at least one uppercase letter.',
-                    ]),
+                    new Assert\NotBlank(
+                        message: 'Please enter a new password.'
+                    ),
+                    new Assert\Length(
+                        min: 10,
+                        minMessage: 'Password must contain at least 10 characters.'
+                    ),
+                    new Assert\Regex(
+                        pattern: '/[a-z]/',
+                        message: 'Password must contain at least one lowercase letter.'
+                    ),
+                    new Assert\Regex(
+                        pattern: '/[A-Z]/',
+                        message: 'Password must contain at least one uppercase letter.'
+                    ),
                 ],
             ]);
     }
