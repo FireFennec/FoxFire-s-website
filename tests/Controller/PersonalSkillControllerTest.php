@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Tests\Controller;
 
 use App\Entity\PersonalSkill;
+use App\Entity\User;
 use App\Model\PersonalSkillLevelEnum;
 use App\Repository\PersonalSkillRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class PersonalSkillControllerTest extends WebTestCase
 {
@@ -125,6 +127,7 @@ class PersonalSkillControllerTest extends WebTestCase
     public function testCreateFormLoadsSuccessfully(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
         $client->request('GET', '/skills/create');
 
         self::assertResponseIsSuccessful();
@@ -135,6 +138,7 @@ class PersonalSkillControllerTest extends WebTestCase
     public function testSkillCanBeCreatedAndPersisted(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
         $name = 'Test Created Skill ' . bin2hex(random_bytes(6));
 
         $client->request('GET', '/skills/create');
@@ -162,6 +166,7 @@ class PersonalSkillControllerTest extends WebTestCase
     public function testInvalidSkillIsNotCreated(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $before = $entityManager->getRepository(PersonalSkill::class)->count([]);
 
@@ -182,6 +187,7 @@ class PersonalSkillControllerTest extends WebTestCase
     public function testEditFormLoadsWithExistingValues(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
 
         $skill = $this->createSkill(
@@ -208,6 +214,7 @@ class PersonalSkillControllerTest extends WebTestCase
     public function testSkillCanBeEditedAndChangesArePersisted(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $skill = $this->createSkill(
             $entityManager,
@@ -239,6 +246,7 @@ class PersonalSkillControllerTest extends WebTestCase
     public function testInvalidEditDoesNotChangeStoredSkill(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $skill = $this->createSkill(
             $entityManager,
@@ -270,6 +278,7 @@ class PersonalSkillControllerTest extends WebTestCase
     public function testEditingNonexistentSkillReturnsNotFound(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
         $client->request('GET', '/skills/999999999/edit');
         self::assertResponseStatusCodeSame(404);
     }
@@ -277,6 +286,7 @@ class PersonalSkillControllerTest extends WebTestCase
     public function testCreateGetRequestDoesNotChangeDatabase(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $before = $entityManager->getRepository(PersonalSkill::class)->count([]);
 
@@ -290,6 +300,7 @@ class PersonalSkillControllerTest extends WebTestCase
     public function testEditGetRequestDoesNotChangeDatabase(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $skill = $this->createSkill(
             $entityManager,
@@ -312,6 +323,24 @@ class PersonalSkillControllerTest extends WebTestCase
         self::assertSame('Unchanged description.', $stored->getSkillDescription());
         self::assertSame(PersonalSkillLevelEnum::ADVANCED, $stored->getLevelOfSkill());
         self::assertSame($before, $entityManager->getRepository(PersonalSkill::class)->count([]));
+    }
+
+    /** Creates an administrator in the test database and authenticates the client. */
+    private function loginAsAdmin(KernelBrowser $client): void
+    {
+        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
+        $suffix = bin2hex(random_bytes(8));
+
+        $admin = (new User())
+            ->setUsername('skill_admin_' . $suffix)
+            ->setEmail('skill_admin_' . $suffix . '@example.test')
+            ->setPassword('test-password-not-used-by-loginUser')
+            ->setRoles(['ROLE_ADMIN']);
+
+        $entityManager->persist($admin);
+        $entityManager->flush();
+
+        $client->loginUser($admin);
     }
 
     private function createSkill(

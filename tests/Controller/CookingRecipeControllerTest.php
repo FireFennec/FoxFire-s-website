@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Tests\Controller;
 
 use App\Entity\CookingRecipe;
+use App\Entity\User;
 use App\Repository\CookingRecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class CookingRecipeControllerTest extends WebTestCase
 {
@@ -80,6 +82,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testMissingRecipeEditReturns404(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
 
         $client->request('GET', '/cooking-recipes/999999999/edit');
 
@@ -89,6 +92,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testCreateRecipeFormLoadsSuccessfully(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
 
         $crawler = $client->request('GET', '/cooking-recipes/create');
 
@@ -114,6 +118,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testValidRecipeCanBeCreated(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
 
         $crawler = $client->request('GET', '/cooking-recipes/create');
 
@@ -157,6 +162,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testInvalidRecipeIsNotCreated(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
 
         $crawler = $client->request('GET', '/cooking-recipes/create');
 
@@ -194,6 +200,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testExistingRecipeCanBeEdited(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
 
         $recipe = $this->createRecipe();
         $id = $recipe->getId();
@@ -269,6 +276,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testInvalidEditDoesNotChangeStoredRecipe(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
         $recipe = $this->createRecipe();
         $id = $recipe->getId();
 
@@ -310,6 +318,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testInvalidCsrfTokenPreventsRecipeCreation(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
 
         $client->request('GET', '/cooking-recipes/create');
 
@@ -334,6 +343,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testInvalidCsrfTokenPreventsRecipeEdit(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
         $recipe = $this->createRecipe();
         $id = $recipe->getId();
 
@@ -366,6 +376,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testRecipeWithoutIngredientsIsNotCreated(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
 
         $crawler = $client->request('GET', '/cooking-recipes/create');
 
@@ -384,12 +395,6 @@ class CookingRecipeControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
 
-        $crawler = $client->getCrawler();
-
-        dump($crawler->filter('.form-error-message')->each(
-            static fn ($node): string => trim($node->text())
-        ));
-
         $repository = static::getContainer()->get(
             CookingRecipeRepository::class
         );
@@ -402,6 +407,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testWhitespaceOnlyIngredientIsNotAccepted(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
 
         $crawler = $client->request('GET', '/cooking-recipes/create');
 
@@ -430,6 +436,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testRecipeNameExceedingLimitIsNotAccepted(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
 
         $crawler = $client->request('GET', '/cooking-recipes/create');
 
@@ -456,6 +463,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testPutRequestToCreateRecipeIsRejected(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
 
         $client->request('PUT', '/cooking-recipes/create');
 
@@ -532,6 +540,24 @@ class CookingRecipeControllerTest extends WebTestCase
             '.recipe-row',
             'Test Mac and Cheese'
         );
+    }
+
+    /** Creates an administrator in the test database and authenticates the client. */
+    private function loginAsAdmin(KernelBrowser $client): void
+    {
+        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
+        $suffix = bin2hex(random_bytes(8));
+
+        $admin = (new User())
+            ->setUsername('recipe_admin_' . $suffix)
+            ->setEmail('recipe_admin_' . $suffix . '@example.test')
+            ->setPassword('test-password-not-used-by-loginUser')
+            ->setRoles(['ROLE_ADMIN']);
+
+        $entityManager->persist($admin);
+        $entityManager->flush();
+
+        $client->loginUser($admin);
     }
 
     private function createRecipe(): CookingRecipe

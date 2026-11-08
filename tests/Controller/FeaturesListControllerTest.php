@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Tests\Controller;
 
 use App\Entity\WebsiteFeature;
+use App\Entity\User;
 use App\Model\FeaturePriorityEnum;
 use App\Model\FeaturesStatusEnum;
 use App\Repository\WebsiteFeatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class FeaturesListControllerTest extends WebTestCase
 {
@@ -114,6 +116,7 @@ class FeaturesListControllerTest extends WebTestCase
     public function testFeatureCanBeCreated(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
 
         $client->request('GET', '/feature/createFeature');
         self::assertResponseIsSuccessful();
@@ -152,6 +155,7 @@ class FeaturesListControllerTest extends WebTestCase
     public function testFeatureCanBeEdited(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
 
         $feature = $this->createFeature(
@@ -222,6 +226,7 @@ class FeaturesListControllerTest extends WebTestCase
     public function testFeatureCanBeDeleted(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
 
         $feature = $this->createFeature(
@@ -253,6 +258,7 @@ class FeaturesListControllerTest extends WebTestCase
     public function testDeleteWithInvalidCsrfTokenIsRejected(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
 
         $feature = $this->createFeature(
@@ -282,6 +288,7 @@ class FeaturesListControllerTest extends WebTestCase
     public function testEditingNonExistentFeatureReturns404(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
 
         $client->request('GET', '/feature/editFeature/999999999');
 
@@ -291,11 +298,30 @@ class FeaturesListControllerTest extends WebTestCase
     public function testDeletingNonExistentFeatureReturns404(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
 
         // Missing features return 404 before CSRF validation.
         $client->request('POST', '/feature/deleteFeature/999999999');
 
         self::assertResponseStatusCodeSame(404);
+    }
+
+    /** Creates a test administrator and authenticates the client. */
+    private function loginAsAdmin(KernelBrowser $client): void
+    {
+        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
+        $suffix = bin2hex(random_bytes(8));
+
+        $admin = (new User())
+            ->setUsername('feature_admin_' . $suffix)
+            ->setEmail('feature_admin_' . $suffix . '@example.test')
+            ->setPassword('test-password-not-used-by-loginUser')
+            ->setRoles(['ROLE_ADMIN']);
+
+        $entityManager->persist($admin);
+        $entityManager->flush();
+
+        $client->loginUser($admin);
     }
 
     private function createFeature(
@@ -334,6 +360,7 @@ class FeaturesListControllerTest extends WebTestCase
     public function testFeatureCannotBeCreatedWithBlankFields(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
 
         $client->request('GET', '/feature/createFeature');
 
@@ -369,6 +396,7 @@ class FeaturesListControllerTest extends WebTestCase
     public function testFeatureCannotBeCreatedWithTooLongName(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
 
         $client->request('GET', '/feature/createFeature');
 
@@ -448,6 +476,7 @@ class FeaturesListControllerTest extends WebTestCase
     public function testFeatureCanBeCreatedWithDeadline(): void
     {
         $client = static::createClient();
+        $this->loginAsAdmin($client);
 
         $client->request('GET', '/feature/createFeature');
 
@@ -484,3 +513,4 @@ class FeaturesListControllerTest extends WebTestCase
         );
     }
 }
+
