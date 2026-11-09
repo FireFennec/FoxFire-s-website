@@ -359,4 +359,113 @@ class PersonalSkillControllerTest extends WebTestCase
 
         return $skill;
     }
+
+    public function testInvalidCsrfTokenPreventsSkillCreation(): void
+    {
+        $this->assertSkillCreationRejectedByCsrf('invalid-token');
+    }
+
+    public function testMissingCsrfTokenPreventsSkillCreation(): void
+    {
+        $this->assertSkillCreationRejectedByCsrf(null);
+    }
+
+    public function testInvalidCsrfTokenPreventsSkillEdit(): void
+    {
+        $this->assertSkillEditRejectedByCsrf('invalid-token');
+    }
+
+    public function testMissingCsrfTokenPreventsSkillEdit(): void
+    {
+        $this->assertSkillEditRejectedByCsrf(null);
+    }
+
+    private function assertSkillCreationRejectedByCsrf(?string $token): void
+    {
+        $client = static::createClient();
+        $this->loginAsAdmin($client);
+
+        $name = 'CSRF Protected Skill ' . bin2hex(random_bytes(6));
+
+        $client->request('GET', '/skills/create');
+        self::assertResponseIsSuccessful();
+
+        $data = [
+            'skillName' => $name,
+            'skillDescription' => 'This should never be saved.',
+            'levelOfSkill' => (string) PersonalSkillLevelEnum::ADVANCED->value,
+        ];
+
+        if ($token !== null) {
+            $data['_token'] = $token;
+        }
+
+        $client->request('POST', '/skills/create', [
+            'personal_skill' => $data,
+        ]);
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorExists('form[name="personal_skill"]');
+
+        $em = static::getContainer()->get(EntityManagerInterface::class);
+        $em->clear();
+
+        self::assertNull(
+            $em->getRepository(PersonalSkill::class)->findOneBy([
+                'skillName' => $name,
+            ])
+        );
+    }
+
+    private function assertSkillEditRejectedByCsrf(?string $token): void
+    {
+        $client = static::createClient();
+        $this->loginAsAdmin($client);
+
+        $em = static::getContainer()->get(EntityManagerInterface::class);
+
+        $skill = $this->createSkill(
+            $em,
+            'Original CSRF Skill ' . bin2hex(random_bytes(6)),
+            'Original description.',
+            PersonalSkillLevelEnum::BEGINNER
+        );
+
+        $id = $skill->getId();
+        $originalName = $skill->getSkillName();
+        $url = '/skills/' . $id . '/edit';
+
+        $client->request('GET', $url);
+        self::assertResponseIsSuccessful();
+
+        $data = [
+            'skillName' => 'Unauthorized CSRF Edit',
+            'skillDescription' => 'This should never be saved.',
+            'levelOfSkill' => (string) PersonalSkillLevelEnum::MASTER->value,
+        ];
+
+        if ($token !== null) {
+            $data['_token'] = $token;
+        }
+
+        $client->request('POST', $url, [
+            'personal_skill' => $data,
+        ]);
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorExists('form[name="personal_skill"]');
+
+        $em = static::getContainer()->get(EntityManagerInterface::class);
+        $em->clear();
+
+        $stored = $em->getRepository(PersonalSkill::class)->find($id);
+
+        self::assertInstanceOf(PersonalSkill::class, $stored);
+        self::assertSame($originalName, $stored->getSkillName());
+        self::assertSame('Original description.', $stored->getSkillDescription());
+        self::assertSame(
+            PersonalSkillLevelEnum::BEGINNER,
+            $stored->getLevelOfSkill()
+        );
+    }
 }

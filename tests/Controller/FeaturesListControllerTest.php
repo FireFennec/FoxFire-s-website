@@ -512,5 +512,121 @@ class FeaturesListControllerTest extends WebTestCase
             $feature->getDeadlineAt()->format('Y-m-d')
         );
     }
+
+    public function testInvalidCsrfTokenPreventsFeatureCreation(): void
+    {
+        $this->assertFeatureCreationRejectedByCsrf('invalid-token');
+    }
+
+    public function testMissingCsrfTokenPreventsFeatureCreation(): void
+    {
+        $this->assertFeatureCreationRejectedByCsrf(null);
+    }
+
+    public function testInvalidCsrfTokenPreventsFeatureEdit(): void
+    {
+        $this->assertFeatureEditRejectedByCsrf('invalid-token');
+    }
+
+    public function testMissingCsrfTokenPreventsFeatureEdit(): void
+    {
+        $this->assertFeatureEditRejectedByCsrf(null);
+    }
+
+    private function assertFeatureCreationRejectedByCsrf(?string $token): void
+    {
+        $client = static::createClient();
+        $this->loginAsAdmin($client);
+
+        $name = 'CSRF Protected Feature ' . bin2hex(random_bytes(6));
+
+        $client->request('GET', '/feature/createFeature');
+        self::assertResponseIsSuccessful();
+
+        $data = [
+            'name' => $name,
+            'description' => 'This should never be saved.',
+            'status' => FeaturesStatusEnum::NEW_FEATURE->value,
+            'priority' => (string) FeaturePriorityEnum::SOON->value,
+        ];
+
+        if ($token !== null) {
+            $data['_token'] = $token;
+        }
+
+        $client->request('POST', '/feature/createFeature', [
+            'create_feature_form' => $data,
+        ]);
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorExists('form');
+
+        $em = static::getContainer()->get(EntityManagerInterface::class);
+        $em->clear();
+
+        self::assertNull(
+            $em->getRepository(WebsiteFeature::class)->findOneBy([
+                'name' => $name,
+            ])
+        );
+    }
+
+    private function assertFeatureEditRejectedByCsrf(?string $token): void
+    {
+        $client = static::createClient();
+        $this->loginAsAdmin($client);
+
+        $em = static::getContainer()->get(EntityManagerInterface::class);
+
+        $feature = $this->createFeature(
+            $em,
+            'Original CSRF Feature ' . bin2hex(random_bytes(6)),
+            'Original description.',
+            FeaturesStatusEnum::NEW_FEATURE,
+            FeaturePriorityEnum::SOON
+        );
+
+        $id = $feature->getId();
+        $originalName = $feature->getName();
+        $url = '/feature/editFeature/' . $id;
+
+        $client->request('GET', $url);
+        self::assertResponseIsSuccessful();
+
+        $data = [
+            'name' => 'Unauthorized CSRF Edit',
+            'description' => 'This should never be saved.',
+            'status' => FeaturesStatusEnum::COMPLETED_FEATURE->value,
+            'priority' => (string) FeaturePriorityEnum::ASAP->value,
+        ];
+
+        if ($token !== null) {
+            $data['_token'] = $token;
+        }
+
+        $client->request('POST', $url, [
+            'create_feature_form' => $data,
+        ]);
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorExists('form');
+
+        $em = static::getContainer()->get(EntityManagerInterface::class);
+        $em->clear();
+
+        $stored = $em->getRepository(WebsiteFeature::class)->find($id);
+
+        self::assertInstanceOf(WebsiteFeature::class, $stored);
+        self::assertSame($originalName, $stored->getName());
+        self::assertSame('Original description.', $stored->getDescription());
+        self::assertSame(
+            FeaturesStatusEnum::NEW_FEATURE,
+            $stored->getStatus()
+        );
+        self::assertSame(
+            FeaturePriorityEnum::SOON,
+            $stored->getPriority()
+        );
+    }
 }
 

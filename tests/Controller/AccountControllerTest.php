@@ -144,6 +144,53 @@ class AccountControllerTest extends WebTestCase
         $this->assertPasswordUnchanged($user, $oldHash);
     }
 
+    public function testInvalidCsrfTokenPreventsPasswordChange(): void
+    {
+        $client = static::createClient();
+        $user = $this->createUser();
+        $oldHash = $user->getPassword();
+        $client->loginUser($user);
+
+        $client->request('GET', '/account/change-password');
+        $client->request('POST', '/account/change-password', [
+            'change_password' => [
+                'currentPassword' => self::CURRENT_PASSWORD,
+                'newPassword' => [
+                    'first' => self::NEW_PASSWORD,
+                    'second' => self::NEW_PASSWORD,
+                ],
+                '_token' => 'invalid-csrf-token',
+            ],
+        ]);
+
+        self::assertResponseStatusCodeSame(422);
+        self::assertSelectorTextContains('body', 'The CSRF token is invalid. Please try to resubmit the form.');
+        $this->assertPasswordUnchanged($user, $oldHash);
+    }
+
+    public function testMissingCsrfTokenPreventsPasswordChange(): void
+    {
+        $client = static::createClient();
+        $user = $this->createUser();
+        $oldHash = $user->getPassword();
+        $client->loginUser($user);
+
+        $client->request('GET', '/account/change-password');
+        $client->request('POST', '/account/change-password', [
+            'change_password' => [
+                'currentPassword' => self::CURRENT_PASSWORD,
+                'newPassword' => [
+                    'first' => self::NEW_PASSWORD,
+                    'second' => self::NEW_PASSWORD,
+                ],
+            ],
+        ]);
+
+        self::assertResponseStatusCodeSame(422);
+        self::assertSelectorTextContains('body', 'The CSRF token is invalid. Please try to resubmit the form.');
+        $this->assertPasswordUnchanged($user, $oldHash);
+    }
+
     private function submitPasswordChange(
         KernelBrowser $client,
         string $currentPassword,
