@@ -196,6 +196,7 @@ class RegistrationControllerTest extends WebTestCase
         static::getContainer()->set(EmailVerifier::class, $verifier);
     }
 
+    /** @return array<string, string> */
     private function validFields(
         string $username,
         string $email,

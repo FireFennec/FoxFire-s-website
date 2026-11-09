@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SecurityAccessTest extends WebTestCase
 {
+    /** @return iterable<string, array{string}> */
     public static function adminPages(): iterable
     {
         yield 'feature creation' => ['/feature/createFeature'];
@@ -108,6 +109,7 @@ class SecurityAccessTest extends WebTestCase
         self::assertNotNull($em->find(WebsiteFeature::class, $id));
     }
 
+    /** @param list<string> $roles */
     private function createUser(array $roles = []): User
     {
         $suffix = bin2hex(random_bytes(6));
