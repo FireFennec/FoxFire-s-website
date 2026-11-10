@@ -331,6 +331,7 @@ class ContactControllerTest extends WebTestCase
 
         $rel = preg_split('/\s+/', trim((string) $links->attr('rel')));
 
+        self::assertIsArray($rel);
         self::assertContains('noopener', $rel);
         self::assertContains('noreferrer', $rel);
     }

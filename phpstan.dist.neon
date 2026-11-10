@@ -3,10 +3,14 @@ includes:
     - vendor/phpstan/phpstan-symfony/extension.neon
 
 parameters:
-    level: 6
+    level: 7
+
     paths:
         - bin/
         - config/
         - public/
         - src/
         - tests/
+
+    symfony:
+        containerXmlPath: var/cache/test/App_KernelTestDebugContainer.xml
