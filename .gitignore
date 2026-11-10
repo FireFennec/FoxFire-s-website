@@ -33,3 +33,7 @@ phpstan.neon
 
 # Local database backups
 /backups/
+
+/.idea/
+
+gitleaks-report.json
