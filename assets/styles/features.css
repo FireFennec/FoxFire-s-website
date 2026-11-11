@@ -28,6 +28,23 @@
 }
 
 
+
+.features-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--list-line);
+}
+
+.features-page-indicator {
+    white-space: nowrap;
+}
+
 /* ==========================================================================
    Feature Form
    ========================================================================== */

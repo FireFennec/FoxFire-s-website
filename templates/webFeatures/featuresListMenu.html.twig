@@ -20,6 +20,27 @@
                 {% for feature in toDoFeatures %}
                     {% include 'webFeatures/_featureRow.html.twig' %}
                 {% endfor %}
+                {% if toDoFeatures.nbPages > 1 %}
+                    <nav class="features-pagination" aria-label="To do features pagination">
+                        {% if toDoFeatures.hasPreviousPage %}
+                            <a class="button" href="{{ path('app_FeaturesList_featureListMenu', {
+                                toDoPage: toDoFeatures.previousPage,
+                                completedPage: completedFeatures.currentPage
+                            }) }}">← Previous</a>
+                        {% endif %}
+
+                        <span class="features-page-indicator">
+                            Page {{ toDoFeatures.currentPage }} of {{ toDoFeatures.nbPages }}
+                        </span>
+
+                        {% if toDoFeatures.hasNextPage %}
+                            <a class="button" href="{{ path('app_FeaturesList_featureListMenu', {
+                                toDoPage: toDoFeatures.nextPage,
+                                completedPage: completedFeatures.currentPage
+                            }) }}">Next →</a>
+                        {% endif %}
+                    </nav>
+                {% endif %}
             </section>
 
             <section class="page-panel page-panel-compact features-section">
@@ -28,6 +49,27 @@
                 {% for feature in completedFeatures %}
                     {% include 'webFeatures/_featureRow.html.twig' %}
                 {% endfor %}
+                {% if completedFeatures.nbPages > 1 %}
+                    <nav class="features-pagination" aria-label="Completed features pagination">
+                        {% if completedFeatures.hasPreviousPage %}
+                            <a class="button" href="{{ path('app_FeaturesList_featureListMenu', {
+                                completedPage: completedFeatures.previousPage,
+                                toDoPage: toDoFeatures.currentPage
+                            }) }}">← Previous</a>
+                        {% endif %}
+
+                        <span class="features-page-indicator">
+                            Page {{ completedFeatures.currentPage }} of {{ completedFeatures.nbPages }}
+                        </span>
+
+                        {% if completedFeatures.hasNextPage %}
+                            <a class="button" href="{{ path('app_FeaturesList_featureListMenu', {
+                                completedPage: completedFeatures.nextPage,
+                                toDoPage: toDoFeatures.currentPage
+                            }) }}">Next →</a>
+                        {% endif %}
+                    </nav>
+                {% endif %}
             </section>
         </div>
     </div>

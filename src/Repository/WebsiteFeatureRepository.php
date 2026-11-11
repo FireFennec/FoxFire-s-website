@@ -64,6 +64,30 @@ class WebsiteFeatureRepository extends ServiceEntityRepository
     }
 
     /**
+     * Builds the query for unfinished features without loading all rows.
+     */
+    public function createToDoQueryBuilder(): \Doctrine\ORM\QueryBuilder
+    {
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.status != :completed')
+            ->setParameter('completed', FeaturesStatusEnum::COMPLETED_FEATURE)
+            ->orderBy('f.priority', 'DESC')
+            ->addOrderBy('f.id', 'DESC');
+    }
+
+    /**
+     * Builds the query for completed features without loading all rows.
+     */
+    public function createCompletedQueryBuilder(): \Doctrine\ORM\QueryBuilder
+    {
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.status = :completed')
+            ->setParameter('completed', FeaturesStatusEnum::COMPLETED_FEATURE)
+            ->orderBy('f.priority', 'DESC')
+            ->addOrderBy('f.id', 'DESC');
+    }
+
+    /**
      * Finds a single website feature by its ID.
      */
     public function findOne(int $id): ?WebsiteFeature

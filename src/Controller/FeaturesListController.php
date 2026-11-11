@@ -8,6 +8,8 @@ use App\Entity\WebsiteFeature;
 use App\Form\Features\CreateFeatureForm;
 use App\Repository\WebsiteFeatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,11 +27,26 @@ class FeaturesListController extends AbstractController
      * Displays website features grouped by completion status.
      */
     #[Route('/list', name: 'app_FeaturesList_featureListMenu', methods: ['GET'])]
-    public function featuresListMenu(WebsiteFeatureRepository $repository): Response
+    public function featuresListMenu(Request $request, WebsiteFeatureRepository $repository): Response
     {
+        $toDoFeatures = new Pagerfanta(new QueryAdapter($repository->createToDoQueryBuilder()));
+        $completedFeatures = new Pagerfanta(new QueryAdapter($repository->createCompletedQueryBuilder()));
+
+        foreach ([
+            'toDoPage' => $toDoFeatures,
+            'completedPage' => $completedFeatures,
+        ] as $parameter => $pager) {
+            $pager->setMaxPerPage(10);
+
+            $page = max(1, $request->query->getInt($parameter, 1));
+            $page = min($page, max(1, $pager->getNbPages()));
+
+            $pager->setCurrentPage($page);
+        }
+
         return $this->render('webFeatures/featuresListMenu.html.twig', [
-            'completedFeatures' => $repository->findCompleted(),
-            'toDoFeatures' => $repository->findToDo(),
+            'completedFeatures' => $completedFeatures,
+            'toDoFeatures' => $toDoFeatures,
         ]);
     }
 
