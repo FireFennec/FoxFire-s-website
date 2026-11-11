@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Controller;
 
 use App\Entity\PersonalSkill;
+use App\Entity\Role;
 use App\Entity\User;
 use App\Model\PersonalSkillLevelEnum;
 use App\Repository\PersonalSkillRepository;
@@ -325,22 +326,94 @@ class PersonalSkillControllerTest extends WebTestCase
         self::assertSame($before, $entityManager->getRepository(PersonalSkill::class)->count([]));
     }
 
-    /** Creates an administrator in the test database and authenticates the client. */
+    /** Authenticates a user with the personal skill administrator role. */
     private function loginAsAdmin(KernelBrowser $client): void
+    {
+        $this->loginWithRoles($client, ['ROLE_PERSONAL_SKILL_ADMIN']);
+    }
+
+    /**
+     * @param list<string> $roleNames
+     */
+    private function loginWithRoles(KernelBrowser $client, array $roleNames = []): void
     {
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $suffix = bin2hex(random_bytes(8));
 
-        $admin = (new User())
-            ->setUsername('skill_admin_' . $suffix)
-            ->setEmail('skill_admin_' . $suffix . '@example.test')
-            ->setPassword('test-password-not-used-by-loginUser')
-            ->setRoles(['ROLE_ADMIN']);
+        $user = (new User())
+            ->setUsername('skill_user_' . $suffix)
+            ->setEmail('skill_user_' . $suffix . '@example.test')
+            ->setPassword('test-password-not-used-by-loginUser');
 
-        $entityManager->persist($admin);
+        $roleRepository = $entityManager->getRepository(Role::class);
+
+        foreach ($roleNames as $roleName) {
+            $role = $roleRepository->findOneBy(['name' => $roleName]);
+
+            if (!$role instanceof Role) {
+                throw new \RuntimeException(sprintf(
+                    'Required test role "%s" does not exist.',
+                    $roleName
+                ));
+            }
+
+            $user->addAssignedRole($role);
+        }
+
+        $entityManager->persist($user);
         $entityManager->flush();
 
-        $client->loginUser($admin);
+        $client->loginUser($user);
+    }
+
+    public function testRegularUserCannotCreateOrEditSkill(): void
+    {
+        $client = static::createClient();
+        $em = static::getContainer()->get(EntityManagerInterface::class);
+        $skill = $this->createSkill(
+            $em,
+            'Protected Skill ' . bin2hex(random_bytes(6)),
+            'Original description.',
+            PersonalSkillLevelEnum::BEGINNER
+        );
+        $id = $skill->getId();
+        self::assertNotNull($id);
+
+        $this->loginWithRoles($client);
+
+        $client->request('GET', '/skills/create');
+        self::assertResponseStatusCodeSame(403);
+
+        $client->request('POST', '/skills/create');
+        self::assertResponseStatusCodeSame(403);
+
+        $client->request('GET', '/skills/' . $id . '/edit');
+        self::assertResponseStatusCodeSame(403);
+
+        $client->request('POST', '/skills/' . $id . '/edit');
+        self::assertResponseStatusCodeSame(403);
+
+        $em = static::getContainer()->get(EntityManagerInterface::class);
+        $em->clear();
+        self::assertNotNull($em->find(PersonalSkill::class, $id));
+    }
+
+    public function testCookingAdminCannotManageSkills(): void
+    {
+        $client = static::createClient();
+        $this->loginWithRoles($client, ['ROLE_COOKING_ADMIN']);
+
+        $client->request('GET', '/skills/create');
+        self::assertResponseStatusCodeSame(403);
+    }
+
+    public function testSuperAdminCanAccessSkillCreation(): void
+    {
+        $client = static::createClient();
+        $this->loginWithRoles($client, ['ROLE_SUPER_ADMIN']);
+
+        $client->request('GET', '/skills/create');
+        self::assertResponseIsSuccessful();
     }
 
     private function createSkill(

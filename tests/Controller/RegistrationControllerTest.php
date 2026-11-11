@@ -55,8 +55,15 @@ class RegistrationControllerTest extends WebTestCase
 
         self::assertInstanceOf(User::class, $user);
         self::assertSame($username, $user->getUsername());
-        self::assertContains('ROLE_USER', $user->getRoles());
-        self::assertNotContains('ROLE_ADMIN', $user->getRoles());
+        self::assertSame(
+            ['ROLE_USER'],
+            $user->getRoles()
+        );
+
+        self::assertCount(
+            0,
+            $user->getAssignedRoles()
+        );
         self::assertFalse($user->isVerified());
         self::assertNotSame($password, $user->getPassword());
 
