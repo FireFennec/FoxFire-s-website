@@ -483,6 +483,72 @@ class FeaturesListControllerTest extends WebTestCase
         ], $featureNames);
     }
 
+
+    public function testFeatureSectionsHaveIndependentPagination(): void
+    {
+        $client = static::createClient();
+        $em = static::getContainer()->get(EntityManagerInterface::class);
+
+        for ($i = 1; $i <= 12; ++$i) {
+            $this->createFeature(
+                $em,
+                sprintf('Pagination To Do %02d', $i),
+                'Pagination test.',
+                FeaturesStatusEnum::NEW_FEATURE,
+                FeaturePriorityEnum::SOON
+            );
+
+            $this->createFeature(
+                $em,
+                sprintf('Pagination Completed %02d', $i),
+                'Pagination test.',
+                FeaturesStatusEnum::COMPLETED_FEATURE,
+                FeaturePriorityEnum::SOON
+            );
+        }
+
+        $crawler = $client->request('GET', '/feature/list');
+        self::assertResponseIsSuccessful();
+
+        $sections = $crawler->filter('section.features-section');
+        self::assertCount(10, $sections->eq(0)->filter('.feature-row'));
+        self::assertCount(10, $sections->eq(1)->filter('.feature-row'));
+
+        $crawler = $client->request('GET', '/feature/list?toDoPage=2&completedPage=1');
+        self::assertResponseIsSuccessful();
+
+        $sections = $crawler->filter('section.features-section');
+        self::assertCount(2, $sections->eq(0)->filter('.feature-row'));
+        self::assertCount(10, $sections->eq(1)->filter('.feature-row'));
+        self::assertSelectorExists('nav[aria-label="To do features pagination"]');
+        self::assertSelectorExists('nav[aria-label="Completed features pagination"]');
+
+        $crawler = $client->request('GET', '/feature/list?toDoPage=1&completedPage=2');
+        self::assertResponseIsSuccessful();
+
+        $sections = $crawler->filter('section.features-section');
+        self::assertCount(10, $sections->eq(0)->filter('.feature-row'));
+        self::assertCount(2, $sections->eq(1)->filter('.feature-row'));
+    }
+
+    public function testFeaturePaginationClampsInvalidPageNumbers(): void
+    {
+        $client = static::createClient();
+        $em = static::getContainer()->get(EntityManagerInterface::class);
+
+        $this->createFeature(
+            $em,
+            'Pagination Boundary Feature',
+            'Pagination test.',
+            FeaturesStatusEnum::NEW_FEATURE,
+            FeaturePriorityEnum::SOON
+        );
+
+        $crawler = $client->request('GET', '/feature/list?toDoPage=-5&completedPage=99999');
+        self::assertResponseIsSuccessful();
+        self::assertCount(1, $crawler->filter('section.features-section')->eq(0)->filter('.feature-row'));
+    }
+
     public function testFeatureCanBeCreatedWithDeadline(): void
     {
         $client = static::createClient();
