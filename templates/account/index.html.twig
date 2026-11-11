@@ -33,7 +33,7 @@
                     <div class="account-field">
                         <strong>Account role</strong>
                         <p>
-                            {% if is_granted('ROLE_ADMIN') %}
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
                                 Administrator
                             {% else %}
                                 User

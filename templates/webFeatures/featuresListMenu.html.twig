@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="page-layout features-page">
-        {% if is_granted('ROLE_ADMIN') %}
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
             <a
                 class="button page-action"
                 href="{{ path('app_featureList_createFeature') }}"

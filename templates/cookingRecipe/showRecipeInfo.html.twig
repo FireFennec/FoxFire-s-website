@@ -17,7 +17,7 @@
                 <div class="recipe-detail-header">
                     <h1>{{ cookingRecipe.recipeName }}</h1>
 
-                    {% if is_granted('ROLE_ADMIN') %}
+                    {% if is_granted('ROLE_COOKING_ADMIN') %}
                         <a
                             class="button-edit"
                             href="{{ path('app_cookingRecipe_editCookingRecipe', {id: cookingRecipe.id}) }}"
