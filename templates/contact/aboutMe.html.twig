@@ -70,15 +70,17 @@
                     </section>
                 {% endif %}
 
-                {% if myContactInformation.x
-                    or myContactInformation.barq
-                    or myContactInformation.github
+                {% if myContactInformation.github
                     or myContactInformation.spotify
+                    or (
+                    is_granted('ROLE_FURRY')
+                    and (myContactInformation.x or myContactInformation.barq)
+                    )
                 %}
                     <section class="about-section">
                         <h2>Follow me</h2>
 
-                        {% if myContactInformation.x %}
+                        {% if is_granted('ROLE_FURRY') and myContactInformation.x %}
                             <div class="about-row">
                                 <span class="about-label">X</span>
 
@@ -100,7 +102,7 @@
                             </div>
                         {% endif %}
 
-                        {% if myContactInformation.barq %}
+                        {% if is_granted('ROLE_FURRY') and myContactInformation.barq %}
                             <div class="about-row">
                                 <span class="about-label">Barq</span>
 

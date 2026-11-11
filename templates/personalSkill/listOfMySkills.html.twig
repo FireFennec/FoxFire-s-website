@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="page-layout skills-page">
-        {% if is_granted('ROLE_ADMIN') %}
+        {% if is_granted('ROLE_PERSONAL_SKILL_ADMIN') %}
             <a
                 class="button page-action"
                 href="{{ path('app_personal_skill_create') }}"
@@ -33,7 +33,7 @@
                             {{ skill.skillDescription }}
                         </p>
 
-                        {% if is_granted('ROLE_ADMIN') %}
+                        {% if is_granted('ROLE_PERSONAL_SKILL_ADMIN') %}
                             <div class="form-actions">
                                 <a
                                     href="{{ path('app_personal_skill_edit', {

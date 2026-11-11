@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -46,12 +48,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     /**
-     * @var list<string> The user roles
-     */
-    #[ORM\Column]
-    private array $roles = [];
-
-    /**
      * @var string The hashed password
      */
     #[ORM\Column]
@@ -59,6 +55,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private bool $isVerified = false;
+
+    /**
+     * @var Collection<int, Role>
+     */
+    #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users')]
+    private Collection $assignedRoles;
+
+    public function __construct()
+    {
+        $this->assignedRoles = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -104,25 +111,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @see UserInterface
+     * Returns the user's security roles.
+     *
+     * @return list<string>
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
+        $roles = [];
+
+        foreach ($this->assignedRoles as $assignedRole) {
+            $roleName = $assignedRole->getName();
+
+            if ($roleName !== null) {
+                $roles[] = $roleName;
+            }
+        }
+
+        // Every authenticated user receives the basic role.
         $roles[] = 'ROLE_USER';
 
-        return array_unique($roles);
-    }
-
-    /**
-     * @param list<string> $roles
-     */
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
-
-        return $this;
+        return array_values(array_unique($roles));
     }
 
     /**
@@ -141,7 +149,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Ensure the session doesn't contain actual password hashes by CRC32C-hashing them, as supported since Symfony 7.3.
+     * Ensure the session doesn't contain actual password hashes
+     * by CRC32C-hashing them, as supported since Symfony 7.3.
      */
     public function __serialize(): array
     {
@@ -165,6 +174,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Role>
+     */
+    public function getAssignedRoles(): Collection
+    {
+        return $this->assignedRoles;
+    }
+
+    public function addAssignedRole(Role $assignedRole): static
+    {
+        if (!$this->assignedRoles->contains($assignedRole)) {
+            $this->assignedRoles->add($assignedRole);
+        }
+
+        return $this;
+    }
+
+    public function removeAssignedRole(Role $assignedRole): static
+    {
+        $this->assignedRoles->removeElement($assignedRole);
 
         return $this;
     }
