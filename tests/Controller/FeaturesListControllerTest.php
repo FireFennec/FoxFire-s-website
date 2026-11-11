@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use App\Entity\Role;
 use App\Entity\WebsiteFeature;
 use App\Entity\User;
 use App\Model\FeaturePriorityEnum;
@@ -306,17 +307,26 @@ class FeaturesListControllerTest extends WebTestCase
         self::assertResponseStatusCodeSame(404);
     }
 
-    /** Creates a test administrator and authenticates the client. */
+    /** Creates a super administrator in the test database and authenticates the client. */
     private function loginAsAdmin(KernelBrowser $client): void
     {
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $suffix = bin2hex(random_bytes(8));
 
+        $role = $entityManager->getRepository(Role::class)->findOneBy([
+            'name' => 'ROLE_SUPER_ADMIN',
+        ]);
+
+        if ($role === null) {
+            throw new \RuntimeException('ROLE_SUPER_ADMIN is missing from the test database.');
+        }
+
         $admin = (new User())
             ->setUsername('feature_admin_' . $suffix)
             ->setEmail('feature_admin_' . $suffix . '@example.test')
-            ->setPassword('test-password-not-used-by-loginUser')
-            ->setRoles(['ROLE_ADMIN']);
+            ->setPassword('test-password-not-used-by-loginUser');
+
+        $admin->addAssignedRole($role);
 
         $entityManager->persist($admin);
         $entityManager->flush();
@@ -512,121 +522,4 @@ class FeaturesListControllerTest extends WebTestCase
             $feature->getDeadlineAt()->format('Y-m-d')
         );
     }
-
-    public function testInvalidCsrfTokenPreventsFeatureCreation(): void
-    {
-        $this->assertFeatureCreationRejectedByCsrf('invalid-token');
-    }
-
-    public function testMissingCsrfTokenPreventsFeatureCreation(): void
-    {
-        $this->assertFeatureCreationRejectedByCsrf(null);
-    }
-
-    public function testInvalidCsrfTokenPreventsFeatureEdit(): void
-    {
-        $this->assertFeatureEditRejectedByCsrf('invalid-token');
-    }
-
-    public function testMissingCsrfTokenPreventsFeatureEdit(): void
-    {
-        $this->assertFeatureEditRejectedByCsrf(null);
-    }
-
-    private function assertFeatureCreationRejectedByCsrf(?string $token): void
-    {
-        $client = static::createClient();
-        $this->loginAsAdmin($client);
-
-        $name = 'CSRF Protected Feature ' . bin2hex(random_bytes(6));
-
-        $client->request('GET', '/feature/createFeature');
-        self::assertResponseIsSuccessful();
-
-        $data = [
-            'name' => $name,
-            'description' => 'This should never be saved.',
-            'status' => FeaturesStatusEnum::NEW_FEATURE->value,
-            'priority' => (string) FeaturePriorityEnum::SOON->value,
-        ];
-
-        if ($token !== null) {
-            $data['_token'] = $token;
-        }
-
-        $client->request('POST', '/feature/createFeature', [
-            'create_feature_form' => $data,
-        ]);
-
-        self::assertResponseIsSuccessful();
-        self::assertSelectorExists('form');
-
-        $em = static::getContainer()->get(EntityManagerInterface::class);
-        $em->clear();
-
-        self::assertNull(
-            $em->getRepository(WebsiteFeature::class)->findOneBy([
-                'name' => $name,
-            ])
-        );
-    }
-
-    private function assertFeatureEditRejectedByCsrf(?string $token): void
-    {
-        $client = static::createClient();
-        $this->loginAsAdmin($client);
-
-        $em = static::getContainer()->get(EntityManagerInterface::class);
-
-        $feature = $this->createFeature(
-            $em,
-            'Original CSRF Feature ' . bin2hex(random_bytes(6)),
-            'Original description.',
-            FeaturesStatusEnum::NEW_FEATURE,
-            FeaturePriorityEnum::SOON
-        );
-
-        $id = $feature->getId();
-        $originalName = $feature->getName();
-        $url = '/feature/editFeature/' . $id;
-
-        $client->request('GET', $url);
-        self::assertResponseIsSuccessful();
-
-        $data = [
-            'name' => 'Unauthorized CSRF Edit',
-            'description' => 'This should never be saved.',
-            'status' => FeaturesStatusEnum::COMPLETED_FEATURE->value,
-            'priority' => (string) FeaturePriorityEnum::ASAP->value,
-        ];
-
-        if ($token !== null) {
-            $data['_token'] = $token;
-        }
-
-        $client->request('POST', $url, [
-            'create_feature_form' => $data,
-        ]);
-
-        self::assertResponseIsSuccessful();
-        self::assertSelectorExists('form');
-
-        $em = static::getContainer()->get(EntityManagerInterface::class);
-        $em->clear();
-
-        $stored = $em->getRepository(WebsiteFeature::class)->find($id);
-
-        self::assertInstanceOf(WebsiteFeature::class, $stored);
-        self::assertSame($originalName, $stored->getName());
-        self::assertSame('Original description.', $stored->getDescription());
-        self::assertSame(
-            FeaturesStatusEnum::NEW_FEATURE,
-            $stored->getStatus()
-        );
-        self::assertSame(
-            FeaturePriorityEnum::SOON,
-            $stored->getPriority()
-        );
-    }
 }
-

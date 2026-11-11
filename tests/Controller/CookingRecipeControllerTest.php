@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Controller;
 
 use App\Entity\CookingRecipe;
+use App\Entity\Role;
 use App\Entity\User;
 use App\Repository\CookingRecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -82,7 +83,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testMissingRecipeEditReturns404(): void
     {
         $client = static::createClient();
-        $this->loginAsAdmin($client);
+        $this->loginAsCookingAdmin($client);
 
         $client->request('GET', '/cooking-recipes/999999999/edit');
 
@@ -92,7 +93,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testCreateRecipeFormLoadsSuccessfully(): void
     {
         $client = static::createClient();
-        $this->loginAsAdmin($client);
+        $this->loginAsCookingAdmin($client);
 
         $crawler = $client->request('GET', '/cooking-recipes/create');
 
@@ -118,7 +119,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testValidRecipeCanBeCreated(): void
     {
         $client = static::createClient();
-        $this->loginAsAdmin($client);
+        $this->loginAsCookingAdmin($client);
 
         $crawler = $client->request('GET', '/cooking-recipes/create');
 
@@ -162,7 +163,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testInvalidRecipeIsNotCreated(): void
     {
         $client = static::createClient();
-        $this->loginAsAdmin($client);
+        $this->loginAsCookingAdmin($client);
 
         $crawler = $client->request('GET', '/cooking-recipes/create');
 
@@ -200,7 +201,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testExistingRecipeCanBeEdited(): void
     {
         $client = static::createClient();
-        $this->loginAsAdmin($client);
+        $this->loginAsCookingAdmin($client);
 
         $recipe = $this->createRecipe();
         $id = $recipe->getId();
@@ -276,7 +277,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testInvalidEditDoesNotChangeStoredRecipe(): void
     {
         $client = static::createClient();
-        $this->loginAsAdmin($client);
+        $this->loginAsCookingAdmin($client);
         $recipe = $this->createRecipe();
         $id = $recipe->getId();
 
@@ -318,7 +319,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testInvalidCsrfTokenPreventsRecipeCreation(): void
     {
         $client = static::createClient();
-        $this->loginAsAdmin($client);
+        $this->loginAsCookingAdmin($client);
 
         $client->request('GET', '/cooking-recipes/create');
 
@@ -343,7 +344,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testInvalidCsrfTokenPreventsRecipeEdit(): void
     {
         $client = static::createClient();
-        $this->loginAsAdmin($client);
+        $this->loginAsCookingAdmin($client);
         $recipe = $this->createRecipe();
         $id = $recipe->getId();
 
@@ -376,7 +377,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testRecipeWithoutIngredientsIsNotCreated(): void
     {
         $client = static::createClient();
-        $this->loginAsAdmin($client);
+        $this->loginAsCookingAdmin($client);
 
         $crawler = $client->request('GET', '/cooking-recipes/create');
 
@@ -407,7 +408,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testWhitespaceOnlyIngredientIsNotAccepted(): void
     {
         $client = static::createClient();
-        $this->loginAsAdmin($client);
+        $this->loginAsCookingAdmin($client);
 
         $crawler = $client->request('GET', '/cooking-recipes/create');
 
@@ -436,7 +437,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testRecipeNameExceedingLimitIsNotAccepted(): void
     {
         $client = static::createClient();
-        $this->loginAsAdmin($client);
+        $this->loginAsCookingAdmin($client);
 
         $crawler = $client->request('GET', '/cooking-recipes/create');
 
@@ -463,7 +464,7 @@ class CookingRecipeControllerTest extends WebTestCase
     public function testPutRequestToCreateRecipeIsRejected(): void
     {
         $client = static::createClient();
-        $this->loginAsAdmin($client);
+        $this->loginAsCookingAdmin($client);
 
         $client->request('PUT', '/cooking-recipes/create');
 
@@ -542,22 +543,59 @@ class CookingRecipeControllerTest extends WebTestCase
         );
     }
 
-    /** Creates an administrator in the test database and authenticates the client. */
-    private function loginAsAdmin(KernelBrowser $client): void
+    /** Authenticates a user who can manage cooking recipes. */
+    private function loginAsCookingAdmin(KernelBrowser $client): void
+    {
+        $client->loginUser($this->createUserWithRoles(['ROLE_COOKING_ADMIN']));
+    }
+
+    public function testRegularUserCannotCreateRecipe(): void
+    {
+        $client = static::createClient();
+        $user = $this->createUserWithRoles();
+        $client->loginUser($user);
+
+        $client->request('GET', '/cooking-recipes/create');
+
+        self::assertResponseStatusCodeSame(403);
+    }
+
+    public function testSkillAdminCannotCreateRecipe(): void
+    {
+        $client = static::createClient();
+        $user = $this->createUserWithRoles(['ROLE_PERSONAL_SKILL_ADMIN']);
+        $client->loginUser($user);
+
+        $client->request('GET', '/cooking-recipes/create');
+
+        self::assertResponseStatusCodeSame(403);
+    }
+
+    /** @param list<string> $roleNames */
+    private function createUserWithRoles(array $roleNames = []): User
     {
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $suffix = bin2hex(random_bytes(8));
 
-        $admin = (new User())
-            ->setUsername('recipe_admin_' . $suffix)
-            ->setEmail('recipe_admin_' . $suffix . '@example.test')
-            ->setPassword('test-password-not-used-by-loginUser')
-            ->setRoles(['ROLE_ADMIN']);
+        $user = (new User())
+            ->setUsername('recipe_user_' . $suffix)
+            ->setEmail('recipe_user_' . $suffix . '@example.test')
+            ->setPassword('test-password-not-used-by-loginUser');
 
-        $entityManager->persist($admin);
+        foreach ($roleNames as $roleName) {
+            $role = $entityManager->getRepository(Role::class)->findOneBy(['name' => $roleName]);
+
+            if (!$role instanceof Role) {
+                throw new \RuntimeException(sprintf('Test role "%s" is missing.', $roleName));
+            }
+
+            $user->addAssignedRole($role);
+        }
+
+        $entityManager->persist($user);
         $entityManager->flush();
 
-        $client->loginUser($admin);
+        return $user;
     }
 
     private function createRecipe(): CookingRecipe
@@ -583,3 +621,4 @@ class CookingRecipeControllerTest extends WebTestCase
         return $recipe;
     }
 }
+
