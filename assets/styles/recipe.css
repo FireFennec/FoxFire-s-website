@@ -48,6 +48,10 @@
    Recipe Detail
    ========================================================================== */
 
+.recipe-detail-page {
+    padding-bottom: 50px;
+}
+
 .recipe-detail-header {
     display: flex;
     align-items: center;
