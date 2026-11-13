@@ -26,6 +26,10 @@ class PersonalSkill
     #[Assert\Length(max: 255)]
     private ?string $skillName = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Assert\Length(max: 300)]
+    private ?string $shortDescription = null;
+
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 2000)]
@@ -48,6 +52,20 @@ class PersonalSkill
     public function setSkillName(string $skillName): static
     {
         $this->skillName = trim($skillName);
+
+        return $this;
+    }
+
+    public function getShortDescription(): ?string
+    {
+        return $this->shortDescription;
+    }
+
+    public function setShortDescription(?string $shortDescription): static
+    {
+        $this->shortDescription = $shortDescription !== null
+            ? trim($shortDescription)
+            : null;
 
         return $this;
     }

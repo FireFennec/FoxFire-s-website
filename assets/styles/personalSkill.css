@@ -2,6 +2,11 @@
    Personal Skills Page
    ========================================================================== */
 
+.skills-page,
+.skill-form-page {
+    padding-bottom: 50px;
+}
+
 .skills-page .page-content > h1 {
     margin-top: 0;
     margin-bottom: 35px;
@@ -80,6 +85,36 @@
     white-space: pre-line;
 }
 
+.skill-description[hidden] {
+    display: none;
+}
+
+.skill-description-toggle {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 0;
+
+    color: #ff7777;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    transition: color 0.2s ease;
+}
+
+.skill-description-toggle:hover {
+    color: #ffaaaa;
+}
+
+.skill-description-toggle:focus-visible {
+    outline: 2px solid #ff7777;
+    outline-offset: 4px;
+}
+
 
 /* ==========================================================================
    Empty State
@@ -135,4 +170,9 @@
 .skill-form textarea {
     min-height: 180px;
     resize: vertical;
+}
+
+.skill-form textarea[name="personal_skill[shortDescription]"] {
+    min-height: 80px;
+    height: 80px;
 }

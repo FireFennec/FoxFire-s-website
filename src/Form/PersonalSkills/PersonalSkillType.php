@@ -29,10 +29,20 @@ class PersonalSkillType extends AbstractType
                 'required' => true,
                 'empty_data' => '',
             ])
+            ->add('shortDescription', TextareaType::class, [
+                'label' => 'Short Description',
+                'required' => false,
+                'attr' => [
+                    'maxlength' => 300,
+                ],
+            ])
             ->add('skillDescription', TextareaType::class, [
-                'label' => 'Description',
+                'label' => 'Long Description',
                 'required' => true,
                 'empty_data' => '',
+                'attr' => [
+                    'maxlength' => 2000,
+                ],
             ])
             ->add('levelOfSkill', EnumType::class, [
                 'class' => PersonalSkillLevelEnum::class,

@@ -29,9 +29,24 @@
                             </span>
                         </div>
 
-                        <p class="skill-description">
-                            {{ skill.skillDescription }}
-                        </p>
+                        {% if skill.shortDescription %}
+                            <div class="skill-description-container">
+                                <p class="skill-description skill-description-short">
+                                    {{ skill.shortDescription }}
+                                </p>
+
+                                <p class="skill-description skill-description-long" hidden>
+                                    {{ skill.skillDescription }}
+                                </p>
+
+                                <button type="button" class="skill-description-toggle"
+                                        aria-expanded="false">
+                                    Read more
+                                </button>
+                            </div>
+                        {% else %}
+                            <p class="skill-description">{{ skill.skillDescription }}</p>
+                        {% endif %}
 
                         {% if is_granted('ROLE_PERSONAL_SKILL_ADMIN') %}
                             <div class="form-actions">
