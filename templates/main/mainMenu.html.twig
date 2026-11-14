@@ -7,13 +7,23 @@
         {{ include('main/_featuresListAside.html.twig') }}
 
         <div class="homepage-content">
-            <h1>FoxFire's website</h1>
+            <section class="homepage-intro">
+                <div class="homepage-intro-text">
+                    <h1>FoxFire's website</h1>
 
-            <h2>What is the purpose?</h2>
-            <p>
-                I want to improve my web development skills by creating
-                interesting and useful applications.
-            </p>
+                    <h2>What is the purpose?</h2>
+                    <p>
+                        I want to improve my web development skills by creating
+                        interesting and useful applications.
+                    </p>
+                </div>
+
+                <img
+                    class="homepage-intro-sticker"
+                    src="{{ asset('images/stickers/foxfire-notebook.png') }}"
+                    alt="FoxFire working on a laptop"
+                >
+            </section>
 
             {# Pass only explicitly defined variables to the reusable feature sections. #}
             {{ include('main/_featureSection.html.twig', {
