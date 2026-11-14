@@ -32,9 +32,11 @@ class MainMenuController extends AbstractController
                     FeaturesStatusEnum::UPDATE_FEATURE
                 ),
             'completedFeatures' => $websiteFeaturesRepository
-                ->findByStatusOrderedByPriority(
-                    FeaturesStatusEnum::COMPLETED_FEATURE
-                ),
+                ->findRecentlyCompleted(),
+            'completedFeaturesCount' => $websiteFeaturesRepository
+                ->count([
+                    'status' => FeaturesStatusEnum::COMPLETED_FEATURE,
+                ]),
         ]);
     }
 }

@@ -112,4 +112,21 @@ class WebsiteFeatureRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * Retrieves the most recently completed features.
+     *
+     * @return list<WebsiteFeature>
+     */
+    public function findRecentlyCompleted(int $limit = 15): array
+    {
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.status = :status')
+            ->setParameter('status', FeaturesStatusEnum::COMPLETED_FEATURE)
+            ->orderBy('f.completedAt', 'DESC')
+            ->addOrderBy('f.id', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 }

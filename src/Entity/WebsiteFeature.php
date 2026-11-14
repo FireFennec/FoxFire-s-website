@@ -46,6 +46,9 @@ class WebsiteFeature
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $deadlineAt = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $completedAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -82,6 +85,14 @@ class WebsiteFeature
 
     public function setStatus(FeaturesStatusEnum $status): static
     {
+        if ($status === FeaturesStatusEnum::COMPLETED_FEATURE) {
+            if ($this->status !== FeaturesStatusEnum::COMPLETED_FEATURE) {
+                $this->completedAt = new DateTimeImmutable();
+            }
+        } else {
+            $this->completedAt = null;
+        }
+
         $this->status = $status;
 
         return $this;
@@ -122,6 +133,18 @@ class WebsiteFeature
     public function setDeadlineAt(?DateTimeImmutable $deadlineAt): static
     {
         $this->deadlineAt = $deadlineAt;
+
+        return $this;
+    }
+
+    public function getCompletedAt(): ?DateTimeImmutable
+    {
+        return $this->completedAt;
+    }
+
+    public function setCompletedAt(?DateTimeImmutable $completedAt): static
+    {
+        $this->completedAt = $completedAt;
 
         return $this;
     }

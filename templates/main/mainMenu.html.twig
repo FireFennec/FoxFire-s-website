@@ -32,7 +32,7 @@
 
             {{ include('main/_featureSection.html.twig', {
                 heading: 'The list of existing features',
-                description: 'There are currently ' ~ (completedFeatures|length) ~ ' completed features.',
+                description: 'There are currently ' ~ completedFeaturesCount ~ ' completed features.',
                 features: completedFeatures,
                 emptyMessage: 'No features have been completed yet.'
             }, with_context = false) }}
