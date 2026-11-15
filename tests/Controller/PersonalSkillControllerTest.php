@@ -107,15 +107,20 @@ class PersonalSkillControllerTest extends WebTestCase
     public function testEmptySkillsListDisplaysMessage(): void
     {
         $client = static::createClient();
-        $repository = $this->createStub(PersonalSkillRepository::class);
-        $repository->method('findAllOrderedByLevel')->willReturn([]);
 
-        static::getContainer()->set(PersonalSkillRepository::class, $repository);
         $client->request('GET', '/skills');
 
         self::assertResponseIsSuccessful();
-        self::assertSelectorTextContains('.skills-empty', 'No skills available yet.');
-        self::assertCount(0, $client->getCrawler()->filter('.skill-card'));
+
+        self::assertSelectorTextContains(
+            '.skills-empty',
+            'No skills available yet.'
+        );
+
+        self::assertCount(
+            0,
+            $client->getCrawler()->filter('.skill-card')
+        );
     }
 
     public function testPostRequestIsRejected(): void

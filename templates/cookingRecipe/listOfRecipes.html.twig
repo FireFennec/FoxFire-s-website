@@ -16,57 +16,60 @@
         <div class="page-content page-width-800">
             <h1>Cooking recipes</h1>
 
-            <section class="page-panel page-panel-compact recipes-section">
-                <div class="recipes-list">
-                    {% for recipe in recipes %}
-                        <div class="recipe-row">
-                            <a
-                                class="recipe-name"
-                                href="{{ path('app_cooking_recipe_showRecipeInfo', {id: recipe.id}) }}"
-                            >
-                                {{ recipe.recipeName }}
-                            </a>
-                        </div>
-                    {% else %}
-                        <p class="recipes-empty">
-                            No recipes have been added yet.
-                        </p>
-                    {% endfor %}
-                </div>
+            <turbo-frame id="cooking-recipes" data-turbo-action="advance">
+                <section class="page-panel page-panel-compact recipes-section">
+                    <div class="recipes-list">
+                        {% for recipe in recipes %}
+                            <div class="recipe-row">
+                                <a
+                                    class="recipe-name"
+                                    href="{{ path('app_cooking_recipe_showRecipeInfo', {id: recipe.id}) }}"
+                                    data-turbo-frame="_top"
+                                >
+                                    {{ recipe.recipeName }}
+                                </a>
+                            </div>
+                        {% else %}
+                            <p class="recipes-empty">
+                                No recipes have been added yet.
+                            </p>
+                        {% endfor %}
+                    </div>
 
-                {% if recipes.nbPages > 1 %}
-                    <nav
-                        class="recipes-pagination"
-                        aria-label="Recipe pagination"
-                    >
-                        {% if recipes.hasPreviousPage %}
-                            <a
-                                class="button"
-                                href="{{ path('app_cooking_recipe', {
-                                    page: recipes.previousPage
-                                }) }}"
-                            >
-                                ← Previous
-                            </a>
-                        {% endif %}
+                    {% if recipes.nbPages > 1 %}
+                        <nav
+                            class="recipes-pagination"
+                            aria-label="Recipe pagination"
+                        >
+                            {% if recipes.hasPreviousPage %}
+                                <a
+                                    class="button"
+                                    href="{{ path('app_cooking_recipe', {
+                                        page: recipes.previousPage
+                                    }) }}"
+                                >
+                                    ← Previous
+                                </a>
+                            {% endif %}
 
-                        <span class="recipes-page-indicator">
-                            Page {{ recipes.currentPage }} of {{ recipes.nbPages }}
-                        </span>
+                            <span class="recipes-page-indicator">
+                                Page {{ recipes.currentPage }} of {{ recipes.nbPages }}
+                            </span>
 
-                        {% if recipes.hasNextPage %}
-                            <a
-                                class="button"
-                                href="{{ path('app_cooking_recipe', {
-                                    page: recipes.nextPage
-                                }) }}"
-                            >
-                                Next →
-                            </a>
-                        {% endif %}
-                    </nav>
-                {% endif %}
-            </section>
+                            {% if recipes.hasNextPage %}
+                                <a
+                                    class="button"
+                                    href="{{ path('app_cooking_recipe', {
+                                        page: recipes.nextPage
+                                    }) }}"
+                                >
+                                    Next →
+                                </a>
+                            {% endif %}
+                        </nav>
+                    {% endif %}
+                </section>
+            </turbo-frame>
         </div>
     </div>
 
