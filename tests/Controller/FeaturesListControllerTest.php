@@ -21,16 +21,22 @@ class FeaturesListControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $client->request('GET', '/feature/list');
+        $crawler = $client->request('GET', '/feature/list');
 
         self::assertResponseIsSuccessful();
-        self::assertSelectorTextContains(
-            'section.features-section:nth-of-type(1) h2',
-            'To Do Features'
+
+        $sections = $crawler->filter('section.features-section');
+
+        self::assertCount(2, $sections);
+
+        self::assertSame(
+            'To Do Features',
+            trim($sections->eq(0)->filter('h2')->text())
         );
-        self::assertSelectorTextContains(
-            'section.features-section:nth-of-type(2) h2',
-            'Completed Features'
+
+        self::assertSame(
+            'Completed Features',
+            trim($sections->eq(1)->filter('h2')->text())
         );
     }
 

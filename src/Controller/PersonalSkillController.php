@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 
 /**
  * Handles listing, creating, and editing personal skills.
@@ -21,15 +23,28 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class PersonalSkillController extends AbstractController
 {
     /**
-     * Displays personal skills ordered by proficiency level.
+     * Displays a paginated list of personal skills
+     * ordered by proficiency level.
      */
     #[Route('', name: 'app_personal_skill_index', methods: ['GET'])]
-    public function index(PersonalSkillRepository $repository): Response
-    {
-        $skills = $repository->findAllOrderedByLevel();
+    public function index(
+        Request $request,
+        PersonalSkillRepository $repository
+    ): Response {
+        $queryBuilder = $repository->createOrderedQueryBuilder();
+
+        $pager = new Pagerfanta(new QueryAdapter($queryBuilder));
+        $pager->setMaxPerPage(5);
+
+        // Keep the requested page within the available range.
+        $page = $request->query->getInt('page', 1);
+        $page = max(1, $page);
+        $page = min($page, max(1, $pager->getNbPages()));
+
+        $pager->setCurrentPage($page);
 
         return $this->render('personalSkill/listOfMySkills.html.twig', [
-            'skills' => $skills,
+            'skills' => $pager,
         ]);
     }
 
