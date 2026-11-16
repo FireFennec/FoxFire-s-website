@@ -41,4 +41,5 @@ security:
             logout:
                 path: app_logout
 
-    access_control: []
+    access_control:
+        - { path: ^/admin(?:/|$), roles: ROLE_SUPER_ADMIN }
