@@ -52,7 +52,7 @@ class RegistrationController extends AbstractController
                 'app_verify_email',
                 $user,
                 (new TemplatedEmail())
-                    ->from(new Address('noreply@foxfire.local', "FoxFire's Website"))
+                    ->from(new Address('noreply@foxfireworld.com', "FoxFire's Website"))
                     ->to((string) $user->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
@@ -74,7 +74,7 @@ class RegistrationController extends AbstractController
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(
         Request $request,
-        TranslatorInterface $translator,
+	TranslatorInterface $translator,
         UserRepository $userRepository
     ): Response {
         $id = $request->query->get('id');
