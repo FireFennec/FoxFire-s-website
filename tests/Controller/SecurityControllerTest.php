@@ -100,7 +100,8 @@ class SecurityControllerTest extends WebTestCase
         $suffix = bin2hex(random_bytes(6));
         $user = (new User())
             ->setUsername('test_' . $suffix)
-            ->setEmail('test_' . $suffix . '@example.test');
+            ->setEmail('test_' . $suffix . '@example.test')
+            ->setIsVerified(true);
         $hasher = static::getContainer()->get(UserPasswordHasherInterface::class);
         $user->setPassword($hasher->hashPassword($user, 'ValidPassword123'));
         $em = static::getContainer()->get(EntityManagerInterface::class);
