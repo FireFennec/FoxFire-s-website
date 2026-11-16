@@ -35,5 +35,11 @@ class DashboardController extends AbstractDashboardController
             'Users',
             'fas fa-users'
         );
+
+        yield MenuItem::linkToRoute(
+            'Back to Website',
+            'fas fa-arrow-left',
+            'app_mainMenu'
+        );
     }
 }
