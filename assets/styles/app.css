@@ -35,3 +35,32 @@
 *::after {
     box-sizing: border-box;
 }
+
+.flash-notification {
+    position: static;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    width: fit-content;
+    max-width: 100%;
+    margin: 16px 0;
+    padding: 14px 20px;
+
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.flash-notification-success {
+    color: #b8f5c8;
+    background: rgba(20, 65, 35, 0.9);
+    border: 1px solid #39b86a;
+    box-shadow: 0 0 12px rgba(57, 184, 106, 0.15);
+}
+
+.flash-notification-icon {
+    font-size: 22px;
+    font-weight: bold;
+    color: #55e88a;
+}
