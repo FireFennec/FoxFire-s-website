@@ -9,6 +9,13 @@
         <div class="homepage-content">
             <section class="homepage-intro">
                 <div class="homepage-intro-text">
+                    {% for message in app.flashes('success') %}
+                        <div class="flash-notification flash-notification-success" role="status">
+                            <span class="flash-notification-icon" aria-hidden="true">✓</span>
+                            <span>{{ message }}</span>
+                        </div>
+                    {% endfor %}
+
                     <h1>FoxFire's website</h1>
 
                     <h2>What is the purpose?</h2>

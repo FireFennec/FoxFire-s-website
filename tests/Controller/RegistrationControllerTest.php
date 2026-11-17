@@ -46,6 +46,15 @@ class RegistrationControllerTest extends WebTestCase
 
         self::assertResponseRedirects('/');
 
+        $client->followRedirect();
+
+        self::assertResponseIsSuccessful();
+
+        self::assertSelectorTextContains(
+            '.flash-notification-success',
+            'Registration successful. Please check your email to verify your account.'
+        );
+
         $em = static::getContainer()->get(EntityManagerInterface::class);
         $em->clear();
 
