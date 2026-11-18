@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Form;
+namespace App\Form\Registration;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
@@ -27,10 +27,11 @@ class RegistrationFormType extends AbstractType
             ->add('username')
             ->add('email')
             ->add('agreeTerms', CheckboxType::class, [
+                'label' => 'I agree to the Terms and Conditions',
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue(
-                        message: 'You should agree to our terms.',
+                        message: 'You must accept the Terms and Conditions.',
                     ),
                 ],
             ])

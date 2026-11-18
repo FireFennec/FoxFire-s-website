@@ -199,7 +199,7 @@ final class UserCrudControllerTest extends WebTestCase
 
         self::assertSame(0, $removedRoleCount);
     }
-    
+
     public function testCanDeleteRegularUser(): void
     {
         self::bootKernel();
