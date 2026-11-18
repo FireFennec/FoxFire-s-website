@@ -199,4 +199,116 @@ final class UserCrudControllerTest extends WebTestCase
 
         self::assertSame(0, $removedRoleCount);
     }
+    
+    public function testCanDeleteRegularUser(): void
+    {
+        self::bootKernel();
+
+        $container = static::getContainer();
+        $entityManager = $container->get(EntityManagerInterface::class);
+
+        $suffix = bin2hex(random_bytes(6));
+
+        $user = (new User())
+            ->setUsername('user_' . $suffix)
+            ->setEmail('user_' . $suffix . '@example.test')
+            ->setPassword('test-password-hash');
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        $userId = $user->getId();
+
+        $controller = new \App\Controller\Admin\UserCrudController(
+            $container->get(\App\Service\SuperAdminProtection::class)
+        );
+
+        $controller->deleteEntity($entityManager, $user);
+
+        self::assertNull(
+            $entityManager->getRepository(User::class)->find($userId)
+        );
+    }
+
+    public function testCannotDeleteLastSuperAdmin(): void
+    {
+        self::bootKernel();
+
+        $container = static::getContainer();
+        $entityManager = $container->get(EntityManagerInterface::class);
+
+        $role = $entityManager->getRepository(Role::class)
+            ->findOneBy(['name' => 'ROLE_SUPER_ADMIN']);
+
+        self::assertNotNull($role);
+
+        $suffix = bin2hex(random_bytes(6));
+
+        $user = (new User())
+            ->setUsername('admin_' . $suffix)
+            ->setEmail('admin_' . $suffix . '@example.test')
+            ->setPassword('test-password-hash');
+
+        $user->addAssignedRole($role);
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        $controller = new \App\Controller\Admin\UserCrudController(
+            $container->get(\App\Service\SuperAdminProtection::class)
+        );
+
+        $this->expectException(
+            \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException::class
+        );
+
+        $controller->deleteEntity($entityManager, $user);
+    }
+
+    public function testCanDeleteSuperAdminWhenAnotherExists(): void
+    {
+        self::bootKernel();
+
+        $container = static::getContainer();
+        $entityManager = $container->get(EntityManagerInterface::class);
+
+        $role = $entityManager->getRepository(Role::class)
+            ->findOneBy(['name' => 'ROLE_SUPER_ADMIN']);
+
+        self::assertNotNull($role);
+
+        $users = [];
+
+        for ($i = 0; $i < 2; $i++) {
+            $suffix = bin2hex(random_bytes(6));
+
+            $user = (new User())
+                ->setUsername('admin_' . $suffix)
+                ->setEmail('admin_' . $suffix . '@example.test')
+                ->setPassword('test-password-hash');
+
+            $user->addAssignedRole($role);
+            $entityManager->persist($user);
+
+            $users[] = $user;
+        }
+
+        $entityManager->flush();
+
+        $deletedUserId = $users[1]->getId();
+
+        $controller = new \App\Controller\Admin\UserCrudController(
+            $container->get(\App\Service\SuperAdminProtection::class)
+        );
+
+        $controller->deleteEntity($entityManager, $users[1]);
+
+        self::assertNull(
+            $entityManager->getRepository(User::class)->find($deletedUserId)
+        );
+
+        self::assertNotNull(
+            $entityManager->getRepository(User::class)->find($users[0]->getId())
+        );
+    }
 }
