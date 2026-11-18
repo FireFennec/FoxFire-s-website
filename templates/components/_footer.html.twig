@@ -1,0 +1,33 @@
+<footer class="site-footer">
+    <div class="site-footer__inner">
+        <div class="site-footer__top">
+            <div class="site-footer__brand">
+                <a class="site-footer__brand-link" href="{{ path('app_mainMenu') }}">
+                    <img src="{{ asset('images/logo_fox.png') }}" alt="" width="48" height="48">
+                    <span>FoxFire's Website</span>
+                </a>
+                <p>Personal development &amp; projects</p>
+            </div>
+
+            <nav class="site-footer__links" aria-label="Footer navigation">
+                <div class="site-footer__group">
+                    <h2>Explore</h2>
+                    <a href="{{ path('app_mainMenu') }}">Main Menu</a>
+                    <a href="{{ path('app_contact_aboutMe') }}">About Me</a>
+                    <a href="{{ path('app_cooking_recipe') }}">Cooking Recipes</a>
+                    <a href="{{ path('app_personal_skill_index') }}">Personal Skills</a>
+                </div>
+                <div class="site-footer__group">
+                    <h2>Information</h2>
+                    <a href="{{ path('app_terms_and_conditions') }}">Terms &amp; Conditions</a>
+                    <a href="{{ path('app_contact_aboutMe') }}">About &amp; Contact</a>
+                </div>
+            </nav>
+        </div>
+
+        <div class="site-footer__bottom">
+            <span>&copy; {{ 'now'|date('Y') }} FoxFire World. All rights reserved.</span>
+            <span class="site-footer__signature">Made with fluffy paws by FoxFire 🐾</span>
+        </div>
+    </div>
+</footer>
