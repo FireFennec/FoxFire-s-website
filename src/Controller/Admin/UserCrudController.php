@@ -45,8 +45,37 @@ class UserCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         return $actions
-            ->disable(Action::NEW, Action::DELETE)
-            ->setPermission(Action::EDIT, 'ROLE_SUPER_ADMIN');
+            ->disable(Action::NEW)
+            ->setPermission(Action::EDIT, 'ROLE_SUPER_ADMIN')
+            ->setPermission(Action::DELETE, 'ROLE_SUPER_ADMIN');
+    }
+
+    /**
+     * Deletes a user while protecting the last super administrator.
+     */
+    public function deleteEntity(
+        EntityManagerInterface $entityManager,
+                               $entityInstance
+    ): void {
+        if (!$entityInstance instanceof User) {
+            return;
+        }
+
+        $connection = $entityManager->getConnection();
+        $connection->beginTransaction();
+
+        try {
+            $this->superAdminProtection->lockSuperAdminRole();
+            $this->superAdminProtection->assertCanRemoveSuperAdmin($entityInstance);
+
+            parent::deleteEntity($entityManager, $entityInstance);
+
+            $connection->commit();
+        } catch (\Throwable $exception) {
+            $connection->rollBack();
+
+            throw $exception;
+        }
     }
 
     public function updateEntity(
