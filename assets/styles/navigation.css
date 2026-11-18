@@ -29,7 +29,7 @@ header img {
    Navigation
    ========================================================================== */
 
-nav {
+header nav {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -40,7 +40,7 @@ nav {
     font-size: 20px;
 }
 
-nav a {
+header nav a {
     position: relative;
 
     padding: 8px 18px;
@@ -69,7 +69,7 @@ nav a {
  * Creates an inset background layer while preserving
  * the clipped corner of the navigation link.
  */
-nav a::before {
+header nav a::before {
     content: "";
     position: absolute;
     z-index: -1;
@@ -87,7 +87,7 @@ nav a::before {
     );
 }
 
-nav a:hover {
+header nav a:hover {
     color: #ffffff;
 
     text-shadow:
@@ -99,7 +99,7 @@ nav a:hover {
         drop-shadow(0 0 10px rgba(255, 0, 0, 0.4));
 }
 
-nav a:hover::before {
+header nav a:hover::before {
     background: #300000;
 }
 
@@ -108,7 +108,7 @@ nav a:hover::before {
    Keyboard Accessibility
    ========================================================================== */
 
-nav a:focus-visible {
+header nav a:focus-visible {
     color: #ffffff;
 
     outline: 2px solid #ffffff;
@@ -130,7 +130,7 @@ nav a:focus-visible {
         padding: 20px;
     }
 
-    nav {
+    header nav {
         justify-content: center;
         gap: 15px;
 
@@ -153,7 +153,7 @@ nav a:focus-visible {
         height: 45px;
     }
 
-    nav {
+    header nav {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 10px;
@@ -161,7 +161,7 @@ nav a:focus-visible {
         font-size: 15px;
     }
 
-    nav a {
+    header nav a {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -173,11 +173,15 @@ nav a:focus-visible {
 
 /* Use a single navigation column on very narrow screens. */
 @media (max-width: 360px) {
-    nav {
+    header nav {
         grid-template-columns: 1fr;
     }
 }
 
+
+/* ==========================================================================
+   Header Navigation Layout
+   ========================================================================== */
 
 /* Main navigation layout */
 header .header-navigation {
