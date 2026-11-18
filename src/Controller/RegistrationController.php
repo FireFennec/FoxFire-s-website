@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\RegistrationFormType;
+use App\Form\Registration\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
@@ -44,6 +44,9 @@ class RegistrationController extends AbstractController
             $user->setPassword(
                 $userPasswordHasher->hashPassword($user, $plainPassword)
             );
+
+            $user->setTermsAcceptedAt(new \DateTimeImmutable());
+            $user->setTermsAcceptedVersion('1.0');
 
             $entityManager->persist($user);
             $entityManager->flush();

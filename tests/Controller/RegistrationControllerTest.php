@@ -9,6 +9,7 @@ use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use App\Form\Registration\RegistrationFormType;
 
 class RegistrationControllerTest extends WebTestCase
 {
@@ -75,6 +76,15 @@ class RegistrationControllerTest extends WebTestCase
         );
         self::assertFalse($user->isVerified());
         self::assertNotSame($password, $user->getPassword());
+        self::assertInstanceOf(
+            \DateTimeImmutable::class,
+            $user->getTermsAcceptedAt()
+        );
+
+        self::assertSame(
+            '1.0',
+            $user->getTermsAcceptedVersion()
+        );
 
         self::assertTrue(
             static::getContainer()
@@ -175,12 +185,12 @@ class RegistrationControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
+        $username = 'test_' . bin2hex(random_bytes(6));
+        $email = $username . '@example.test';
+
         $client->request('GET', '/register');
 
-        $fields = $this->validFields(
-            'test_' . bin2hex(random_bytes(6)),
-            'terms@example.test'
-        );
+        $fields = $this->validFields($username, $email);
 
         unset($fields['registration_form[agreeTerms]']);
 
@@ -189,8 +199,16 @@ class RegistrationControllerTest extends WebTestCase
         self::assertResponseStatusCodeSame(422);
         self::assertSelectorTextContains(
             'body',
-            'You should agree to our terms.'
+            'You must accept the Terms and Conditions.'
         );
+
+        $em = static::getContainer()->get(EntityManagerInterface::class);
+
+        $user = $em->getRepository(User::class)->findOneBy([
+            'email' => $email,
+        ]);
+
+        self::assertNull($user);
     }
 
     public function testInvalidVerificationLinkReturns404(): void

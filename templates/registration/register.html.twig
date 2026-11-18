@@ -50,7 +50,14 @@
 
                 <div class="registration-terms">
                     {{ form_widget(registrationForm.agreeTerms) }}
-                    {{ form_label(registrationForm.agreeTerms) }}
+
+                    <label for="{{ registrationForm.agreeTerms.vars.id }}">
+                        I agree to the
+                        <a href="{{ path('app_terms_and_conditions') }}" target="_blank" rel="noopener noreferrer">
+                            Terms and Conditions
+                        </a>
+                    </label>
+
                     {{ form_errors(registrationForm.agreeTerms) }}
                 </div>
 

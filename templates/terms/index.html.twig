@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <main class="container mx-auto max-w-4xl px-4 py-10">
+        <h1>Terms and Conditions</h1>
+        <p>Last updated: November 18, 2026</p>
+
+        <section>
+            <h2>1. General Provisions</h2>
+            <p>
+                Welcome to FoxFire World, a personal website and development project.
+                By creating an account or using this website, you agree to these
+                Terms and Conditions.
+            </p>
+        </section>
+
+        <section>
+            <h2>2. User Accounts</h2>
+            <p>
+                Users must provide accurate registration information and are responsible
+                for keeping their login credentials secure. Unauthorized access to
+                another user's account is prohibited.
+            </p>
+        </section>
+
+        <section>
+            <h2>3. Acceptable Use</h2>
+            <p>
+                Users must not engage in harassment, spam, fraudulent activities,
+                unauthorized access, exploitation of security vulnerabilities,
+                or intentional disruption of the website.
+            </p>
+        </section>
+
+        <section>
+            <h2>4. User-Generated Content</h2>
+            <p>
+                Users are responsible for any content they submit or publish.
+                Illegal, malicious, or copyright-infringing content is prohibited.
+                The administrator may remove content that violates these terms.
+            </p>
+        </section>
+
+        <section>
+            <h2>5. Account Suspension and Termination</h2>
+            <p>
+                Accounts that violate these terms may be suspended or deleted,
+                subject to applicable law. Users may request account deletion
+                by contacting the website administrator.
+            </p>
+        </section>
+
+        <section>
+            <h2>6. Website Availability and Liability</h2>
+            <p>
+                FoxFire World is a personal development project.
+                Temporary interruptions, maintenance, and technical errors may occur.
+                Continuous availability is not guaranteed.
+                Nothing in these terms excludes liability that cannot legally be excluded.
+            </p>
+        </section>
+
+        <section>
+            <h2>7. Changes to Terms and Conditions</h2>
+            <p>
+                These terms may be updated as the website evolves.
+                Material changes will be communicated where appropriate.
+                The latest version will always be available on this page.
+            </p>
+        </section>
+
+        <section>
+            <h2>8. Contact</h2>
+            <p>
+                For questions regarding these terms or account deletion,
+                please contact the website administrator through the
+                contact information provided on the website.
+            </p>
+        </section>
+    </main>
+
+    {# Decorative sticker for the Terms and Conditions page. #}
+    <img
+        class="terms-sticker"
+        src="{{ asset('images/stickers/foxfire-suit_two.png') }}"
+        alt=""
+        aria-hidden="true"
+    >
+{% endblock %}

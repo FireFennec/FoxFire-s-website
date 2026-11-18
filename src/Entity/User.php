@@ -62,6 +62,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users')]
     private Collection $assignedRoles;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $termsAcceptedAt = null;
+
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $termsAcceptedVersion = null;
+
     public function __construct()
     {
         $this->assignedRoles = new ArrayCollection();
@@ -198,6 +204,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeAssignedRole(Role $assignedRole): static
     {
         $this->assignedRoles->removeElement($assignedRole);
+
+        return $this;
+    }
+
+    public function getTermsAcceptedAt(): ?\DateTimeImmutable
+    {
+        return $this->termsAcceptedAt;
+    }
+
+    public function setTermsAcceptedAt(?\DateTimeImmutable $termsAcceptedAt): static
+    {
+        $this->termsAcceptedAt = $termsAcceptedAt;
+
+        return $this;
+    }
+
+    public function getTermsAcceptedVersion(): ?string
+    {
+        return $this->termsAcceptedVersion;
+    }
+
+    public function setTermsAcceptedVersion(?string $termsAcceptedVersion): static
+    {
+        $this->termsAcceptedVersion = $termsAcceptedVersion;
 
         return $this;
     }
