@@ -13,11 +13,9 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
@@ -57,13 +55,13 @@ class RegistrationController extends AbstractController
                 (new TemplatedEmail())
                     ->from(new Address('noreply@foxfireworld.com', "FoxFire's Website"))
                     ->to((string) $user->getEmail())
-                    ->subject('Please Confirm your Email')
+                    ->subject('Verify Your Email Address – FoxFire\'s Website')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
 
             $this->addFlash(
                 'success',
-                'Registration successful. Please check your email to verify your account.'
+                'Your account has been created successfully! Please check your inbox and follow the verification link to activate your account.'
             );
 
             return $this->redirectToRoute('app_mainMenu');
@@ -77,40 +75,54 @@ class RegistrationController extends AbstractController
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(
         Request $request,
-	TranslatorInterface $translator,
         UserRepository $userRepository
     ): Response {
         $id = $request->query->get('id');
 
         if (!is_string($id) || !ctype_digit($id)) {
-            throw new NotFoundHttpException('Invalid verification link.');
+            $this->addFlash(
+                'verify_email_error',
+                'This verification link is invalid. Please check that you opened the complete link from your email.'
+            );
+
+            return $this->redirectToRoute('app_register');
         }
 
         $user = $userRepository->find((int) $id);
 
         if (!$user) {
-            throw new NotFoundHttpException('User not found.');
+            $this->addFlash(
+                'verify_email_error',
+                'We could not find the account associated with this verification link.'
+            );
+
+            return $this->redirectToRoute('app_register');
         }
+
+        $alreadyVerified = $user->isVerified();
 
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash(
                 'verify_email_error',
-                $translator->trans(
-                    $exception->getReason(),
-                    [],
-                    'VerifyEmailBundle'
-                )
+                'This verification link is invalid or has expired. Please check the verification email for the correct link.'
             );
 
             return $this->redirectToRoute('app_register');
         }
 
-        $this->addFlash(
-            'success',
-            'Registration successful. Please check your email to verify your account.'
-        );
+        if ($alreadyVerified) {
+            $this->addFlash(
+                'success',
+                'Your email address is already verified. You can sign in to your account.'
+            );
+        } else {
+            $this->addFlash(
+                'success',
+                'Your email address has been successfully verified. You can now sign in to your account.'
+            );
+        }
 
         return $this->redirectToRoute('app_mainMenu');
     }

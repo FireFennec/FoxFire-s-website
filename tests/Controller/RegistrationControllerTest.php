@@ -9,7 +9,7 @@ use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use App\Form\Registration\RegistrationFormType;
+use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 class RegistrationControllerTest extends WebTestCase
 {
@@ -53,7 +53,7 @@ class RegistrationControllerTest extends WebTestCase
 
         self::assertSelectorTextContains(
             '.flash-notification-success',
-            'Registration successful. Please check your email to verify your account.'
+            'Your account has been created successfully! Please check your inbox and follow the verification link to activate your account.'
         );
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -211,13 +211,116 @@ class RegistrationControllerTest extends WebTestCase
         self::assertNull($user);
     }
 
-    public function testInvalidVerificationLinkReturns404(): void
+    public function testInvalidVerificationLinkRedirectsWithError(): void
     {
         $client = static::createClient();
 
         $client->request('GET', '/verify/email?id=invalid');
 
-        self::assertResponseStatusCodeSame(404);
+        self::assertResponseRedirects('/register');
+
+        $client->followRedirect();
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains(
+            '.alert-danger',
+            'This verification link is invalid. Please check that you opened the complete link from your email.'
+        );
+    }
+
+    public function testVerificationLinkWithNonexistentUserRedirectsWithError(): void
+    {
+        $client = static::createClient();
+
+        $client->request('GET', '/verify/email?id=999999999');
+
+        self::assertResponseRedirects('/register');
+
+        $client->followRedirect();
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains(
+            '.alert-danger',
+            'We could not find the account associated with this verification link.'
+        );
+    }
+
+    public function testVerificationLinkWithInvalidSignatureRedirectsWithError(): void
+    {
+        $client = static::createClient();
+
+        // Create an existing user who has not verified their email.
+        $user = $this->persistUser();
+
+        self::assertFalse($user->isVerified());
+
+        // The user ID is valid, but the verification signature is missing.
+        $client->request(
+            'GET',
+            '/verify/email?id=' . $user->getId()
+        );
+
+        self::assertResponseRedirects('/register');
+
+        $client->followRedirect();
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains(
+            '.alert-danger',
+            'This verification link is invalid or has expired.'
+        );
+
+        // Verify that the invalid link did not activate the account.
+        $em = static::getContainer()->get(EntityManagerInterface::class);
+        $em->clear();
+
+        $updatedUser = $em->getRepository(User::class)->find($user->getId());
+
+        self::assertInstanceOf(User::class, $updatedUser);
+        self::assertFalse($updatedUser->isVerified());
+    }
+    
+    public function testValidVerificationLinkVerifiesUserAndShowsSuccessMessage(): void
+    {
+        $client = static::createClient();
+
+        // Create an unverified user.
+        $user = $this->persistUser();
+
+        self::assertFalse($user->isVerified());
+
+        // Generate a valid signed verification URL.
+        $verifyEmailHelper = static::getContainer()
+            ->get(VerifyEmailHelperInterface::class);
+
+        $signature = $verifyEmailHelper->generateSignature(
+            'app_verify_email',
+            (string) $user->getId(),
+            (string) $user->getEmail(),
+            ['id' => $user->getId()]
+        );
+
+        // Open the signed verification link.
+        $client->request('GET', $signature->getSignedUrl());
+
+        self::assertResponseRedirects('/');
+
+        $client->followRedirect();
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains(
+            '.flash-notification-success',
+            'Your email address has been successfully verified.'
+        );
+
+        // Verify that the account is marked as verified in the database.
+        $em = static::getContainer()->get(EntityManagerInterface::class);
+        $em->clear();
+
+        $verifiedUser = $em->getRepository(User::class)->find($user->getId());
+
+        self::assertInstanceOf(User::class, $verifiedUser);
+        self::assertTrue($verifiedUser->isVerified());
     }
 
     private function disableOutgoingVerificationEmail(): void
