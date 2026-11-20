@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Admin;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\Admin\UserCrudController;
 use App\Entity\Role;
+use App\Entity\User;
+use App\Service\SuperAdminProtection;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DomCrawler\Field\ChoiceFormField;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 final class UserCrudControllerTest extends WebTestCase
 {
@@ -104,7 +108,11 @@ final class UserCrudControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('Save changes')->form();
 
-        $form['User[assignedRoles]']->setValue([]);
+        $rolesField = $form['User[assignedRoles]'];
+
+        self::assertInstanceOf(ChoiceFormField::class, $rolesField);
+
+        $rolesField->setValue([]);
 
         $client->submit($form);
 
@@ -167,7 +175,11 @@ final class UserCrudControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('Save changes')->form();
 
-        $form['User[assignedRoles]']->setValue([]);
+        $rolesField = $form['User[assignedRoles]'];
+
+        self::assertInstanceOf(ChoiceFormField::class, $rolesField);
+
+        $rolesField->setValue([]);
 
         $client->submit($form);
 
@@ -177,9 +189,9 @@ final class UserCrudControllerTest extends WebTestCase
 
         $remainingSuperAdmins = (int) $connection->fetchOne(
             'SELECT COUNT(DISTINCT ur.user_id)
-         FROM user_role ur
-         INNER JOIN role r ON r.id = ur.role_id
-         WHERE r.name = :role',
+             FROM user_role ur
+             INNER JOIN role r ON r.id = ur.role_id
+             WHERE r.name = :role',
             ['role' => 'ROLE_SUPER_ADMIN']
         );
 
@@ -187,10 +199,10 @@ final class UserCrudControllerTest extends WebTestCase
 
         $removedRoleCount = (int) $connection->fetchOne(
             'SELECT COUNT(*)
-         FROM user_role ur
-         INNER JOIN role r ON r.id = ur.role_id
-         WHERE ur.user_id = :userId
-         AND r.name = :role',
+             FROM user_role ur
+             INNER JOIN role r ON r.id = ur.role_id
+             WHERE ur.user_id = :userId
+             AND r.name = :role',
             [
                 'userId' => $users[1]->getId(),
                 'role' => 'ROLE_SUPER_ADMIN',
@@ -199,7 +211,7 @@ final class UserCrudControllerTest extends WebTestCase
 
         self::assertSame(0, $removedRoleCount);
     }
-    
+
     public function testCanDeleteRegularUser(): void
     {
         self::bootKernel();
@@ -219,8 +231,8 @@ final class UserCrudControllerTest extends WebTestCase
 
         $userId = $user->getId();
 
-        $controller = new \App\Controller\Admin\UserCrudController(
-            $container->get(\App\Service\SuperAdminProtection::class)
+        $controller = new UserCrudController(
+            $container->get(SuperAdminProtection::class)
         );
 
         $controller->deleteEntity($entityManager, $user);
@@ -254,12 +266,12 @@ final class UserCrudControllerTest extends WebTestCase
         $entityManager->persist($user);
         $entityManager->flush();
 
-        $controller = new \App\Controller\Admin\UserCrudController(
-            $container->get(\App\Service\SuperAdminProtection::class)
+        $controller = new UserCrudController(
+            $container->get(SuperAdminProtection::class)
         );
 
         $this->expectException(
-            \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException::class
+            AccessDeniedHttpException::class
         );
 
         $controller->deleteEntity($entityManager, $user);
@@ -297,8 +309,8 @@ final class UserCrudControllerTest extends WebTestCase
 
         $deletedUserId = $users[1]->getId();
 
-        $controller = new \App\Controller\Admin\UserCrudController(
-            $container->get(\App\Service\SuperAdminProtection::class)
+        $controller = new UserCrudController(
+            $container->get(SuperAdminProtection::class)
         );
 
         $controller->deleteEntity($entityManager, $users[1]);

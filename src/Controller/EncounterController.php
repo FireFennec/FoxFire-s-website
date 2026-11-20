@@ -20,16 +20,19 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
  * Handles the D&D encounter tracker page.
  */
 #[Route('/dnd/encounter')]
-#[IsGranted('ROLE_DND_PLAYER')]
 final class EncounterController extends AbstractController
 {
     /**
-     * Displays the encounter tracker.
+     * Displays the encounter tracker or an access information page.
      */
     #[Route('', name: 'app_dnd_encounter_index', methods: ['GET'])]
     public function index(
         EncounterCombatantRepository $combatantRepository
     ): Response {
+        if (!$this->isGranted('ROLE_DND_PLAYER')) {
+            return $this->render('dnd/encounter/access_denied.html.twig');
+        }
+
         $allies = $combatantRepository->findBy(
             ['side' => EncounterSideEnum::ALLY],
             ['initiative' => 'DESC']
@@ -133,6 +136,7 @@ final class EncounterController extends AbstractController
         name: 'app_dnd_encounter_hp_status',
         methods: ['GET']
     )]
+    #[IsGranted('ROLE_DND_PLAYER')]
     public function hpStatus(
         EncounterCombatantRepository $combatantRepository
     ): JsonResponse {
@@ -169,6 +173,7 @@ final class EncounterController extends AbstractController
         name: 'app_dnd_encounter_combatants_html',
         methods: ['GET']
     )]
+    #[IsGranted('ROLE_DND_PLAYER')]
     public function combatantsHtml(
         EncounterCombatantRepository $combatantRepository
     ): JsonResponse {
@@ -211,6 +216,7 @@ final class EncounterController extends AbstractController
         methods: ['POST'],
         requirements: ['id' => '\d+']
     )]
+    #[IsGranted('ROLE_DND_PLAYER')]
     public function updateHp(
         EncounterCombatant $combatant,
         Request $request,

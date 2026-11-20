@@ -51,12 +51,32 @@ final class EncounterControllerTest extends WebTestCase
         parent::tearDown();
     }
 
-    private function remember(object $entity): void
-    {
+    private function remember(
+        EncounterCombatant|Role|User $entity
+    ): void {
         $this->created[] = [
             'class' => $entity::class,
             'id' => $entity->getId(),
         ];
+    }
+
+    /**
+     * Decodes a JSON response after verifying its content.
+     *
+     * @return mixed
+     */
+    private function responseJson(): mixed
+    {
+        $content = $this->client->getResponse()->getContent();
+
+        self::assertIsString($content);
+
+        return json_decode(
+            $content,
+            true,
+            512,
+            JSON_THROW_ON_ERROR
+        );
     }
 
     private function login(string $roleName): void
@@ -170,12 +190,10 @@ final class EncounterControllerTest extends WebTestCase
 
     public function testAnonymousUserCannotAccessTracker(): void
     {
-        $this->client->request(
-            'GET',
-            '/dnd/encounter'
-        );
+        $this->client->request('GET', '/dnd/encounter');
 
-        self::assertResponseRedirects();
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('h2', 'Access Restricted');
     }
 
     public function testPlayerCanViewTrackerAndStatus(): void
@@ -196,12 +214,7 @@ final class EncounterControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
 
-        $json = json_decode(
-            $this->client->getResponse()->getContent(),
-            true,
-            512,
-            JSON_THROW_ON_ERROR
-        );
+        $json = $this->responseJson();
 
         self::assertArrayHasKey(
             'combatants',
@@ -252,12 +265,7 @@ final class EncounterControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
 
-        $json = json_decode(
-            $this->client->getResponse()->getContent(),
-            true,
-            512,
-            JSON_THROW_ON_ERROR
-        );
+        $json = $this->responseJson();
 
         self::assertSame(
             35,
@@ -308,12 +316,7 @@ final class EncounterControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
 
-        $json = json_decode(
-            $this->client->getResponse()->getContent(),
-            true,
-            512,
-            JSON_THROW_ON_ERROR
-        );
+        $json = $this->responseJson();
 
         self::assertSame(
             0,
@@ -338,12 +341,7 @@ final class EncounterControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
 
-        $json = json_decode(
-            $this->client->getResponse()->getContent(),
-            true,
-            512,
-            JSON_THROW_ON_ERROR
-        );
+        $json = $this->responseJson();
 
         self::assertSame(
             100,
@@ -417,12 +415,7 @@ final class EncounterControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
 
-        $json = json_decode(
-            $this->client->getResponse()->getContent(),
-            true,
-            512,
-            JSON_THROW_ON_ERROR
-        );
+        $json = $this->responseJson();
 
         $ids = array_column(
             $json['combatants'],
@@ -454,12 +447,7 @@ final class EncounterControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
 
-        $html = json_decode(
-            $this->client->getResponse()->getContent(),
-            true,
-            512,
-            JSON_THROW_ON_ERROR
-        );
+        $html = $this->responseJson();
 
         self::assertStringContainsString(
             $ally->getName(),

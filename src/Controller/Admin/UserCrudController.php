@@ -14,6 +14,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
+/**
+ * @extends AbstractCrudController<User>
+ */
 class UserCrudController extends AbstractCrudController
 {
     public function __construct(
@@ -57,10 +60,6 @@ class UserCrudController extends AbstractCrudController
         EntityManagerInterface $entityManager,
                                $entityInstance
     ): void {
-        if (!$entityInstance instanceof User) {
-            return;
-        }
-
         $connection = $entityManager->getConnection();
         $connection->beginTransaction();
 
@@ -78,14 +77,13 @@ class UserCrudController extends AbstractCrudController
         }
     }
 
+    /**
+     * Updates a user while protecting the last super administrator.
+     */
     public function updateEntity(
         EntityManagerInterface $entityManager,
                                $entityInstance
     ): void {
-        if (!$entityInstance instanceof User) {
-            return;
-        }
-
         $isSuperAdmin = in_array(
             'ROLE_SUPER_ADMIN',
             $entityInstance->getRoles(),
@@ -93,7 +91,6 @@ class UserCrudController extends AbstractCrudController
         );
 
         $connection = $entityManager->getConnection();
-
         $connection->beginTransaction();
 
         try {

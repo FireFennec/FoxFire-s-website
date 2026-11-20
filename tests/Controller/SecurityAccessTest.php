@@ -139,6 +139,9 @@ class SecurityAccessTest extends WebTestCase
         ];
     }
 
+    /**
+     * @param list<string> $roles
+     */
     #[DataProvider('insufficientRoles')]
     public function testUserCannotAccessPageWithoutRequiredRole(
         string $url,
@@ -299,6 +302,9 @@ class SecurityAccessTest extends WebTestCase
         ];
     }
 
+    /**
+     * @param list<string> $roles
+     */
     #[DataProvider('unauthorizedEditors')]
     public function testUnauthorizedUserCannotEditContent(
         string $type,
@@ -359,6 +365,8 @@ class SecurityAccessTest extends WebTestCase
         self::assertNotNull($savedEntity);
 
         if ($type === 'recipe') {
+            self::assertInstanceOf(CookingRecipe::class, $savedEntity);
+
             self::assertSame(
                 'Original recipe',
                 $savedEntity->getRecipeName()
@@ -372,6 +380,8 @@ class SecurityAccessTest extends WebTestCase
                 $savedEntity->getCookingProcess()
             );
         } else {
+            self::assertInstanceOf(PersonalSkill::class, $savedEntity);
+
             self::assertSame(
                 'Original skill',
                 $savedEntity->getSkillName()
@@ -493,6 +503,9 @@ class SecurityAccessTest extends WebTestCase
         yield 'super admin' => [['ROLE_SUPER_ADMIN'], true, true];
     }
 
+    /**
+     * @param list<string> $roles
+     */
     #[DataProvider('adminButtonVisibility')]
     public function testAdminCreateButtonsVisibility(
         array $roles,
@@ -539,6 +552,9 @@ class SecurityAccessTest extends WebTestCase
         yield 'super admin' => [['ROLE_SUPER_ADMIN'], true];
     }
 
+    /**
+     * @param list<string> $roles
+     */
     #[DataProvider('skillEditButtonVisibility')]
     public function testSkillEditButtonVisibility(
         array $roles,
