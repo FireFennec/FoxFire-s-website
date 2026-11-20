@@ -1,0 +1,603 @@
+@import url('https://fonts.googleapis.com/css2?family=Pirata+One&display=swap');
+
+/* ==========================================================================
+   D&D Encounter Form
+   ========================================================================== */
+
+.encounter-form-page {
+    padding-bottom: 60px;
+}
+
+
+/* ==========================================================================
+   Encounter Form Fields
+   ========================================================================== */
+
+/* Center all field labels. */
+.encounter-form-page .form-field label {
+    text-align: center;
+}
+
+/* Half-width fields centered within the form. */
+.encounter-form-page .form-field.encounter-field-half {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Center text inside form inputs. */
+.encounter-form-page .form-field input,
+.encounter-form-page .form-field select {
+    text-align: center;
+}
+
+
+/* ==========================================================================
+   D&D Encounter Tracker
+   ========================================================================== */
+
+.encounter-page {
+    padding-bottom: 60px;
+}
+
+.encounter-page h1 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.encounter-page > .page-content > p {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Reduce spacing above Allies and Enemies headings. */
+.encounter-page .page-panel {
+    padding-top: 10px;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+}
+
+
+/* ==========================================================================
+   Encounter Combatant Cards
+   ========================================================================== */
+
+.encounter-combatant {
+    padding: 18px 20px;
+    margin-top: 15px;
+    background: rgba(5, 0, 0, 0.7);
+    border: 1px solid var(--border-red);
+}
+
+/* Combatant name on the left, initiative on the right. */
+.encounter-combatant-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+
+/* ==========================================================================
+   Dragon's Blood – Ornamental HP Bar
+   ========================================================================== */
+
+.encounter-hp-bar {
+    position: relative;
+    box-sizing: border-box;
+    isolation: isolate;
+    width: 100%;
+    height: 34px;
+    padding: 5px 13px;
+    overflow: hidden;
+
+    background: linear-gradient(180deg, #281013 0%, #100508 100%);
+    border: 3px solid #b78a49;
+    border-radius: 9px;
+    box-shadow:
+        inset 0 0 0 2px #593719,
+        0 0 0 1px #482413,
+        0 0 12px rgba(189, 111, 42, 0.2);
+    clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 10px,
+    100% calc(100% - 10px), calc(100% - 12px) 100%,
+    12px 100%, 0 calc(100% - 10px), 0 10px);
+}
+
+/* Golden ornaments at both ends of the frame. */
+.encounter-hp-bar::before,
+.encounter-hp-bar::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 16px;
+    height: 24px;
+    transform: translateY(-50%);
+    background: linear-gradient(135deg, #ffe0a0, #ba7834 70%, #754018);
+    clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+    z-index: 2;
+    pointer-events: none;
+    filter: drop-shadow(0 0 3px rgba(255, 186, 90, 0.55));
+}
+
+.encounter-hp-bar::before { left: 0; }
+.encounter-hp-bar::after { right: 0; }
+
+.encounter-hp-fill {
+    position: relative;
+    height: 100%;
+    max-width: 100%;
+    background: linear-gradient(180deg, #f27b68 0%, #d02c3d 37%,
+    #a3172b 72%, #670d1b 100%);
+    box-shadow: inset 0 2px 2px rgba(255, 231, 202, 0.3),
+    0 0 9px rgba(241, 49, 66, 0.45);
+    transition: width 650ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 300ms ease;
+}
+
+/* A narrow highlight makes the ruby fill look polished. */
+.encounter-hp-fill::before {
+    content: "";
+    position: absolute;
+    inset: 2px 0 auto;
+    height: 3px;
+    background: rgba(255, 225, 205, 0.25);
+    pointer-events: none;
+}
+
+/* Optional states, activated by Twig/JavaScript in the next step. */
+.encounter-hp-bar[data-hp-state="wounded"] .encounter-hp-fill {
+    background: linear-gradient(180deg, #ffc46c, #d77830 48%, #803017);
+}
+
+.encounter-hp-bar[data-hp-state="critical"] .encounter-hp-fill {
+    background: linear-gradient(180deg, #ff6861, #c51428 50%, #690817);
+    animation: encounter-dragon-pulse 1.6s ease-in-out infinite;
+}
+
+.encounter-hp-bar[data-hp-state="defeated"] {
+    border-color: #75614e;
+    box-shadow: inset 0 0 0 2px #30221d;
+}
+
+@keyframes encounter-dragon-pulse {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.45); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .encounter-hp-fill {
+        transition: none;
+        animation: none !important;
+    }
+}
+
+/* Current and maximum HP below the bar. */
+.encounter-hp-text {
+    margin: 9px 0 0;
+    text-align: center;
+    font-size: 13px;
+}
+
+
+/* ==========================================================================
+   Encounter HP Controls
+   ========================================================================== */
+
+/* Center the HP input and action buttons. */
+.encounter-hp-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/* Numeric input for damage and healing amounts. */
+.encounter-page .encounter-hp-input {
+    box-sizing: border-box;
+    width: 90px;
+    min-width: 0;
+    height: 38px;
+    padding: 8px 10px;
+    margin: 0;
+    background: rgba(5, 0, 0, 0.8);
+    border: 1px solid var(--border-red);
+    border-radius: 3px;
+    color: #ffffff;
+    font: inherit;
+    font-size: 16px;
+    text-align: center;
+}
+
+.encounter-page .encounter-hp-input:focus {
+    outline: 1px solid #d84b4b;
+    outline-offset: 2px;
+}
+
+/* Shared styles for Damage and Heal buttons. */
+.encounter-page .encounter-action-button {
+    box-sizing: border-box;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    min-width: 90px;
+    height: 38px;
+    padding: 8px 15px;
+    margin: 0;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    color: #ffffff;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* Red button for damage. */
+.encounter-page .encounter-damage {
+    background: #9b2525;
+    border-color: #c33b3b;
+}
+
+.encounter-page .encounter-damage:hover {
+    background: #bd3030;
+    border-color: #e04b4b;
+}
+
+/* Green button for healing. */
+.encounter-page .encounter-heal {
+    background: #236b3c;
+    border-color: #368f53;
+}
+
+.encounter-page .encounter-heal:hover {
+    background: #2e8b4e;
+    border-color: #48ad6a;
+}
+
+/* Keyboard accessibility. */
+.encounter-page .encounter-action-button:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 3px;
+}
+
+/* Disabled buttons during an HP update. */
+.encounter-page .encounter-action-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Error messages returned by the server. */
+.encounter-hp-error {
+    margin: 10px 0 0;
+    color: #ff7777;
+    font-size: 12px;
+    text-align: center;
+}
+
+.encounter-hp-error[hidden] {
+    display: none;
+}
+
+
+/* ==========================================================================
+   Encounter Add Combatant Action
+   ========================================================================== */
+
+.encounter-page .encounter-add-action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+}
+
+.encounter-page .encounter-add-action > .button {
+    display: inline-block;
+    flex: 0 0 auto;
+    width: auto;
+    margin: 0;
+}
+
+
+/* ==========================================================================
+   Responsive Layout
+   ========================================================================== */
+
+/* Use full-width form fields on smaller screens. */
+@media (max-width: 600px) {
+    .encounter-form-page .form-field.encounter-field-half {
+        width: 100%;
+    }
+
+    .encounter-combatant-header {
+        flex-wrap: wrap;
+    }
+
+    .encounter-hp-form {
+        gap: 8px;
+    }
+
+    .encounter-page .encounter-hp-input {
+        width: 75px;
+    }
+
+    .encounter-page .encounter-action-button {
+        min-width: 75px;
+        padding: 8px 10px;
+    }
+}
+
+/* Combatant management actions. */
+.encounter-combatant-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.encounter-combatant-actions .button {
+    width: auto;
+    min-width: 90px;
+    padding: 8px 18px;
+    font-size: 13px;
+    text-align: center;
+}
+
+.encounter-combatant-actions form {
+    margin: 0;
+}
+
+.encounter-combatant-actions .encounter-delete-button {
+    width: auto;
+    min-width: 90px;
+    padding: 8px 18px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   D&D Encounter Tracker Sticker
+   ========================================================================== */
+
+.encounter-sticker {
+    position: fixed;
+    top: 50%;
+    right: 70px;
+    transform: translateY(-50%);
+
+    display: block;
+    width: clamp(120px, 14vw, 230px);
+    height: auto;
+    object-fit: contain;
+
+    pointer-events: none;
+    z-index: 1;
+
+    filter:
+        drop-shadow(0 0 3px rgba(255, 40, 40, 0.9))
+        drop-shadow(0 0 9px rgba(255, 0, 0, 0.55))
+        drop-shadow(0 0 18px rgba(255, 0, 0, 0.25));
+}
+
+/* Hide the sticker when there isn't enough space. */
+@media (max-width: 1500px) {
+    .encounter-sticker {
+        display: none;
+    }
+}
+
+
+/* ==========================================================================
+   Combatant Initiative Badge
+   ========================================================================== */
+
+.encounter-initiative {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    gap: 3px;
+
+    min-width: 105px;
+    padding: 8px 14px;
+
+    background: linear-gradient(
+        145deg,
+        rgba(100, 15, 25, 0.65),
+        rgba(25, 5, 10, 0.9)
+    );
+
+    border: 1px solid rgba(255, 65, 75, 0.55);
+    border-radius: 8px;
+
+    box-shadow:
+        0 0 12px rgba(255, 35, 45, 0.12),
+        inset 0 0 12px rgba(255, 40, 40, 0.06);
+}
+
+.encounter-initiative-label {
+    color: #e9a0a0;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+.encounter-initiative-value {
+    color: #fff1f1;
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+
+    text-shadow: 0 0 10px rgba(255, 65, 65, 0.45);
+}
+
+@media (max-width: 480px) {
+    .encounter-initiative {
+        min-width: 85px;
+        padding: 6px 10px;
+    }
+
+    .encounter-initiative-label {
+        font-size: 9px;
+    }
+
+    .encounter-initiative-value {
+        font-size: 22px;
+    }
+}
+/* ==========================================================================
+   Combatant Identity – D20 Style
+   ========================================================================== */
+
+.encounter-combatant-identity {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    min-width: 0;
+}
+
+.encounter-d20-icon {
+    width: 58px;
+    height: 58px;
+    flex-shrink: 0;
+
+    stroke: #ff7777;
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+
+    filter:
+        drop-shadow(0 0 4px rgba(255, 70, 70, 0.8))
+        drop-shadow(0 0 12px rgba(255, 30, 30, 0.35));
+}
+
+.encounter-d20-icon text {
+    fill: #ffe0e0;
+    stroke: none;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.encounter-combatant-identity::after {
+    content: "";
+    order: 1;
+    width: 2px;
+    height: 45px;
+    flex-shrink: 0;
+
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        #ff4545,
+        transparent
+    );
+
+    box-shadow: 0 0 8px rgba(255, 40, 40, 0.5);
+}
+
+.encounter-combatant-name {
+    order: 2;
+    margin: 0;
+    padding: 0;
+
+    color: #fff5f5;
+    font-family: 'Pirata One', Georgia, serif;
+    font-size: 34px;
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: 0.8px;
+    overflow-wrap: anywhere;
+
+    text-shadow:
+        0 0 3px rgba(255, 255, 255, 0.6),
+        0 0 10px rgba(255, 65, 65, 0.55),
+        0 0 18px rgba(255, 30, 30, 0.2);
+}
+
+@media (max-width: 480px) {
+    .encounter-combatant-identity {
+        gap: 10px;
+    }
+
+    .encounter-d20-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .encounter-combatant-identity::after {
+        height: 35px;
+    }
+
+    .encounter-combatant-name {
+        font-size: 25px;
+    }
+}
+
+/* ==========================================================================
+   Encounter Controls Layout
+   ========================================================================== */
+
+.encounter-controls-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 15px;
+
+    margin-top: 18px;
+}
+
+/* Keep Damage/Heal centered within the combatant card. */
+.encounter-controls-row .encounter-hp-form {
+    grid-column: 2;
+    margin: 0;
+}
+
+/* Position Edit/Delete on the right. */
+.encounter-controls-row .encounter-combatant-actions {
+    grid-column: 3;
+    justify-self: end;
+
+    margin: 0;
+    gap: 10px;
+}
+
+/* Stack controls when horizontal space is limited. */
+@media (max-width: 850px) {
+    .encounter-controls-row {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .encounter-controls-row .encounter-hp-form {
+        justify-content: center;
+    }
+
+    .encounter-controls-row .encounter-combatant-actions {
+        justify-content: center;
+    }
+}
+
+
+/* Keep long fantasy names within the card. */
+.encounter-combatant-identity {
+    flex: 1 1 auto;
+}
+
+@media (max-width: 600px) {
+    .encounter-combatant-header {
+        align-items: flex-start;
+    }
+
+    .encounter-combatant-name {
+        font-size: 27px;
+    }
+}

@@ -13,12 +13,15 @@ security:
         ROLE_COOKING_ADMIN: ROLE_USER
         ROLE_PERSONAL_SKILL_ADMIN: ROLE_USER
         ROLE_FURRY: ROLE_USER
+        ROLE_DND_PLAYER: ROLE_USER
+        ROLE_DND_DM: ROLE_DND_PLAYER
 
         ROLE_SUPER_ADMIN:
             - ROLE_USER
             - ROLE_COOKING_ADMIN
             - ROLE_PERSONAL_SKILL_ADMIN
             - ROLE_FURRY
+            - ROLE_DND_DM
 
     firewalls:
         dev:

@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Combatant{% endblock %}
+
+{% block body %}
+    <div class="page-layout encounter-form-page">
+
+        <a href="{{ path('app_dnd_encounter_index') }}"
+           class="button page-action">
+            Back
+        </a>
+
+        <div class="page-content page-width-800">
+
+            <h1>Edit Combatant: {{ combatant.name }}</h1>
+
+            <section class="page-panel page-panel-standard">
+
+                {{ form_start(form) }}
+
+                {{ form_errors(form) }}
+
+                <div class="form-field">
+                    {{ form_label(form.name) }}
+                    {{ form_widget(form.name) }}
+                    {{ form_errors(form.name) }}
+                </div>
+
+                <div class="form-field encounter-field-half">
+                    {{ form_label(form.side) }}
+                    {{ form_widget(form.side) }}
+                    {{ form_errors(form.side) }}
+                </div>
+
+                <div class="form-field encounter-field-half">
+                    {{ form_label(form.maxHp) }}
+                    {{ form_widget(form.maxHp) }}
+                    {{ form_errors(form.maxHp) }}
+                </div>
+
+                <div class="form-field encounter-field-half">
+                    {{ form_label(form.initiative) }}
+                    {{ form_widget(form.initiative) }}
+                    {{ form_errors(form.initiative) }}
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="button">
+                        Save Changes
+                    </button>
+                </div>
+
+                {{ form_end(form) }}
+
+            </section>
+        </div>
+    </div>
+{% endblock %}

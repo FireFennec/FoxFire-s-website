@@ -1,0 +1,125 @@
+<div class="encounter-combatant"
+     data-combatant-id="{{ combatant.id }}">
+
+    <div class="encounter-combatant-header">
+        <div class="encounter-combatant-identity">
+            <img src="{{ asset('images/icons/d20.svg') }}"
+                 class="encounter-d20-icon"
+                 alt=""
+                 aria-hidden="true">
+
+            <h3 class="encounter-combatant-name">
+                {{ combatant.name }}
+            </h3>
+        </div>
+
+        <div class="encounter-initiative"
+             aria-label="Initiative: {{ combatant.initiative }}">
+            <span class="encounter-initiative-label">
+                ⚔ Initiative
+            </span>
+
+            <span class="encounter-initiative-value">
+                {{ combatant.initiative }}
+            </span>
+        </div>
+    </div>
+
+    {% set hpPercentage = combatant.maxHp > 0
+        ? (combatant.currentHp / combatant.maxHp * 100)
+        : 0
+    %}
+    {% set hpPercentage = max(0, min(100, hpPercentage)) %}
+    {% set hpState = hpPercentage <= 0
+        ? 'defeated'
+        : (hpPercentage <= 25
+        ? 'critical'
+        : (hpPercentage <= 50 ? 'wounded' : 'healthy'))
+    %}
+
+    <div class="encounter-hp-bar"
+         data-hp-state="{{ hpState }}"
+         role="progressbar"
+         aria-label="{{ combatant.name }} HP"
+         aria-valuemin="0"
+         aria-valuemax="{{ combatant.maxHp }}"
+         aria-valuenow="{{ combatant.currentHp }}">
+
+        <div class="encounter-hp-fill"
+             style="width: {{ hpPercentage }}%;"></div>
+    </div>
+
+    <p class="encounter-hp-text">
+        {{ combatant.currentHp }} / {{ combatant.maxHp }} HP
+    </p>
+
+    <div class="encounter-controls-row">
+
+        {% if combatant.side == enum('App\\Model\\EncounterSideEnum').ALLY
+            or is_granted('ROLE_DND_DM') %}
+
+            <form class="encounter-hp-form"
+                  action="{{ path('app_dnd_encounter_hp', {id: combatant.id}) }}"
+                  method="post">
+
+                <input type="hidden"
+                       name="_token"
+                       value="{{ csrf_token('encounter_hp_' ~ combatant.id) }}">
+
+                <input type="number"
+                       name="amount"
+                       min="1"
+                       step="1"
+                       required
+                       placeholder="HP"
+                       aria-label="HP amount for {{ combatant.name }}"
+                       class="encounter-hp-input">
+
+                <button type="submit"
+                        name="action"
+                        value="damage"
+                        class="encounter-action-button encounter-damage">
+                    Damage
+                </button>
+
+                <button type="submit"
+                        name="action"
+                        value="heal"
+                        class="encounter-action-button encounter-heal">
+                    Heal
+                </button>
+            </form>
+
+        {% endif %}
+
+        {% if is_granted('ROLE_DND_DM') %}
+            <div class="encounter-combatant-actions">
+                <a href="{{ path('app_dnd_encounter_edit', {id: combatant.id}) }}"
+                   class="button">
+                    Edit
+                </a>
+
+                <form action="{{ path('app_dnd_encounter_delete', {id: combatant.id}) }}"
+                      method="post"
+                      onsubmit="return confirm('Are you sure you want to delete {{ combatant.name|e('js') }}?');">
+
+                    <input type="hidden"
+                           name="_token"
+                           value="{{ csrf_token('encounter_delete_' ~ combatant.id) }}">
+
+                    <button type="submit"
+                            class="button encounter-delete-button">
+                        Delete
+                    </button>
+                </form>
+            </div>
+        {% endif %}
+
+    </div>
+
+    {% if combatant.side == enum('App\\Model\\EncounterSideEnum').ALLY
+        or is_granted('ROLE_DND_DM') %}
+        <p class="encounter-hp-error" role="alert" hidden></p>
+    {% endif %}
+
+</div>

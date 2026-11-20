@@ -1,0 +1,21 @@
+
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 64 64"
+     fill="none">
+
+    <g stroke="#ff7777"
+       stroke-width="1.6"
+       stroke-linejoin="round">
+        <path d="M32 3 58 18 58 46 32 61 6 46 6 18Z"/>
+        <path d="M32 3 32 18M6 18 32 18 58 18M6 46 20 28 32 18 44 28 58 46M6 46 32 61 58 46M20 28 32 48 44 28M32 48 32 61"/>
+    </g>
+
+    <text x="32"
+          y="39"
+          text-anchor="middle"
+          fill="#ffb4b4"
+          font-size="13"
+          font-family="Georgia, serif">
+        20
+    </text>
+</svg>

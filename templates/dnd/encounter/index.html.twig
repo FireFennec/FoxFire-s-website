@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FoxFire: D&D Encounter Tracker{% endblock %}
+
+{% block body %}
+    <div class="page-layout encounter-page">
+        <div class="page-content page-width-1100">
+
+            <h1>D&D Encounter Tracker</h1>
+
+            <section class="page-panel page-panel-standard"
+                     aria-labelledby="allies-heading">
+
+                <h2 id="allies-heading">Allies</h2>
+
+                <div id="encounter-allies">
+                    {% for combatant in allies %}
+                        {% include 'dnd/encounter/_combatant.html.twig' with {
+                            combatant: combatant
+                        } only %}
+                    {% else %}
+                        <p>No allies added yet.</p>
+                    {% endfor %}
+                </div>
+
+            </section>
+
+            <section class="page-panel page-panel-standard"
+                     aria-labelledby="enemies-heading">
+
+                <h2 id="enemies-heading">Enemies</h2>
+
+                <div id="encounter-enemies">
+                    {% for combatant in enemies %}
+                        {% include 'dnd/encounter/_combatant.html.twig' with {
+                            combatant: combatant
+                        } only %}
+                    {% else %}
+                        <p>No enemies added yet.</p>
+                    {% endfor %}
+                </div>
+
+            </section>
+
+            {% if is_granted('ROLE_DND_DM') %}
+                <div class="encounter-add-action">
+                    <a href="{{ path('app_dnd_encounter_new') }}" class="button">
+                        Add Combatant
+                    </a>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    {# Decorative sticker for the D&D Encounter Tracker. #}
+    <img
+        class="encounter-sticker"
+        src="{{ asset('images/stickers/foxfire-dm.png') }}"
+        alt=""
+        aria-hidden="true"
+    >
+{% endblock %}

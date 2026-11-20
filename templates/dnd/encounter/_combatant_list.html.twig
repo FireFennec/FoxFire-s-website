@@ -1,0 +1,7 @@
+{% for combatant in combatants %}
+    {% include 'dnd/encounter/_combatant.html.twig' with {
+        combatant: combatant
+    } only %}
+{% else %}
+    <p>{{ emptyMessage }}</p>
+{% endfor %}
