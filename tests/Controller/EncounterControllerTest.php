@@ -459,4 +459,124 @@ final class EncounterControllerTest extends WebTestCase
             $html['enemies']
         );
     }
+
+    /**
+     * Submits the combatant edit form as a DM.
+     *
+     * @param array<string, string> $changes
+     */
+    private function editCombatant(
+        EncounterCombatant $combatant,
+        array $changes
+    ): EncounterCombatant {
+        $combatantId = $combatant->getId();
+
+        $this->client->request(
+            'GET',
+            '/dnd/encounter/' . $combatantId . '/edit'
+        );
+
+        self::assertResponseIsSuccessful();
+
+        $form = $this->client->getCrawler()
+            ->selectButton('Save Changes')
+            ->form();
+
+        $this->client->submit($form, $changes);
+
+        self::assertResponseRedirects('/dnd/encounter');
+
+        // Re-fetch from the database, not the detached or cached entity.
+        $this->em = static::getContainer()->get(
+            EntityManagerInterface::class
+        );
+        $this->em->clear();
+
+        $updatedCombatant = $this->em->find(
+            EncounterCombatant::class,
+            $combatantId
+        );
+
+        self::assertNotNull($updatedCombatant);
+
+        return $updatedCombatant;
+    }
+
+    public function testDmCanEditCombatantName(): void
+    {
+        $this->login('ROLE_DND_DM');
+
+        $combatant = $this->combatant(EncounterSideEnum::ALLY);
+
+        $combatant = $this->editCombatant($combatant, [
+            'encounter_combatant[name]' => 'Updated Warrior',
+        ]);
+
+        self::assertSame('Updated Warrior', $combatant->getName());
+    }
+
+    public function testDmCanEditCombatantInitiative(): void
+    {
+        $this->login('ROLE_DND_DM');
+
+        $combatant = $this->combatant(EncounterSideEnum::ENEMY);
+
+        $combatant = $this->editCombatant($combatant, [
+            'encounter_combatant[initiative]' => '25',
+        ]);
+
+        self::assertSame(25, $combatant->getInitiative());
+    }
+
+    public function testDmCanChangeCombatantSide(): void
+    {
+        $this->login('ROLE_DND_DM');
+
+        $combatant = $this->combatant(EncounterSideEnum::ALLY);
+
+        $combatant = $this->editCombatant($combatant, [
+            'encounter_combatant[side]' => EncounterSideEnum::ENEMY->value,
+        ]);
+
+        self::assertSame(
+            EncounterSideEnum::ENEMY,
+            $combatant->getSide()
+        );
+    }
+
+    public function testDecreasingMaximumHpAdjustsCurrentHp(): void
+    {
+        $this->login('ROLE_DND_DM');
+
+        $combatant = $this->combatant(
+            EncounterSideEnum::ALLY,
+            80,
+            100
+        );
+
+        $combatant = $this->editCombatant($combatant, [
+            'encounter_combatant[maxHp]' => '55',
+        ]);
+
+        self::assertSame(55, $combatant->getMaxHp());
+        self::assertSame(55, $combatant->getCurrentHp());
+    }
+
+    public function testIncreasingMaximumHpDoesNotHealCombatant(): void
+    {
+        $this->login('ROLE_DND_DM');
+
+        $combatant = $this->combatant(
+            EncounterSideEnum::ENEMY,
+            40,
+            100
+        );
+
+        $combatant = $this->editCombatant($combatant, [
+            'encounter_combatant[maxHp]' => '150',
+        ]);
+
+        self::assertSame(150, $combatant->getMaxHp());
+        self::assertSame(40, $combatant->getCurrentHp());
+    }
 }

@@ -12,6 +12,8 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 /**
  * @extends AbstractType<EncounterCombatant>
@@ -38,6 +40,21 @@ class EncounterCombatantType extends AbstractType
             ->add('initiative', IntegerType::class, [
                 'label' => 'Initiative',
             ]);
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
+            $combatant = $event->getData();
+
+            if (!$combatant instanceof EncounterCombatant) {
+                return;
+            }
+
+            $maxHp = $combatant->getMaxHp();
+            $currentHp = $combatant->getCurrentHp();
+
+            if ($maxHp !== null && $maxHp > 0 && $currentHp !== null && $currentHp > $maxHp) {
+                $combatant->setCurrentHp($maxHp);
+            }
+        }, 1024);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

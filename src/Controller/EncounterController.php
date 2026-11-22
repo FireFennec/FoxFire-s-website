@@ -100,19 +100,10 @@ final class EncounterController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager
     ): Response {
-        $originalMaxHp = $combatant->getMaxHp();
-
         $form = $this->createForm(EncounterCombatantType::class, $combatant);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Prevent current HP from exceeding the new maximum HP.
-            if ($combatant->getMaxHp() !== $originalMaxHp) {
-                $combatant->setCurrentHp(
-                    min($combatant->getCurrentHp(), $combatant->getMaxHp())
-                );
-            }
-
             $entityManager->flush();
 
             return $this->redirectToRoute('app_dnd_encounter_index');
