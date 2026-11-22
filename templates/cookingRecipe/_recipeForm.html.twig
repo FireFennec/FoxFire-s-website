@@ -67,5 +67,8 @@
         }) }}
     </div>
 
+    {# Prevent Symfony from rendering the ingredients collection again. #}
+    {% do form.ingredients.setRendered() %}
+
     {{ form_end(form) }}
 </div>
