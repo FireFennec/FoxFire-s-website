@@ -97,6 +97,10 @@
     padding-left: 18px;
 }
 
+.account-page .form-actions {
+    gap: 15px;
+}
+
 @media (max-width: 600px) {
     .change-password-page .page-panel {
         padding: 22px 18px;

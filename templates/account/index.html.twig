@@ -48,6 +48,15 @@
                         >
                             Change Password
                         </a>
+
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <a
+                                href="{{ path('admin') }}"
+                                class="button"
+                            >
+                                Administration
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
             </section>
