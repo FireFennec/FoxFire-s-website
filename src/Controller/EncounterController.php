@@ -76,8 +76,6 @@ final class EncounterController extends AbstractController
                 $entityManager->persist($combatant);
                 $entityManager->flush();
 
-                $this->addFlash('success', 'Combatant successfully added.');
-
                 return $this->redirectToRoute('app_dnd_encounter_index');
             }
         }
