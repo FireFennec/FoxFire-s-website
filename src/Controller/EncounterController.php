@@ -115,8 +115,6 @@ final class EncounterController extends AbstractController
 
             $entityManager->flush();
 
-            $this->addFlash('success', 'Combatant successfully updated.');
-
             return $this->redirectToRoute('app_dnd_encounter_index');
         }
 
@@ -306,8 +304,6 @@ final class EncounterController extends AbstractController
 
         $entityManager->remove($combatant);
         $entityManager->flush();
-
-        $this->addFlash('success', 'Combatant successfully deleted.');
 
         return $this->redirectToRoute('app_dnd_encounter_index');
     }
