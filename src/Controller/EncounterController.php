@@ -8,6 +8,7 @@ use App\Entity\EncounterCombatant;
 use App\Form\DnD\EncounterCombatantType;
 use App\Model\EncounterSideEnum;
 use App\Repository\EncounterCombatantRepository;
+use App\Service\EncounterInitiativeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -116,7 +117,7 @@ final class EncounterController extends AbstractController
     }
 
     /**
-     * Returns the current state of all encounter combatants.
+     * Returns the current combatant and initiative state for live synchronization.
      */
     #[Route(
         '/hp-status',
@@ -125,31 +126,35 @@ final class EncounterController extends AbstractController
     )]
     #[IsGranted('ROLE_DND_PLAYER')]
     public function hpStatus(
-        EncounterCombatantRepository $combatantRepository
+        EncounterCombatantRepository $combatantRepository,
+        EncounterInitiativeService $initiativeService
     ): JsonResponse {
         $combatants = $combatantRepository->findBy(
             [],
             ['initiative' => 'DESC', 'id' => 'ASC']
         );
 
-        $combatantStatus = [];
+        $state = $initiativeService->getState();
 
-        foreach ($combatants as $combatant) {
-            $combatantStatus[] = [
-                'id' => $combatant->getId(),
-                'name' => $combatant->getName(),
-                'side' => $combatant->getSide()->value,
-                'initiative' => $combatant->getInitiative(),
-                'currentHp' => $combatant->getCurrentHp(),
-                'maxHp' => $combatant->getMaxHp(),
-            ];
-        }
-
-        return $this->json([
-            'combatants' => $combatantStatus,
-        ], headers: [
-            'Cache-Control' => 'no-store',
+        $response = $this->json([
+            'combatants' => array_map(
+                static fn (EncounterCombatant $combatant): array => [
+                    'id' => $combatant->getId(),
+                    'name' => $combatant->getName(),
+                    'side' => $combatant->getSide()->value,
+                    'initiative' => $combatant->getInitiative(),
+                    'currentHp' => $combatant->getCurrentHp(),
+                    'maxHp' => $combatant->getMaxHp(),
+                ],
+                $combatants
+            ),
+            'activeCombatantId' => $state->getActiveCombatant()?->getId(),
+            'roundNumber' => $state->getRoundNumber(),
         ]);
+
+        $response->headers->set('Cache-Control', 'no-store');
+
+        return $response;
     }
 
     /**
@@ -297,5 +302,69 @@ final class EncounterController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('app_dnd_encounter_index');
+    }
+
+    /**
+     * Advances the encounter to the next combatant.
+     */
+    #[Route(
+        '/next-turn',
+        name: 'app_dnd_encounter_next_turn',
+        methods: ['POST']
+    )]
+    #[IsGranted('ROLE_DND_DM')]
+    public function nextTurn(
+        Request $request,
+        EncounterInitiativeService $initiativeService
+    ): JsonResponse {
+        if (!$this->isCsrfTokenValid(
+            'encounter_next_turn',
+            (string) $request->request->get('_token', '')
+        )) {
+            return $this->json(
+                ['error' => 'Invalid CSRF token.'],
+                Response::HTTP_FORBIDDEN
+            );
+        }
+
+        $state = $initiativeService->nextTurn();
+
+        return $this->json([
+            'success' => true,
+            'activeCombatantId' => $state->getActiveCombatant()?->getId(),
+            'roundNumber' => $state->getRoundNumber(),
+        ]);
+    }
+
+    /**
+     * Resets the encounter to its initial round and turn state.
+     */
+    #[Route(
+        '/reset',
+        name: 'app_dnd_encounter_reset',
+        methods: ['POST']
+    )]
+    #[IsGranted('ROLE_DND_DM')]
+    public function reset(
+        Request $request,
+        EncounterInitiativeService $initiativeService
+    ): JsonResponse {
+        if (!$this->isCsrfTokenValid(
+            'encounter_reset',
+            (string) $request->request->get('_token', '')
+        )) {
+            return $this->json(
+                ['error' => 'Invalid CSRF token.'],
+                Response::HTTP_FORBIDDEN
+            );
+        }
+
+        $state = $initiativeService->reset();
+
+        return $this->json([
+            'success' => true,
+            'activeCombatantId' => $state->getActiveCombatant()?->getId(),
+            'roundNumber' => $state->getRoundNumber(),
+        ]);
     }
 }

@@ -668,3 +668,413 @@
 .encounter-access-panel {
     margin-top: 0;
 }
+
+
+/* ==========================================================================
+   Encounter Initiative Tracker
+   ========================================================================== */
+
+/* Position the initiative tracker beside the combatant panels. */
+.encounter-layout {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.encounter-combatants {
+    min-width: 0;
+}
+
+/* Keep the initiative tracker visible while scrolling. */
+.encounter-page .encounter-initiative-panel {
+    position: sticky;
+    top: 25px;
+
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    padding: 20px;
+    margin: 0;
+
+    background: linear-gradient(
+        145deg,
+        rgba(45, 8, 12, 0.45),
+        rgba(10, 2, 4, 0.55)
+    );
+
+    border: 1px solid var(--border-red);
+    box-shadow: 0 0 18px rgba(180, 0, 0, 0.12);
+}
+
+/* Initiative tracker heading. */
+.encounter-page .encounter-initiative-panel h2 {
+    margin: 0 0 24px;
+    padding: 0 0 14px;
+
+    border: none;
+    border-bottom: 1px solid #8b2026;
+
+    color: #fff1f1;
+    font-family: Georgia, serif;
+    font-size: 27px;
+    font-weight: 400;
+    line-height: 1.2;
+    text-align: center;
+    text-shadow: none;
+}
+
+/* Remove the default decorative heading accent. */
+.encounter-page .encounter-initiative-panel h2::before,
+.encounter-page .encounter-initiative-panel h2::after {
+    content: none;
+}
+
+/* ==========================================================================
+   Encounter Round – Royal Counter
+   ========================================================================== */
+
+/* Current encounter round. */
+.encounter-round {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    margin: 0 0 24px;
+}
+
+/* Round label with decorative golden lines. */
+.encounter-round-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+
+    width: 100%;
+
+    color: #d5ac58;
+    font-family: Georgia, serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+.encounter-round-label::before,
+.encounter-round-label::after {
+    content: "";
+
+    flex: 1;
+    height: 1px;
+
+    background: #a98143;
+}
+
+/* Large golden round number. */
+#encounter-round-number {
+    display: block;
+    width: 60%;
+    padding-bottom: 8px;
+
+    border-bottom: 1px solid #805b30;
+
+    color: #ffe0a0;
+    font-family: Georgia, serif;
+    font-size: 60px;
+    font-weight: 700;
+    line-height: 1.1;
+    text-align: center;
+    font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* Vertical initiative order. */
+#encounter-initiative-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    max-height: 55vh;
+    overflow-y: auto;
+
+    padding: 3px;
+    margin-bottom: 20px;
+
+    scrollbar-width: thin;
+    scrollbar-color: #8b2026 transparent;
+}
+
+#encounter-initiative-list > p {
+    margin: 10px 0;
+    color: #aaaaaa;
+    font-size: 13px;
+    text-align: center;
+}
+
+/* Individual combatant in the initiative order. */
+.encounter-initiative-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+
+    box-sizing: border-box;
+    min-height: 48px;
+    padding: 12px;
+
+    background: rgba(5, 0, 0, 0.35);
+    border: 1px solid rgba(255, 65, 75, 0.25);
+    border-left: 3px solid #8b2026;
+    border-radius: 4px;
+
+    transition:
+        background 200ms ease,
+        border-color 200ms ease,
+        box-shadow 200ms ease;
+}
+
+/* Distinguish allies and enemies. */
+.encounter-initiative-item[data-side="Ally"] {
+    border-left-color: #48ad6a;
+}
+
+.encounter-initiative-item[data-side="Enemy"] {
+    border-left-color: #d84b4b;
+}
+
+/* Combatant name. */
+.encounter-initiative-name {
+    min-width: 0;
+
+    color: #fff5f5;
+    font-family: 'Pirata One', Georgia, serif;
+    font-size: 21px;
+    line-height: 1.2;
+    letter-spacing: 0.5px;
+    overflow-wrap: anywhere;
+}
+
+/* Override the initiative badge value only inside the tracker. */
+.encounter-initiative-panel .encounter-initiative-value {
+    flex-shrink: 0;
+
+    color: #fff1f1;
+    font-size: 20px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Highlight the combatant whose turn is currently active. */
+.encounter-initiative-item.is-active {
+    background: linear-gradient(
+        135deg,
+        rgba(100, 65, 20, 0.4),
+        rgba(35, 15, 5, 0.95)
+    );
+
+    border-color: #d5ac58;
+
+    box-shadow:
+        0 0 8px rgba(213, 172, 88, 0.45),
+        inset 0 0 10px rgba(213, 172, 88, 0.1);
+}
+
+.encounter-initiative-item.is-active .encounter-initiative-name,
+.encounter-initiative-item.is-active .encounter-initiative-value {
+    color: #ffe0a0;
+
+    text-shadow:
+        0 0 5px rgba(213, 172, 88, 0.5);
+}
+
+/* Display a label beneath the active combatant's name. */
+.encounter-initiative-item.is-active
+.encounter-initiative-name::after {
+    content: "Current Turn";
+
+    display: block;
+    margin-top: 5px;
+
+    color: #d5ac58;
+    font-family: monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* Initiative progression controls. */
+#encounter-next-turn-form {
+    margin: 0;
+}
+
+#encounter-next-turn {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 12px 8px;
+
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#encounter-next-turn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+#encounter-next-turn:focus-visible {
+    outline: 2px solid #d5ac58;
+    outline-offset: 3px;
+}
+
+/* Initiative request errors. */
+.encounter-initiative-error {
+    margin: 12px 0 0;
+
+    color: #ff7777;
+    font-size: 12px;
+    text-align: center;
+}
+
+.encounter-initiative-error[hidden] {
+    display: none;
+}
+
+
+/* ==========================================================================
+   Initiative Tracker – Responsive Layout
+   ========================================================================== */
+
+/* Stack combatant controls when the available width is reduced. */
+@media (max-width: 1250px) {
+    .encounter-combatants .encounter-controls-row {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
+/* Move the initiative tracker above combatants on smaller screens. */
+@media (max-width: 950px) {
+    .encounter-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+    }
+
+    .encounter-page .encounter-initiative-panel {
+        position: static;
+    }
+
+    #encounter-initiative-list {
+        max-height: 300px;
+    }
+}
+
+/* Disable decorative transitions when reduced motion is preferred. */
+@media (prefers-reduced-motion: reduce) {
+    .encounter-initiative-item {
+        transition: none;
+    }
+}
+
+/* Keep the combatant panels centered at their original width. */
+.encounter-combatants {
+    width: 100%;
+}
+
+/* Position the initiative tracker outside the main content. */
+@media (min-width: 1750px) {
+    .encounter-page .encounter-initiative-panel {
+        position: fixed;
+        top: 210px;
+        right: calc(50% + 550px + 25px);
+        width: 260px;
+        max-height: calc(100vh - 235px);
+        overflow-y: auto;
+    }
+}
+
+/* Use a narrower sidebar on medium-sized desktop screens. */
+@media (min-width: 1450px) and (max-width: 1749px) {
+    .encounter-page .encounter-initiative-panel {
+        position: fixed;
+        top: 210px;
+        left: 20px;
+        width: calc((100vw - 1100px) / 2 - 40px);
+        max-height: calc(100vh - 235px);
+        overflow-y: auto;
+        padding: 12px;
+    }
+}
+
+/* Stack the tracker above combatants when space is limited. */
+@media (max-width: 1449px) {
+    .encounter-page .encounter-initiative-panel {
+        position: static;
+        width: 100%;
+        margin-bottom: 25px;
+    }
+}
+
+/* Scale the initiative heading on narrower desktop screens. */
+@media (min-width: 1450px) and (max-width: 1749px) {
+    .encounter-page .encounter-initiative-panel h2 {
+        font-size: clamp(17px, 1.45vw, 25px);
+    }
+}
+
+/* ==========================================================================
+   Encounter Reset Controls
+   ========================================================================== */
+
+#encounter-reset-form {
+    margin: 12px 0 0;
+}
+
+.encounter-page #encounter-reset {
+    display: block;
+    box-sizing: border-box;
+
+    width: 100%;
+    margin: 0;
+    padding: 9px 8px;
+
+    background: rgba(40, 5, 8, 0.25);
+    border: 1px solid rgba(139, 32, 38, 0.65);
+
+    color: #d98c8c;
+    font-size: 12px;
+    font-weight: 400;
+    text-align: center;
+
+    cursor: pointer;
+
+    transition:
+        background-color 200ms ease,
+        border-color 200ms ease,
+        color 200ms ease;
+}
+
+.encounter-page #encounter-reset:not(:disabled):hover {
+    background: rgba(139, 32, 38, 0.25);
+    border-color: #d84b4b;
+    color: #fff1f1;
+}
+
+.encounter-page #encounter-reset:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.encounter-page #encounter-reset:focus-visible {
+    outline: 2px solid #d84b4b;
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .encounter-page #encounter-reset {
+        transition: none;
+    }
+}

@@ -1,5 +1,6 @@
 /**
- * Handles damage, healing and automatic encounter synchronization.
+ * Handles damage, healing, initiative tracking
+ * and automatic encounter synchronization.
  */
 
 const encounterHpSyncInterval = 2000;
@@ -7,6 +8,8 @@ const encounterHpSyncInterval = 2000;
 let encounterHpSyncTimer = null;
 let encounterHpSyncController = null;
 let encounterStructure = null;
+let encounterInitiativeStructure = null;
+let encounterTurnUpdating = false;
 
 /**
  * Updates the HP bar and displayed HP values.
@@ -60,6 +63,245 @@ function getEncounterStructure(combatants) {
 }
 
 /**
+ * Updates the initiative tracker and current round.
+ */
+function updateEncounterInitiative(
+    combatants,
+    activeCombatantId,
+    roundNumber
+) {
+    const initiativeList = document.querySelector(
+        '#encounter-initiative-list'
+    );
+
+    const roundElement = document.querySelector(
+        '#encounter-round-number'
+    );
+
+    const nextTurnButton = document.querySelector(
+        '#encounter-next-turn'
+    );
+
+    const resetButton = document.querySelector(
+        '#encounter-reset'
+    );
+
+    if (!initiativeList || !roundElement) {
+        return;
+    }
+
+    roundElement.textContent = String(roundNumber);
+
+    if (nextTurnButton) {
+        nextTurnButton.disabled =
+            encounterTurnUpdating || combatants.length === 0;
+
+        nextTurnButton.textContent = activeCombatantId === null
+            ? 'Start Encounter'
+            : 'Next Turn';
+    }
+
+    if (resetButton) {
+        resetButton.disabled =
+            encounterTurnUpdating ||
+            (activeCombatantId === null && Number(roundNumber) === 1);
+    }
+
+    const orderedCombatants = [...combatants].sort(
+        (a, b) =>
+            Number(b.initiative) - Number(a.initiative) ||
+            Number(a.id) - Number(b.id)
+    );
+
+    const newStructure = JSON.stringify({
+        combatants: orderedCombatants.map((combatant) => ({
+            id: combatant.id,
+            name: combatant.name,
+            side: combatant.side,
+            initiative: combatant.initiative
+        })),
+        activeCombatantId: activeCombatantId
+    });
+
+    // Avoid rebuilding the initiative list unnecessarily.
+    if (encounterInitiativeStructure === newStructure) {
+        return;
+    }
+
+    encounterInitiativeStructure = newStructure;
+
+    if (orderedCombatants.length === 0) {
+        const emptyMessage = document.createElement('p');
+
+        emptyMessage.textContent = 'No combatants added yet.';
+
+        initiativeList.replaceChildren(emptyMessage);
+
+        return;
+    }
+
+    const fragment = document.createDocumentFragment();
+
+    for (const combatant of orderedCombatants) {
+        const item = document.createElement('div');
+
+        item.classList.add('encounter-initiative-item');
+
+        item.dataset.initiativeCombatantId = String(combatant.id);
+        item.dataset.side = combatant.side;
+
+        const isActive =
+            activeCombatantId !== null &&
+            Number(combatant.id) === Number(activeCombatantId);
+
+        if (isActive) {
+            item.classList.add('is-active');
+            item.setAttribute('aria-current', 'true');
+        }
+
+        const name = document.createElement('span');
+
+        name.classList.add('encounter-initiative-name');
+        name.textContent = combatant.name;
+
+        const initiative = document.createElement('span');
+
+        initiative.classList.add('encounter-initiative-value');
+        initiative.textContent = String(combatant.initiative);
+
+        item.append(name, initiative);
+
+        fragment.appendChild(item);
+    }
+
+    initiativeList.replaceChildren(fragment);
+}
+
+/**
+ * Registers the initiative progression and reset forms.
+ */
+function initializeEncounterInitiativeForm() {
+    const forms = document.querySelectorAll(
+        '#encounter-next-turn-form, #encounter-reset-form'
+    );
+
+    forms.forEach((form) => {
+        const button = form.querySelector('button[type="submit"]');
+
+        if (!button ||
+            form.dataset.initiativeInitialized === 'true'
+        ) {
+            return;
+        }
+
+        form.dataset.initiativeInitialized = 'true';
+
+        const isReset = form.id === 'encounter-reset-form';
+
+        const errorMessage = isReset
+            ? 'Unable to reset the encounter.'
+            : 'Unable to advance the encounter.';
+
+        const errorElement = document.createElement('p');
+
+        errorElement.classList.add('encounter-initiative-error');
+        errorElement.setAttribute('role', 'alert');
+        errorElement.hidden = true;
+
+        form.appendChild(errorElement);
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            if (encounterTurnUpdating || button.disabled) {
+                return;
+            }
+
+            // Confirm before resetting the encounter.
+            if (isReset && !window.confirm(
+                'Are you sure you want to reset the encounter? ' +
+                'The round and current turn will be reset. ' +
+                'All combatants and their HP will remain unchanged.'
+            )) {
+                return;
+            }
+
+            encounterTurnUpdating = true;
+
+            const buttons = document.querySelectorAll(
+                '#encounter-next-turn, #encounter-reset'
+            );
+
+            const previousButtonStates = Array.from(
+                buttons,
+                (button) => ({
+                    button,
+                    disabled: button.disabled
+                })
+            );
+
+            buttons.forEach((button) => {
+                button.disabled = true;
+            });
+
+            // Clear previous initiative errors.
+            document.querySelectorAll(
+                '.encounter-initiative-error'
+            ).forEach((element) => {
+                element.hidden = true;
+                element.textContent = '';
+            });
+
+            // Cancel polling to prevent outdated initiative updates.
+            if (encounterHpSyncController) {
+                encounterHpSyncController.abort();
+                encounterHpSyncController = null;
+            }
+
+            try {
+                const response = await fetch(
+                    form.getAttribute('action'),
+                    {
+                        method: 'POST',
+                        body: new FormData(form),
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    }
+                );
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(
+                        data.error || errorMessage
+                    );
+                }
+
+            } catch (error) {
+                errorElement.textContent =
+                    error.message || errorMessage;
+
+                errorElement.hidden = false;
+
+            } finally {
+                encounterTurnUpdating = false;
+
+                // Restore controls before retrieving the latest state.
+                previousButtonStates.forEach(({ button, disabled }) => {
+                    button.disabled = disabled;
+                });
+
+                // Immediately retrieve the latest encounter state.
+                if (form.isConnected) {
+                    await synchronizeEncounterHp();
+                }
+            }
+        });
+    });
+}
+
+/**
  * Saves the state of an HP input before replacing its card.
  */
 function saveCombatantInput(card) {
@@ -96,7 +338,9 @@ function restoreCombatantInput(card, state) {
     if (state.focused) {
         input.focus({ preventScroll: true });
 
-        if (state.selectionStart !== null && state.selectionEnd !== null) {
+        if (state.selectionStart !== null &&
+            state.selectionEnd !== null
+        ) {
             try {
                 input.setSelectionRange(
                     state.selectionStart,
@@ -137,6 +381,7 @@ function initializeEncounterHpForms() {
             if (!Number.isSafeInteger(amount) || amount <= 0) {
                 errorElement.textContent = 'Enter a positive whole number.';
                 errorElement.hidden = false;
+
                 return;
             }
 
@@ -156,18 +401,23 @@ function initializeEncounterHpForms() {
                 formData.set('amount', String(amount));
                 formData.set('action', action);
 
-                const response = await fetch(form.getAttribute('action'), {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
+                const response = await fetch(
+                    form.getAttribute('action'),
+                    {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
                     }
-                });
+                );
 
                 const data = await response.json();
 
                 if (!response.ok) {
-                    throw new Error(data.error || 'Unable to update HP.');
+                    throw new Error(
+                        data.error || 'Unable to update HP.'
+                    );
                 }
 
                 updateCombatantHp(
@@ -183,6 +433,7 @@ function initializeEncounterHpForms() {
                     error.message || 'Unable to update HP.';
 
                 errorElement.hidden = false;
+
             } finally {
                 delete combatantCard.dataset.hpUpdating;
 
@@ -199,6 +450,7 @@ function initializeEncounterHpForms() {
  */
 function updateCombatantList(container, html, combatants) {
     const template = document.createElement('template');
+
     template.innerHTML = html;
 
     const incomingCards = Array.from(
@@ -206,8 +458,9 @@ function updateCombatantList(container, html, combatants) {
     );
 
     const existingCards = new Map(
-        Array.from(container.querySelectorAll('.encounter-combatant'))
-            .map((card) => [card.dataset.combatantId, card])
+        Array.from(
+            container.querySelectorAll('.encounter-combatant')
+        ).map((card) => [card.dataset.combatantId, card])
     );
 
     const combatantsById = new Map(
@@ -226,11 +479,15 @@ function updateCombatantList(container, html, combatants) {
 
         if (!existingCard || !combatant) {
             orderedCards.push(incomingCard);
+
             continue;
         }
 
-        const existingName = existingCard.querySelector('h3')?.textContent.trim();
-        const incomingName = incomingCard.querySelector('h3')?.textContent.trim();
+        const existingName = existingCard
+            .querySelector('h3')?.textContent.trim();
+
+        const incomingName = incomingCard
+            .querySelector('h3')?.textContent.trim();
 
         const existingInitiative = existingCard.querySelector(
             '.encounter-initiative'
@@ -255,12 +512,14 @@ function updateCombatantList(container, html, combatants) {
 
         if (!hasChanged) {
             orderedCards.push(existingCard);
+
             continue;
         }
 
         // Never replace a card during an active HP request.
         if (existingCard.dataset.hpUpdating === 'true') {
             orderedCards.push(existingCard);
+
             continue;
         }
 
@@ -299,7 +558,9 @@ async function synchronizeEncounterStructure(controller, combatants) {
 
     const data = await response.json();
 
-    if (controller.signal.aborted || !document.querySelector('.encounter-page')) {
+    if (controller.signal.aborted ||
+        !document.querySelector('.encounter-page')
+    ) {
         return false;
     }
 
@@ -311,12 +572,23 @@ async function synchronizeEncounterStructure(controller, combatants) {
     }
 
     // Defer structural changes while any HP submission is running.
-    if (document.querySelector('.encounter-combatant[data-hp-updating="true"]')) {
+    if (document.querySelector(
+        '.encounter-combatant[data-hp-updating="true"]'
+    )) {
         return false;
     }
 
-    updateCombatantList(alliesContainer, data.allies, combatants);
-    updateCombatantList(enemiesContainer, data.enemies, combatants);
+    updateCombatantList(
+        alliesContainer,
+        data.allies,
+        combatants
+    );
+
+    updateCombatantList(
+        enemiesContainer,
+        data.enemies,
+        combatants
+    );
 
     initializeEncounterHpForms();
 
@@ -331,11 +603,12 @@ async function synchronizeEncounterHp() {
         return;
     }
 
-    if (encounterHpSyncController) {
+    if (encounterHpSyncController || encounterTurnUpdating) {
         return;
     }
 
     const controller = new AbortController();
+
     encounterHpSyncController = controller;
 
     try {
@@ -354,15 +627,27 @@ async function synchronizeEncounterHp() {
 
         const data = await response.json();
 
-        if (controller.signal.aborted || !document.querySelector('.encounter-page')) {
+        if (controller.signal.aborted ||
+            encounterTurnUpdating ||
+            !document.querySelector('.encounter-page')
+        ) {
             return;
         }
+
+        // Synchronize initiative independently of HP card changes.
+        updateEncounterInitiative(
+            data.combatants,
+            data.activeCombatantId,
+            data.roundNumber
+        );
 
         const newStructure = getEncounterStructure(data.combatants);
 
         const displayedIds = Array.from(
             document.querySelectorAll('.encounter-combatant')
-        ).map((card) => Number(card.dataset.combatantId)).sort((a, b) => a - b);
+        ).map(
+            (card) => Number(card.dataset.combatantId)
+        ).sort((a, b) => a - b);
 
         const serverIds = data.combatants
             .map((combatant) => Number(combatant.id))
@@ -372,7 +657,10 @@ async function synchronizeEncounterHp() {
             JSON.stringify(displayedIds) !== JSON.stringify(serverIds);
 
         if (idsChanged ||
-            (encounterStructure !== null && encounterStructure !== newStructure)
+            (
+                encounterStructure !== null &&
+                encounterStructure !== newStructure
+            )
         ) {
             const updated = await synchronizeEncounterStructure(
                 controller,
@@ -384,6 +672,10 @@ async function synchronizeEncounterHp() {
             }
         }
 
+        if (controller.signal.aborted || encounterTurnUpdating) {
+            return;
+        }
+
         encounterStructure = newStructure;
 
         for (const combatant of data.combatants) {
@@ -391,7 +683,9 @@ async function synchronizeEncounterHp() {
                 `.encounter-combatant[data-combatant-id="${combatant.id}"]`
             );
 
-            if (!combatantCard || combatantCard.dataset.hpUpdating === 'true') {
+            if (!combatantCard ||
+                combatantCard.dataset.hpUpdating === 'true'
+            ) {
                 continue;
             }
 
@@ -406,6 +700,7 @@ async function synchronizeEncounterHp() {
         if (error.name !== 'AbortError') {
             console.error('Encounter synchronization failed:', error);
         }
+
     } finally {
         if (encounterHpSyncController === controller) {
             encounterHpSyncController = null;
@@ -438,15 +733,39 @@ function startEncounterHpSync() {
 function stopEncounterHpSync() {
     if (encounterHpSyncTimer !== null) {
         window.clearInterval(encounterHpSyncTimer);
+
         encounterHpSyncTimer = null;
     }
 
     if (encounterHpSyncController) {
         encounterHpSyncController.abort();
+
         encounterHpSyncController = null;
     }
 
     encounterStructure = null;
+    encounterInitiativeStructure = null;
+}
+
+/**
+ * Prepares the tracker before Turbo caches the page.
+ */
+function prepareEncounterForCache() {
+    stopEncounterHpSync();
+
+    document.querySelectorAll('.encounter-hp-form').forEach((form) => {
+        delete form.dataset.hpInitialized;
+    });
+
+    document.querySelectorAll(
+        '#encounter-next-turn-form, #encounter-reset-form'
+    ).forEach((form) => {
+        delete form.dataset.initiativeInitialized;
+
+        form.querySelector(
+            '.encounter-initiative-error'
+        )?.remove();
+    });
 }
 
 /**
@@ -454,22 +773,38 @@ function stopEncounterHpSync() {
  */
 function initializeEncounterHp() {
     initializeEncounterHpForms();
+    initializeEncounterInitiativeForm();
     startEncounterHpSync();
 }
 
-document.addEventListener('turbo:load', initializeEncounterHp);
+document.addEventListener(
+    'turbo:load',
+    initializeEncounterHp
+);
 
-document.addEventListener('turbo:before-cache', stopEncounterHpSync);
-document.addEventListener('turbo:before-render', stopEncounterHpSync);
+document.addEventListener(
+    'turbo:before-cache',
+    prepareEncounterForCache
+);
+
+document.addEventListener(
+    'turbo:before-render',
+    stopEncounterHpSync
+);
 
 document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && document.querySelector('.encounter-page')) {
+    if (!document.hidden &&
+        document.querySelector('.encounter-page')
+    ) {
         synchronizeEncounterHp();
     }
 });
 
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeEncounterHp);
+    document.addEventListener(
+        'DOMContentLoaded',
+        initializeEncounterHp
+    );
 } else {
     initializeEncounterHp();
 }
