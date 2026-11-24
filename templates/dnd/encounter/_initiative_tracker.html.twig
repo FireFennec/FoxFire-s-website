@@ -1,0 +1,58 @@
+<aside class="page-panel page-panel-standard encounter-initiative-panel"
+       aria-labelledby="initiative-heading">
+
+    <h2 id="initiative-heading">Initiative Tracker</h2>
+
+    <div class="encounter-round">
+        <div class="encounter-round-label">
+            Round
+        </div>
+
+        <span id="encounter-round-number">1</span>
+    </div>
+
+    <div id="encounter-initiative-list"
+         aria-live="polite">
+        <p>No combatants added yet.</p>
+    </div>
+
+    {% if is_granted('ROLE_DND_DM') %}
+        <form id="encounter-next-turn-form"
+              action="{{ path('app_dnd_encounter_next_turn') }}"
+              method="post">
+
+            <input type="hidden"
+                   name="_token"
+                   value="{{ csrf_token('encounter_next_turn') }}">
+
+            <button type="submit"
+                    id="encounter-next-turn"
+                    class="button"
+                    disabled>
+                Start Encounter
+            </button>
+
+        </form>
+
+        <form
+            id="encounter-reset-form"
+            action="{{ path('app_dnd_encounter_reset') }}"
+            method="post"
+        >
+            <input
+                type="hidden"
+                name="_token"
+                value="{{ csrf_token('encounter_reset') }}"
+            >
+
+            <button
+                type="submit"
+                id="encounter-reset"
+                class="button"
+            >
+                Reset Encounter
+            </button>
+        </form>
+    {% endif %}
+
+</aside>

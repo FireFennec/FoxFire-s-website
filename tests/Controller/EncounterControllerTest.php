@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Controller;
 
 use App\Entity\EncounterCombatant;
+use App\Entity\EncounterState;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Model\EncounterSideEnum;
@@ -20,6 +21,9 @@ final class EncounterControllerTest extends WebTestCase
     /** @var list<array{class: class-string, id: int}> */
     private array $created = [];
 
+    private ?int $originalActiveCombatantId = null;
+    private ?int $originalRoundNumber = null;
+
     protected function setUp(): void
     {
         $this->client = static::createClient();
@@ -34,6 +38,21 @@ final class EncounterControllerTest extends WebTestCase
     {
         // Remove only records created by this test.
         if (isset($this->em) && $this->em->isOpen()) {
+            if ($this->originalRoundNumber !== null) {
+                $this->em->clear();
+                $state = $this->em->find(EncounterState::class, 1);
+
+                if ($state !== null) {
+                    $activeCombatant = $this->originalActiveCombatantId !== null
+                        ? $this->em->find(EncounterCombatant::class, $this->originalActiveCombatantId)
+                        : null;
+
+                    $state->setActiveCombatant($activeCombatant);
+                    $state->setRoundNumber($this->originalRoundNumber);
+                    $this->em->flush();
+                }
+            }
+
             foreach (array_reverse($this->created) as $record) {
                 $entity = $this->em->find(
                     $record['class'],
@@ -114,14 +133,15 @@ final class EncounterControllerTest extends WebTestCase
     private function combatant(
         EncounterSideEnum $side,
         int $hp = 50,
-        int $max = 100
+        int $max = 100,
+        int $initiative = 12
     ): EncounterCombatant {
         $entity = (new EncounterCombatant())
             ->setName(
                 'Test combatant ' . bin2hex(random_bytes(3))
             )
             ->setSide($side)
-            ->setInitiative(12)
+            ->setInitiative($initiative)
             ->setMaxHp($max)
             ->setCurrentHp($hp);
 
@@ -578,5 +598,190 @@ final class EncounterControllerTest extends WebTestCase
 
         self::assertSame(150, $combatant->getMaxHp());
         self::assertSame(40, $combatant->getCurrentHp());
+    }
+
+    /**
+     * Prepares an isolated initiative state for testing.
+     */
+    private function prepareInitiativeState(): void
+    {
+        $state = $this->em->find(EncounterState::class, 1);
+        self::assertNotNull($state);
+        self::assertSame(
+            0,
+            $this->em->getRepository(EncounterCombatant::class)->count([]),
+            'Initiative tests require an empty encounter.'
+        );
+
+        $this->originalActiveCombatantId = $state->getActiveCombatant()?->getId();
+        $this->originalRoundNumber = $state->getRoundNumber();
+        $state->setActiveCombatant(null);
+        $state->setRoundNumber(1);
+        $this->em->flush();
+    }
+
+    /**
+     * Submits an initiative action using its rendered CSRF token.
+     */
+    private function postInitiativeAction(string $action): void
+    {
+        $this->client->request('GET', '/dnd/encounter');
+        self::assertResponseIsSuccessful();
+
+        $formId = $action === 'reset'
+            ? '#encounter-reset-form'
+            : '#encounter-next-turn-form';
+        $form = $this->client->getCrawler()->filter($formId);
+        self::assertCount(1, $form);
+        $tokenInput = $form->filter('input[name="_token"]');
+        self::assertCount(1, $tokenInput);
+        $token = $tokenInput->attr('value');
+        self::assertNotNull($token);
+
+        $this->client->request('POST', '/dnd/encounter/' . $action, [
+            '_token' => $token,
+        ]);
+    }
+
+    /**
+     * Verifies the persisted encounter round and active combatant.
+     */
+    private function assertInitiativeState(?int $activeCombatantId, int $roundNumber): void
+    {
+        $this->em = static::getContainer()->get(EntityManagerInterface::class);
+        $this->em->clear();
+        $state = $this->em->find(EncounterState::class, 1);
+        self::assertNotNull($state);
+        self::assertSame($activeCombatantId, $state->getActiveCombatant()?->getId());
+        self::assertSame($roundNumber, $state->getRoundNumber());
+    }
+
+    public function testEncounterStartsWithHighestInitiative(): void
+    {
+        $this->login('ROLE_DND_DM');
+        $this->prepareInitiativeState();
+        $this->combatant(EncounterSideEnum::ALLY, initiative: 10);
+        $highest = $this->combatant(EncounterSideEnum::ENEMY, initiative: 20);
+        $this->combatant(EncounterSideEnum::ALLY, initiative: 15);
+
+        $this->postInitiativeAction('next-turn');
+        self::assertResponseIsSuccessful();
+        $json = $this->responseJson();
+        self::assertTrue($json['success']);
+        self::assertSame($highest->getId(), $json['activeCombatantId']);
+        self::assertSame(1, $json['roundNumber']);
+        $this->assertInitiativeState($highest->getId(), 1);
+    }
+
+    public function testNextTurnAdvancesToNextCombatant(): void
+    {
+        $this->login('ROLE_DND_DM');
+        $this->prepareInitiativeState();
+        $first = $this->combatant(EncounterSideEnum::ALLY, initiative: 20);
+        $second = $this->combatant(EncounterSideEnum::ENEMY, initiative: 20);
+        $third = $this->combatant(EncounterSideEnum::ALLY, initiative: 10);
+
+        foreach ([$first, $second, $third] as $combatant) {
+            $this->postInitiativeAction('next-turn');
+            self::assertResponseIsSuccessful();
+            $json = $this->responseJson();
+            self::assertSame($combatant->getId(), $json['activeCombatantId']);
+            self::assertSame(1, $json['roundNumber']);
+            $this->assertInitiativeState($combatant->getId(), 1);
+        }
+    }
+
+    public function testNextTurnIncrementsRoundAfterLastCombatant(): void
+    {
+        $this->login('ROLE_DND_DM');
+        $this->prepareInitiativeState();
+        $first = $this->combatant(EncounterSideEnum::ALLY, initiative: 20);
+        $last = $this->combatant(EncounterSideEnum::ENEMY, initiative: 10);
+
+        $expectedTurns = [
+            [$first->getId(), 1],
+            [$last->getId(), 1],
+            [$first->getId(), 2],
+            [$last->getId(), 2],
+            [$first->getId(), 3],
+        ];
+
+        foreach ($expectedTurns as [$combatantId, $roundNumber]) {
+            $this->postInitiativeAction('next-turn');
+            self::assertResponseIsSuccessful();
+            $json = $this->responseJson();
+            self::assertSame($combatantId, $json['activeCombatantId']);
+            self::assertSame($roundNumber, $json['roundNumber']);
+            $this->assertInitiativeState($combatantId, $roundNumber);
+        }
+    }
+
+    public function testResetEncounterRestoresInitialState(): void
+    {
+        $this->login('ROLE_DND_DM');
+        $this->prepareInitiativeState();
+        $ally = $this->combatant(EncounterSideEnum::ALLY, hp: 35, max: 100, initiative: 20);
+        $this->combatant(EncounterSideEnum::ENEMY, hp: 15, max: 50, initiative: 10);
+
+        // Advance the encounter to round two.
+        for ($i = 0; $i < 3; $i++) {
+            $this->postInitiativeAction('next-turn');
+            self::assertResponseIsSuccessful();
+        }
+        $this->assertInitiativeState($ally->getId(), 2);
+
+        $this->client->request('GET', '/dnd/encounter/hp-status');
+        self::assertResponseIsSuccessful();
+        $before = $this->responseJson()['combatants'];
+
+        $this->postInitiativeAction('reset');
+        self::assertResponseIsSuccessful();
+        $json = $this->responseJson();
+        self::assertTrue($json['success']);
+        self::assertNull($json['activeCombatantId']);
+        self::assertSame(1, $json['roundNumber']);
+        $this->assertInitiativeState(null, 1);
+
+        $this->client->request('GET', '/dnd/encounter/hp-status');
+        self::assertResponseIsSuccessful();
+        $after = $this->responseJson();
+        self::assertNull($after['activeCombatantId']);
+        self::assertSame(1, $after['roundNumber']);
+        self::assertSame($before, $after['combatants']);
+
+        $this->postInitiativeAction('next-turn');
+        self::assertResponseIsSuccessful();
+        $this->assertInitiativeState($ally->getId(), 1);
+    }
+
+    public function testPlayerCannotModifyEncounterInitiative(): void
+    {
+        $this->login('ROLE_DND_DM');
+        $this->prepareInitiativeState();
+        $combatant = $this->combatant(EncounterSideEnum::ALLY, initiative: 20);
+        $this->postInitiativeAction('next-turn');
+        self::assertResponseIsSuccessful();
+        $this->assertInitiativeState($combatant->getId(), 1);
+
+        // Even a DM must provide a valid CSRF token.
+        foreach (['next-turn', 'reset'] as $action) {
+            $this->client->request('POST', '/dnd/encounter/' . $action, [
+                '_token' => 'invalid-token',
+            ]);
+            self::assertResponseStatusCodeSame(403);
+            $this->assertInitiativeState($combatant->getId(), 1);
+        }
+
+        $this->login('ROLE_DND_PLAYER');
+        $this->client->request('GET', '/dnd/encounter');
+        self::assertResponseIsSuccessful();
+        self::assertSelectorNotExists('#encounter-next-turn-form');
+        self::assertSelectorNotExists('#encounter-reset-form');
+
+        foreach (['next-turn', 'reset'] as $action) {
+            $this->client->request('POST', '/dnd/encounter/' . $action);
+            self::assertResponseStatusCodeSame(403);
+            $this->assertInitiativeState($combatant->getId(), 1);
+        }
     }
 }

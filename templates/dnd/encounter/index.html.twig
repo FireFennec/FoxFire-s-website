@@ -8,47 +8,58 @@
 
             <h1>D&D Encounter Tracker</h1>
 
-            <section class="page-panel page-panel-standard"
-                     aria-labelledby="allies-heading">
+            <div class="encounter-layout">
 
-                <h2 id="allies-heading">Allies</h2>
+                {% include 'dnd/encounter/_initiative_tracker.html.twig' %}
 
-                <div id="encounter-allies">
-                    {% for combatant in allies %}
-                        {% include 'dnd/encounter/_combatant.html.twig' with {
-                            combatant: combatant
-                        } only %}
-                    {% else %}
-                        <p>No allies added yet.</p>
-                    {% endfor %}
+                <div class="encounter-combatants">
+
+                    <section class="page-panel page-panel-standard"
+                             aria-labelledby="allies-heading">
+
+                        <h2 id="allies-heading">Allies</h2>
+
+                        <div id="encounter-allies">
+                            {% for combatant in allies %}
+                                {% include 'dnd/encounter/_combatant.html.twig' with {
+                                    combatant: combatant
+                                } only %}
+                            {% else %}
+                                <p>No allies added yet.</p>
+                            {% endfor %}
+                        </div>
+
+                    </section>
+
+                    <section class="page-panel page-panel-standard"
+                             aria-labelledby="enemies-heading">
+
+                        <h2 id="enemies-heading">Enemies</h2>
+
+                        <div id="encounter-enemies">
+                            {% for combatant in enemies %}
+                                {% include 'dnd/encounter/_combatant.html.twig' with {
+                                    combatant: combatant
+                                } only %}
+                            {% else %}
+                                <p>No enemies added yet.</p>
+                            {% endfor %}
+                        </div>
+
+                    </section>
+
+                    {% if is_granted('ROLE_DND_DM') %}
+                        <div class="encounter-add-action">
+                            <a href="{{ path('app_dnd_encounter_new') }}"
+                               class="button">
+                                Add Combatant
+                            </a>
+                        </div>
+                    {% endif %}
+
                 </div>
 
-            </section>
-
-            <section class="page-panel page-panel-standard"
-                     aria-labelledby="enemies-heading">
-
-                <h2 id="enemies-heading">Enemies</h2>
-
-                <div id="encounter-enemies">
-                    {% for combatant in enemies %}
-                        {% include 'dnd/encounter/_combatant.html.twig' with {
-                            combatant: combatant
-                        } only %}
-                    {% else %}
-                        <p>No enemies added yet.</p>
-                    {% endfor %}
-                </div>
-
-            </section>
-
-            {% if is_granted('ROLE_DND_DM') %}
-                <div class="encounter-add-action">
-                    <a href="{{ path('app_dnd_encounter_new') }}" class="button">
-                        Add Combatant
-                    </a>
-                </div>
-            {% endif %}
+            </div>
 
         </div>
     </div>
