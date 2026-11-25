@@ -9,7 +9,10 @@
             <h1>Login</h1>
 
             <section class="page-panel page-panel-standard login-panel">
-                <form method="post" class="login-form">
+                <form method="post"
+                      action="{{ path('app_login') }}"
+                      class="login-form"
+                      data-turbo="false">
 
                     {% if error %}
                         <div class="alert alert-danger" role="alert">
