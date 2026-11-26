@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FoxFire: My Shopping List{% endblock %}
+
+{% block body %}
+    <div class="page-layout shopping-list-page">
+        <div class="page-content page-width-800 shopping-list-content">
+
+            <h1>My Shopping List</h1>
+
+            <section class="page-panel page-panel-standard shopping-list-access-denied">
+
+                <svg
+                    class="shopping-list-lock-icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="40"
+                    height="40"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                >
+                    <rect x="4" y="11" width="16" height="10" rx="2"/>
+                    <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+                    <path d="M12 15v2"/>
+                </svg>
+
+                <h2>Login Required</h2>
+
+                <p>
+                    You need to be logged in to create and manage
+                    your personal shopping list.
+                </p>
+
+                <p>
+                    Please log in or create an account to continue.
+                </p>
+
+                <div class="shopping-list-auth-actions">
+                    <a href="{{ path('app_login') }}" class="button">
+                        Login
+                    </a>
+
+                    <a href="{{ path('app_register') }}" class="button">
+                        Register
+                    </a>
+                </div>
+
+            </section>
+
+        </div>
+    </div>
+{% endblock %}

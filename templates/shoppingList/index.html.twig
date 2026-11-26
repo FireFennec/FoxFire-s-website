@@ -1,0 +1,165 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FoxFire: My Shopping List{% endblock %}
+
+{% block body %}
+    <div class="page-layout shopping-list-page">
+        <div class="page-content page-width-800 shopping-list-content">
+
+            <h1>My Shopping List</h1>
+
+            <section class="page-panel page-panel-standard shopping-list-panel"
+                     aria-label="Personal shopping list">
+
+                <p class="shopping-list-description">
+                    Manage your personal shopping list.
+                </p>
+
+                {# Form for adding new products. #}
+                <form
+                    id="shopping-list-add-form"
+                    class="shopping-list-add-form"
+                    action="{{ path('app_shopping_list_add') }}"
+                    method="post"
+                >
+                    <input
+                        type="hidden"
+                        name="_token"
+                        value="{{ csrf_token('shopping_list_add') }}"
+                    >
+
+                    <input
+                        type="text"
+                        id="shopping-list-product-name"
+                        name="name"
+                        placeholder="Enter product name..."
+                        aria-label="Product name"
+                        maxlength="150"
+                        autocomplete="off"
+                        required
+                    >
+
+                    <button type="submit" class="button">
+                        + Add
+                    </button>
+                </form>
+
+                {# Displays errors returned by shopping list actions. #}
+                <p
+                    id="shopping-list-error"
+                    class="shopping-list-error"
+                    role="alert"
+                    hidden
+                ></p>
+
+                {# Displays the current shopping progress. #}
+                {% set totalItems = items|length %}
+                {% set purchasedItems = items|filter(item => item.isPurchased)|length %}
+                {% set progress = totalItems > 0
+                    ? (purchasedItems / totalItems * 100)|round
+                    : 0
+                %}
+
+                <div class="shopping-list-progress">
+
+                    <div class="shopping-list-progress-header">
+                        <span>Shopping progress</span>
+
+                        <span id="shopping-list-progress-count">
+                            {{ purchasedItems }}/{{ totalItems }}
+                        </span>
+                    </div>
+
+                    <progress
+                        id="shopping-list-progress-bar"
+                        class="shopping-list-progress-bar"
+                        value="{{ progress }}"
+                        max="100"
+                        aria-label="Shopping progress"
+                    ></progress>
+
+                </div>
+
+                {# Personal shopping list items. #}
+                <ul id="shopping-list-items"
+                    class="shopping-list-items">
+
+                    {% for item in items %}
+                        {% include 'shoppingList/_item.html.twig' with {
+                            item: item
+                        } only %}
+                    {% endfor %}
+
+                </ul>
+
+                <p
+                    id="shopping-list-empty"
+                    class="shopping-list-empty"
+                    {% if items is not empty %}hidden{% endif %}
+                >
+                    Your shopping list is empty.
+                </p>
+
+                {# Form for clearing the entire shopping list. #}
+                <form
+                    id="shopping-list-clear-form"
+                    class="shopping-list-clear-form"
+                    action="{{ path('app_shopping_list_clear_all') }}"
+                    method="post"
+                    {% if items is empty %}hidden{% endif %}
+                >
+                    <input
+                        type="hidden"
+                        name="_token"
+                        value="{{ csrf_token('shopping_list_clear_all') }}"
+                    >
+
+                    <button
+                        type="button"
+                        id="shopping-list-clear-button"
+                        class="button shopping-list-clear-button"
+                    >
+                        Clear All
+                    </button>
+                </form>
+
+                {# Confirmation dialog for clearing the shopping list. #}
+                <dialog
+                    id="shopping-list-clear-dialog"
+                    class="shopping-list-clear-dialog"
+                    aria-labelledby="shopping-list-clear-title"
+                    aria-describedby="shopping-list-clear-description"
+                >
+                    <h2 id="shopping-list-clear-title">
+                        Clear Shopping List?
+                    </h2>
+
+                    <p id="shopping-list-clear-description">
+                        Are you sure you want to remove all products from your
+                        shopping list? This action cannot be undone.
+                    </p>
+
+                    <div class="shopping-list-dialog-actions">
+                        <button
+                            type="button"
+                            id="shopping-list-clear-cancel"
+                            class="button"
+                            autofocus
+                        >
+                            Cancel
+                        </button>
+
+                        <button
+                            type="submit"
+                            form="shopping-list-clear-form"
+                            id="shopping-list-clear-confirm"
+                            class="button shopping-list-clear-confirm"
+                        >
+                            Clear All
+                        </button>
+                    </div>
+                </dialog>
+            </section>
+        </div>
+    </div>
+{% endblock %}
